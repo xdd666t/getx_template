@@ -1,2 +1,2 @@
 # getx_template
- Flutter GetX模板生产
+ Flutter GetX模板代码生成
