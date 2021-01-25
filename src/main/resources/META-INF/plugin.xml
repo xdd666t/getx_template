@@ -1,11 +1,15 @@
 <idea-plugin>
     <id>com.tao.getx</id>
+    <!-- 插件名称，官方插件库显示的名称 -->
     <name>GetX</name>
+    <!--  使用gradle模式开发,修改此处版本号无效  -->
     <version>1.0</version>
+    <!-- 供应商主页和email（联系地址）-->
     <vendor email="xdd666@foxmail.com" url="https://github.com/CNAD666">CNAD666</vendor>
 
+    <!-- 插件的描述 （不能使用默认值，必须修改成自己的。并且需要大于40个字符）-->
     <description><![CDATA[
-     GetX_template<br>
+     getx_template<br>
      1. Used to generate the template code of GetX framework <br>
      2. Yo yo, Che Ke, get it done! <br><br>
      User Guide: Right-click the File: New -> GetX <br>
@@ -13,8 +17,10 @@
     ]]></description>
 
 
+    <!-- 插件版本变更信息，支持HTML标签；
+      将展示在 settings | Plugins 对话框和插件仓库的Web页面 -->
     <change-notes><![CDATA[
-      GetX_template Plugin Version1.0<br>
+      getx_template Plugin Version1.0<br>
       <em>
       1. You can generate a large number of GetX template codes<br>
       2. Improve development efficiency<br>
@@ -23,6 +29,13 @@
     ]]>
     </change-notes>
 
+    <!-- 插件所依赖的其他插件的id 建议写上，不写，在在某些情况下，上传插件会报错-->
+    <depends>com.intellij.modules.all</depends>
+
+    <!-- 插件兼容IDEA Build 号-->
+    <idea-version since-build="173.0" until-build="201.8743.12"/>
+
+    <!-- 编写插件动作 -->
     <actions>
         <!-- Add your actions here -->
         <action id="com.tao.NewGetX" class="NewGetX" text="GetX" description="create GetX template code"

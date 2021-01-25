@@ -1,9 +1,17 @@
+buildscript {
+    repositories {
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    }
+
+}
+
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.6.5'
 }
 
 group 'com.tao.getx'
+// 版本号在此处修改
 version '1.0'
 
 repositories {
@@ -15,9 +23,18 @@ dependencies {
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
+// 一定要注意，此处是设置相关兼容位置的插件，注意相应版本
 intellij {
     version '2020.1.4'
+//    plugins = ['coverage', 'org.intellij.plugins.markdown:8.5.0.20160208']
+//    pluginName 'GetX'
 }
+
+//publishPlugin {
+//    token 'ssdfhasdfASDaq23jhnasdkjh'
+//    channels 'nightly'
+//}
+
 patchPluginXml {
     changeNotes """
       Add change notes here.<br>
