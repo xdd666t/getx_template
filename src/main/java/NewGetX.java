@@ -202,12 +202,12 @@ public class NewGetX extends AnAction {
         }
         dispose();
         //创建文件
-        clickCreateFile();
+        createFile();
         //刷新项目
         project.getBaseDir().refresh(false, true);
     }
 
-    private void clickCreateFile() {
+    private void createFile() {
         String type = templateGroup.getSelection().getActionCommand();
         String name = nameTextField.getText();
         String prefix = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name);
