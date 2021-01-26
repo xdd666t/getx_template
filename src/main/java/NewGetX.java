@@ -162,39 +162,6 @@ public class NewGetX extends AnAction {
     }
 
 
-    private KeyListener keyListener = new KeyListener() {
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                save();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                dispose();
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
-    };
-
-    private ActionListener actionListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("Cancel")) {
-                dispose();
-            } else {
-                save();
-            }
-        }
-    };
-
     private void save() {
         if (nameTextField.getText() == null || "".equals(nameTextField.getText().trim())) {
             Messages.showInfoMessage(project, "Please input the module name", "Info");
@@ -257,6 +224,12 @@ public class NewGetX extends AnAction {
         } catch (Exception e) {
         }
         content = content.replaceAll("\\$name", nameTextField.getText());
+        //添加前缀需要修改导入类名
+        if (prefixBox.isSelected()) {
+            String prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, nameTextField.getText()) + "_";
+            content = content.replaceAll("logic.dart", prefixName + "logic.dart");
+            content = content.replaceAll("state.dart", prefixName + "state.dart");
+        }
 
         //写入文件
         try {
@@ -280,6 +253,7 @@ public class NewGetX extends AnAction {
         }
     }
 
+
     private byte[] readStream(InputStream inStream) throws Exception {
         ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
         try {
@@ -297,6 +271,34 @@ public class NewGetX extends AnAction {
         }
         return outSteam.toByteArray();
     }
+
+
+    private KeyListener keyListener = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) save();
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) dispose();
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
+    };
+
+    private ActionListener actionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals("Cancel")) {
+                dispose();
+            } else {
+                save();
+            }
+        }
+    };
 
     private void setPadding(JRadioButton btn, int top, int bottom) {
         btn.setBorder(BorderFactory.createEmptyBorder(top, 10, bottom, 0));

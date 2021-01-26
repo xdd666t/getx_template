@@ -12,7 +12,7 @@ plugins {
 
 group 'com.tao.getx'
 // 版本号在此处修改
-version '1.0'
+version '1.1'
 
 repositories {
     mavenCentral()

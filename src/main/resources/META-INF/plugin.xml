@@ -3,7 +3,7 @@
     <!-- 插件名称，官方插件库显示的名称 -->
     <name>GetX</name>
     <!--  使用gradle模式开发,修改此处版本号无效  -->
-    <version>1.0</version>
+    <!--    <version>1.1</version>-->
     <!-- 供应商主页和email（联系地址）-->
     <vendor email="xdd666@foxmail.com" url="https://github.com/CNAD666">CNAD666</vendor>
 
@@ -20,12 +20,17 @@
     <!-- 插件版本变更信息，支持HTML标签；
       将展示在 settings | Plugins 对话框和插件仓库的Web页面 -->
     <change-notes><![CDATA[
-      getx_template Plugin Version1.0<br>
-      <em>
+      Plugin Version 1.0<br>
+      1.0<br>
       1. You can generate a large number of GetX template codes<br>
       2. Improve development efficiency<br>
       3. If you have any questions, please give feedback<br>
-      </em>
+
+      <br><br><br>
+
+      Plugin Version 1.1<br>
+      Fix the problem of selecting prefix and reporting errors in import packages<br>
+      <em></em>
     ]]>
     </change-notes>
 
