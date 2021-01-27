@@ -11,8 +11,6 @@ plugins {
 }
 
 group 'com.tao.getx'
-// 版本号在此处修改
-version '1.1'
 
 repositories {
     mavenCentral()
@@ -35,8 +33,24 @@ intellij {
 //    channels 'nightly'
 //}
 
+
+// 如果此处设置了插件相关属性，在Plugin.xml对应设置就会失效
+// 下方俩设置更新都比较频繁,故放在此处
+// 版本号在此处修改
+version '1.1'
+// 更新说明在这些
 patchPluginXml {
     changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+    <h1>1.2</h1>
+    <ul>
+        <li>Fix the problem of selecting prefix and reporting errors in import packages</li>
+    </ul>
+
+    <h1>1.1</h1>
+    <ul>
+        <li>You can generate a large number of GetX template codes</li>
+        <li>Improve development efficiency</li>
+        <li>If you have any questions, please give feedback</li>
+    </ul>
+    """
 }
