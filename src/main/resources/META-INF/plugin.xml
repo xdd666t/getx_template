@@ -9,14 +9,10 @@
 
     <!-- 插件的描述 （不能使用默认值，必须修改成自己的。并且需要大于40个字符）-->
     <description><![CDATA[
-    <h2>getx_template</h2>
-    <ul>
-        <li>Used to generate the template code of GetX framework</li>
-        <li>GitHub：https://github.com/CNAD666/getx_template</li>
-    </ul>
-    <h2>User Guide</h2>
+    <h2>Used to generate the template code of GetX framework</h2>
     <ul>
         <li>Right-click the File: New -> GetX</li>
+        <li>GitHub：https://github.com/CNAD666/getx_template</li>
     </ul>
     ]]></description>
 

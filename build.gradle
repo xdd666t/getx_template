@@ -41,12 +41,12 @@ version '1.1'
 // 更新说明在这些
 patchPluginXml {
     changeNotes """
-    <h1>1.2</h1>
+    <h1>1.1</h1>
     <ul>
         <li>Fix the problem of selecting prefix and reporting errors in import packages</li>
     </ul>
 
-    <h1>1.1</h1>
+    <h1>1.0</h1>
     <ul>
         <li>You can generate a large number of GetX template codes</li>
         <li>Improve development efficiency</li>
