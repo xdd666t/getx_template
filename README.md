@@ -6,26 +6,25 @@
 
 - Plug-in effect
 
-- - Take a look at the effect diagram used by the plug-in. The style refers to the fish_redux plug-in style.
+  - Take a look at the effect diagram used by the plug-in. The style refers to the fish_redux plug-in style.
   - There are some optional functions, so make it into a multi-button style, you can operate according to your own needs
 
 ![getx_template](https://cdn.jsdelivr.net/gh/CNAD666/MyData/pic/flutter/blog/getx_plugin_show.gif)
 
-- ## Description
+## Description
 
-  - The description of the plug-in
+The description of the plug-in
 
-  - - Model: generates the GetX mode,
+- Model: generates the GetX mode,
 
-  - - - Default: the Default mode. Three files are generated: state,logic, and view.
-      - Easy: in simple mode, three files are generated: logic,view
+  - Default: the Default mode. Three files are generated: state,logic, and view.
+  - Easy: in simple mode, three files are generated: logic,view
 
-  - - Function: Function selection
+- Function: Function selection
+  - useFolder: use a file. After you select it, a folder is generated. The Hump name is automatically converted to lowercase + underscore.
+  - useprefix: use the prefix, the generated file front prefix, prefix for: large hump named automatically converted to: lowercase + underline
 
-  - - - useFolder: use a file. After you select it, a folder is generated. The Hump name is automatically converted to lowercase + underscore.
-      - useprefix: use the prefix, the generated file front prefix, prefix for: large hump named automatically converted to: lowercase + underline
-
-  - - Module Name: the Name of the Module. Use the hump Name.
+- Module Name: the Name of the Module. Use the hump Name.
 
 ## GetX usage
 
