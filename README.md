@@ -1,6 +1,6 @@
 # getx_template
 
-语言: [English](https://github.com/fluttercandies/flutter_smart_dialog/blob/master/README.md) | [中文简体](https://github.com/fluttercandies/flutter_smart_dialog/blob/master/doc/README-ZH.md)
+语言: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://github.com/CNAD666/getx_template/blob/main/docs/README-ZH.md)
 
 ## Renderings
 
