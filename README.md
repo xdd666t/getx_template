@@ -1,21 +1,32 @@
 # getx_template
 
-## 效果图
+语言: [English](https://github.com/fluttercandies/flutter_smart_dialog/blob/master/README.md) | [中文简体](https://github.com/fluttercandies/flutter_smart_dialog/blob/master/doc/README-ZH.md)
 
-- 插件效果 
-  - 看下插件使用的效果图吧，样式参考了fish_redux插件样式
-  - 有一些可选择的功能，所以做成多按钮的样式，大家可以按照自己的需求进行操作
+## Renderings
+
+- Plug-in effect
+
+- - Take a look at the effect diagram used by the plug-in. The style refers to the fish_redux plug-in style.
+  - There are some optional functions, so make it into a multi-button style, you can operate according to your own needs
 
 ![getx_template](https://cdn.jsdelivr.net/gh/CNAD666/MyData/pic/flutter/blog/getx_plugin_show.gif)
 
-## 说明
+- ## Description
 
-- 说下插件的功能含义
-  - Model：生成GetX的模式，
-    - Default：默认模式，生成三个文件：state，logic，view
-    - Easy：简单模式，生成三个文件：logic，view
-  - Function：功能选择
-    - useFolder：使用文件，选择后会生成文件夹，大驼峰命名自动转换为：小写+下划线
-    - usePrefix：使用前缀，生成的文件前加上前缀，前缀为：大驼峰命名自动转换为：小写+下划线
-  - Module Name：模块的名称，请使用大驼峰命名
+  - The description of the plug-in
 
+  - - Model: generates the GetX mode,
+
+  - - - Default: the Default mode. Three files are generated: state,logic, and view.
+      - Easy: in simple mode, three files are generated: logic,view
+
+  - - Function: Function selection
+
+  - - - useFolder: use a file. After you select it, a folder is generated. The Hump name is automatically converted to lowercase + underscore.
+      - useprefix: use the prefix, the generated file front prefix, prefix for: large hump named automatically converted to: lowercase + underline
+
+  - - Module Name: the Name of the Module. Use the hump Name.
+
+## GetX usage
+
+- Gold digging:  [Flutter GetX use --- simple charm!](https://juejin.cn/post/6924104248275763208)
