@@ -43,7 +43,7 @@ patchPluginXml {
     changeNotes """
     <h1>1.2</h1>
     <ul>
-        <li>add init method</li>
+        <li>add description content</li>
     </ul>
 
     <h1>1.1</h1>
