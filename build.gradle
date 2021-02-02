@@ -37,10 +37,15 @@ intellij {
 // 如果此处设置了插件相关属性，在Plugin.xml对应设置就会失效
 // 下方俩设置更新都比较频繁,故放在此处
 // 版本号在此处修改
-version '1.1'
+version '1.2'
 // 更新说明在这些
 patchPluginXml {
     changeNotes """
+    <h1>1.2</h1>
+    <ul>
+        <li>add init method</li>
+    </ul>
+
     <h1>1.1</h1>
     <ul>
         <li>Fix the problem of selecting prefix and reporting errors in import packages</li>

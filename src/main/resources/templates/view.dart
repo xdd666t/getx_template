@@ -5,7 +5,7 @@ import 'logic.dart';
 import 'state.dart';
 
 class $namePage extends StatelessWidget {
-  final $nameLogic logic = Get.put($nameLogic())..init();
+  final $nameLogic logic = Get.put($nameLogic());
   final $nameState state = Get.find<$nameLogic>().state;
 
   @override
