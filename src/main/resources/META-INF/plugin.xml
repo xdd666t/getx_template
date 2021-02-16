@@ -1,13 +1,15 @@
 <idea-plugin>
     <id>com.tao.getx</id>
-    <!-- 插件名称，官方插件库显示的名称 -->
+    <!-- Plug-in name, the name displayed by the official plugin library -->
     <name>GetX</name>
-    <!-- 版本号  -->
+    <!-- version number  -->
 <!--    <version>1.1</version>-->
-    <!-- 供应商主页和email（联系地址）-->
+    <!-- homepage and email (contact address)-->
     <vendor email="xdd666@foxmail.com" url="https://github.com/CNAD666/getx_template">CNAD666</vendor>
 
-    <!-- 插件的描述 （不能使用默认值，必须修改成自己的。并且需要大于40个字符）-->
+    <!-- The description of the plug-in
+    (the default value cannot be used, it must be modified to its own.
+    And it needs to be greater than 40 characters)-->
     <description><![CDATA[
     <h2>Used to generate the template code of GetX framework</h2>
     <ul>
@@ -18,7 +20,7 @@
     ]]></description>
 
 
-    <!-- 插件版本变更信息 支持HTML标签-->
+    <!-- Plug-in version change information Support HTML tags-->
 <!--    <change-notes><![CDATA[-->
 <!--    <h1>1.1</h1>-->
 <!--    <ul>-->
@@ -28,13 +30,15 @@
 <!--    </ul>-->
 <!--    ]]></change-notes>-->
 
-    <!-- 插件所依赖的其他插件的id 建议写上，不写，在在某些情况下，上传插件会报错-->
+    <!--  It is recommended to write the id of other plug-ins that the plug-in depends on. Do
+    not write it. In some cases, uploading the plug-in will report an error -->
     <depends>com.intellij.modules.all</depends>
 
-    <!-- 插件兼容IDEA Build 号-->
-    <idea-version since-build="173.0" until-build="201.8743.12"/>
+    <!-- Plug-in compatible with IDEA Build number-->
+    <idea-version since-build="181.5540.23" />
+<!--    <idea-version since-build="181.5540.23" until-build="203.7148.57"/>-->
 
-    <!-- 编写插件动作 -->
+    <!-- Write plugin actions -->
     <actions>
         <!-- Add your actions here -->
         <action id="com.tao.NewGetX" class="NewGetX" text="GetX" description="create GetX template code"

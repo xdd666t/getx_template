@@ -19,15 +19,15 @@ public class NewGetX extends AnAction {
     private Project project;
     private String psiPath;
     /**
-     * 整体弹窗实体
+     * Overall popup entity
      */
     private JDialog jDialog;
     private JTextField nameTextField;
     private ButtonGroup templateGroup;
     /**
-     * 多选框
-     * 使用文件夹：默认true
-     * 使用前缀：默认false
+     * Checkbox
+     * Use folder：default true
+     * Use prefix：default false
      */
     private JCheckBox folderBox, prefixBox;
 
@@ -41,20 +41,20 @@ public class NewGetX extends AnAction {
 
     private void initView() {
         jDialog = new JDialog(new JFrame(), "GetX Template Code Produce");
-        //设置功能按钮
+        //Set function button
         Container container = jDialog.getContentPane();
         container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 
-        //设置主模块样式: mode, function
+        //Set the main module style: mode, function
         setModule(container);
 
-        //设置选项: 是否使用前缀
+        //Setting options: whether to use prefix
         setCodeFile(container);
 
-        //生成文件名称和确定取消按钮
+        //Generate file name and OK cancel button
         setNameAndConfirm(container);
 
-        //选择弹窗样式
+        //Choose a pop-up style
         setJDialog();
     }
 
@@ -62,9 +62,10 @@ public class NewGetX extends AnAction {
      * 设置整体弹窗样式
      */
     private void setJDialog() {
-        //焦点集中在当前弹窗,点击其它区域焦点也不会转移
+        //The focus is on the current pop-up window,
+        // and the focus will not shift even if you click on other areas
         jDialog.setModal(true);
-        //设置内边距
+        //Set padding
         ((JPanel) jDialog.getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jDialog.setSize(400, 320);
         jDialog.setLocationRelativeTo(null);
@@ -72,17 +73,17 @@ public class NewGetX extends AnAction {
     }
 
     /**
-     * 主模块
+     * Main module
      *
      * @param container
      */
     private void setModule(Container container) {
-        //布局两行俩列
+        //Two rows and two columns
         JPanel template = new JPanel();
         template.setLayout(new GridLayout(1, 2));
-        //设置主模块样式：mode, function
+        //Set the main module style：mode, function
         template.setBorder(BorderFactory.createTitledBorder("Select Mode"));
-        //default和high设置
+        //default and high setting
         JRadioButton defaultBtn = new JRadioButton("Default", true);
         defaultBtn.setActionCommand("Default");
         setPadding(defaultBtn, 5, 10);
@@ -103,22 +104,22 @@ public class NewGetX extends AnAction {
 
 
     /**
-     * 代码文件
+     * Generate file
      *
      * @param container
      */
     private void setCodeFile(Container container) {
-        //选择生成文件
+        //Select build file
         JPanel file = new JPanel();
         file.setLayout(new GridLayout(1, 2));
         file.setBorder(BorderFactory.createTitledBorder("Select Function"));
 
-        //使用文件夹
+        //Use folder
         folderBox = new JCheckBox("useFolder", true);
         setMargin(folderBox, 5, 10);
         file.add(folderBox);
 
-        //使用前缀
+        //Use prefix
         prefixBox = new JCheckBox("usePrefix", false);
         setMargin(prefixBox, 5, 10);
         file.add(prefixBox);
@@ -129,7 +130,7 @@ public class NewGetX extends AnAction {
 
 
     /**
-     * 生成文件名和按钮
+     * Generate file name and button
      *
      * @param container
      */
@@ -145,10 +146,10 @@ public class NewGetX extends AnAction {
         JPanel menu = new JPanel();
         menu.setLayout(new FlowLayout());
 
-        //设置底部间距
+        //Set bottom spacing
         setDivision(container);
 
-        //确定取消按钮
+        //OK cancel button
         JButton cancel = new JButton("Cancel");
         cancel.setForeground(JBColor.RED);
         cancel.addActionListener(actionListener);
@@ -168,9 +169,9 @@ public class NewGetX extends AnAction {
             return;
         }
         dispose();
-        //创建文件
+        //Create a file
         createFile();
-        //刷新项目
+        //Refresh project
         project.getBaseDir().refresh(false, true);
     }
 
@@ -181,12 +182,12 @@ public class NewGetX extends AnAction {
         String folder = "";
         String prefixName = "";
 
-        //添加文件夹
+        //Add folder
         if (folderBox.isSelected()) {
             folder = "/" + prefix;
         }
 
-        //添加前缀
+        //Add prefix
         if (prefixBox.isSelected()) {
             prefixName = prefix + "_";
         }
@@ -216,7 +217,7 @@ public class NewGetX extends AnAction {
 
 
     private void generateFile(String inputFileName, String filePath, String outFileName) {
-        //获取文件内容
+        //Get file content
         String content = "";
         try {
             InputStream in = this.getClass().getResourceAsStream("/templates/" + inputFileName);
@@ -224,14 +225,14 @@ public class NewGetX extends AnAction {
         } catch (Exception e) {
         }
         content = content.replaceAll("\\$name", nameTextField.getText());
-        //添加前缀需要修改导入类名
+        //Adding a prefix requires modifying the imported class name
         if (prefixBox.isSelected()) {
             String prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, nameTextField.getText()) + "_";
             content = content.replaceAll("logic.dart", prefixName + "logic.dart");
             content = content.replaceAll("state.dart", prefixName + "state.dart");
         }
 
-        //写入文件
+        //Write file
         try {
             File folder = new File(filePath);
             // if file doesnt exists, then create it
@@ -309,7 +310,7 @@ public class NewGetX extends AnAction {
     }
 
     private void setDivision(Container container) {
-        //分隔模块之间的间距
+        //Separate the spacing between modules
         JPanel margin = new JPanel();
         container.add(margin);
     }
