@@ -2,6 +2,10 @@
 
 语言: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://github.com/CNAD666/getx_template/blob/main/docs/README-ZH.md)
 
+## GetX usage
+
+- Gold digging:  [Flutter GetX use --- simple charm!](https://github.com/CNAD666/getx_template/blob/main/docs/Use%20of%20Flutter%20GetX---simple%20charm!.md)
+
 ## Renderings
 
 - Plug-in effect
@@ -25,7 +29,3 @@ The description of the plug-in
   - useprefix: use the prefix, the generated file front prefix, prefix for: large hump named automatically converted to: lowercase + underline
 
 - Module Name: the Name of the Module. Use the hump Name.
-
-## GetX usage
-
-- Gold digging:  [Flutter GetX use --- simple charm!](https://juejin.cn/post/6924104248275763208)

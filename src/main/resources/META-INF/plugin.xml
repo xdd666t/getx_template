@@ -15,7 +15,9 @@
     <ul>
         <li>Right-click the File: New -> GetX</li>
         <li>GitHub：<a href="https://github.com/CNAD666/getx_template">getx_template</a></li>
-        <li>GetX Use Article：<a href="https://juejin.cn/post/6924104248275763208"> Flutter GetX Use --- simple charm!</a></li>
+        <h3>GetX Use Article</h3>
+        <li>English：<a href="https://github.com/CNAD666/getx_template/blob/main/docs/Use%20of%20Flutter%20GetX---simple%20charm!.md"> Flutter GetX Use --- simple charm!</a></li>
+        <li>掘金：<a href="https://juejin.cn/post/6924104248275763208"> Flutter GetX使用---简洁的魅力！</a></li>
     </ul>
     ]]></description>
 
