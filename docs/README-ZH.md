@@ -2,6 +2,10 @@
 
 语言: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://github.com/CNAD666/getx_template/blob/main/docs/README-ZH.md)
 
+## GetX使用
+
+- 掘金：[Flutter GetX使用---简洁的魅力！](https://juejin.cn/post/6924104248275763208)
+
 ## 效果图
 
 - 插件效果 
@@ -20,7 +24,3 @@
   - useFolder：使用文件，选择后会生成文件夹，大驼峰命名自动转换为：小写+下划线
   - usePrefix：使用前缀，生成的文件前加上前缀，前缀为：大驼峰命名自动转换为：小写+下划线
 - Module Name：模块的名称，请使用大驼峰命名
-
-## GetX使用
-
-- 掘金：[Flutter GetX使用---简洁的魅力！](https://juejin.cn/post/6924104248275763208)
