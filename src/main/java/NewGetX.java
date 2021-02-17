@@ -59,7 +59,7 @@ public class NewGetX extends AnAction {
     }
 
     /**
-     * 设置整体弹窗样式
+     * Set the overall pop-up style
      */
     private void setJDialog() {
         //The focus is on the current pop-up window,
