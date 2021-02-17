@@ -37,8 +37,8 @@
     <depends>com.intellij.modules.all</depends>
 
     <!-- Plug-in compatible with IDEA Build number-->
-    <idea-version since-build="181.5540.23" />
-<!--    <idea-version since-build="181.5540.23" until-build="203.7148.57"/>-->
+    <idea-version since-build="173" />
+<!--    <idea-version since-build="173" until-build="203.7148.57"/>-->
 
     <!-- Write plugin actions -->
     <actions>
