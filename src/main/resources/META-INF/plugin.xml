@@ -3,7 +3,7 @@
     <!-- Plug-in name, the name displayed by the official plugin library -->
     <name>GetX</name>
     <!-- version number  -->
-<!--    <version>1.1</version>-->
+    <!--    <version>1.1</version>-->
     <!-- homepage and email (contact address)-->
     <vendor email="xdd666@foxmail.com" url="https://github.com/CNAD666/getx_template">CNAD666</vendor>
 
@@ -23,22 +23,22 @@
 
 
     <!-- Plug-in version change information Support HTML tags-->
-<!--    <change-notes><![CDATA[-->
-<!--    <h1>1.1</h1>-->
-<!--    <ul>-->
-<!--        <li>You can generate a large number of GetX template codes</li>-->
-<!--        <li>Improve development efficiency</li>-->
-<!--        <li>If you have any questions, please give feedback</li>-->
-<!--    </ul>-->
-<!--    ]]></change-notes>-->
+    <!--    <change-notes><![CDATA[-->
+    <!--    <h1>1.1</h1>-->
+    <!--    <ul>-->
+    <!--        <li>You can generate a large number of GetX template codes</li>-->
+    <!--        <li>Improve development efficiency</li>-->
+    <!--        <li>If you have any questions, please give feedback</li>-->
+    <!--    </ul>-->
+    <!--    ]]></change-notes>-->
 
     <!--  It is recommended to write the id of other plug-ins that the plug-in depends on. Do
     not write it. In some cases, uploading the plug-in will report an error -->
     <depends>com.intellij.modules.all</depends>
 
     <!-- Plug-in compatible with IDEA Build number-->
-    <idea-version since-build="173" />
-<!--    <idea-version since-build="173" until-build="203.7148.57"/>-->
+    <idea-version since-build="173"/>
+    <!--    <idea-version since-build="173" until-build="203.7148.57"/>-->
 
     <!-- Write plugin actions -->
     <actions>
@@ -48,4 +48,11 @@
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- application level-->
+        <applicationService serviceImplementation="helper.KeepDataApp"/>
+        <!-- project level -->
+        <!--        <projectService serviceImplementation="helper.KeepDataApp"/>-->
+    </extensions>
 </idea-plugin>
