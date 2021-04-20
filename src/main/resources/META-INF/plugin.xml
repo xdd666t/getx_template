@@ -51,7 +51,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- application level-->
-        <applicationService serviceImplementation="helper.KeepDataApp"/>
+        <applicationService serviceImplementation="helper.DataService"/>
         <!-- project level -->
         <!--        <projectService serviceImplementation="helper.KeepDataApp"/>-->
     </extensions>

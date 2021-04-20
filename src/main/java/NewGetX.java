@@ -1,13 +1,12 @@
 import com.google.common.base.CaseFormat;
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.JBColor;
-import helper.GetXState;
-import helper.KeepDataApp;
+import helper.DataService;
+import org.bouncycastle.asn1.dvcs.Data;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,8 +20,7 @@ import java.io.*;
 public class NewGetX extends AnAction {
     private Project project;
     private String psiPath;
-    private KeepDataApp keepDataApp;
-    private GetXState state;
+    private DataService dataService;
 
     /**
      * Overall popup entity
@@ -47,13 +45,11 @@ public class NewGetX extends AnAction {
     }
 
     private void initData() {
-        keepDataApp = new KeepDataApp();
-        keepDataApp.loadState(new GetXState());
-        state = keepDataApp.getState();
+        dataService = DataService.getInstance();
+        jDialog = new JDialog(new JFrame(), "GetX Template Code Produce");
     }
 
     private void initView() {
-        jDialog = new JDialog(new JFrame(), "GetX Template Code Produce");
         //Set function button
         Container container = jDialog.getContentPane();
         container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
@@ -98,15 +94,11 @@ public class NewGetX extends AnAction {
         template.setLayout(new GridLayout(1, 2));
         //Set the main module style：mode, function
         template.setBorder(BorderFactory.createTitledBorder("Select Mode"));
-        //default and high setting
-
-        System.out.println("---------------");
-        System.out.println(state.defaultMode);
-
-        JRadioButton defaultBtn = new JRadioButton("Default", state.defaultMode);
+        //default: high setting
+        JRadioButton defaultBtn = new JRadioButton("Default", dataService.defaultMode);
         defaultBtn.setActionCommand("Default");
         setPadding(defaultBtn, 5, 10);
-        JRadioButton highBtn = new JRadioButton("Easy", !state.defaultMode);
+        JRadioButton highBtn = new JRadioButton("Easy", !dataService.defaultMode);
         setPadding(highBtn, 5, 10);
         highBtn.setActionCommand("Easy");
 
@@ -121,7 +113,6 @@ public class NewGetX extends AnAction {
         setDivision(container);
     }
 
-
     /**
      * Generate file
      *
@@ -134,12 +125,12 @@ public class NewGetX extends AnAction {
         file.setBorder(BorderFactory.createTitledBorder("Select Function"));
 
         //Use folder
-        folderBox = new JCheckBox("useFolder", true);
+        folderBox = new JCheckBox("useFolder", dataService.useFolder);
         setMargin(folderBox, 5, 10);
         file.add(folderBox);
 
         //Use prefix
-        prefixBox = new JCheckBox("usePrefix", false);
+        prefixBox = new JCheckBox("usePrefix", dataService.usePrefix);
         setMargin(prefixBox, 5, 10);
         file.add(prefixBox);
 
@@ -214,16 +205,20 @@ public class NewGetX extends AnAction {
         switch (type) {
             case "Default":
                 System.out.println("1111111111111111111111");
-                state.defaultMode = true;
+                dataService.defaultMode = true;
                 generateDefault(folder, prefixName);
                 break;
             case "Easy":
                 System.out.println("22222222222222");
-                state.defaultMode = false;
+                dataService.defaultMode = false;
                 generateEasy(folder, prefixName);
                 break;
         }
-        keepDataApp.loadState(state);
+        //deal folder and folder value
+        dataService.useFolder = folderBox.isSelected();
+        dataService.usePrefix = prefixBox.isSelected();
+
+        dataService.loadState(dataService);
     }
 
     private void generateDefault(String folder, String prefixName) {

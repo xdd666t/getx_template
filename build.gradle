@@ -44,6 +44,11 @@ intellij {
 // Update instructions are here
 patchPluginXml {
     changeNotes """
+    <h1>1.5.x</h1>
+    <ul>
+        <li>add memory function</li>
+    </ul>
+
     <h1>1.3.x</h1>
     <ul>
         <li>compatible with multiple versions of ideas</li>
