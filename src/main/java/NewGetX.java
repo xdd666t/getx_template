@@ -15,12 +15,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
+import java.util.Locale;
 
 
 public class NewGetX extends AnAction {
     private Project project;
     private String psiPath;
-    private DataService dataService;
+    private DataService data;
 
     /**
      * Overall popup entity
@@ -35,6 +36,11 @@ public class NewGetX extends AnAction {
      */
     private JCheckBox folderBox, prefixBox;
 
+    /**
+     * @param event
+     */
+    private String canModifyLogic;
+
     @Override
     public void actionPerformed(AnActionEvent event) {
         project = event.getProject();
@@ -45,8 +51,11 @@ public class NewGetX extends AnAction {
     }
 
     private void initData() {
-        dataService = DataService.getInstance();
+        data = DataService.getInstance();
         jDialog = new JDialog(new JFrame(), "GetX Template Code Produce");
+
+        //can modify name
+        canModifyLogic = data.logicName;
     }
 
     private void initView() {
@@ -95,10 +104,10 @@ public class NewGetX extends AnAction {
         //Set the main module style：mode, function
         template.setBorder(BorderFactory.createTitledBorder("Select Mode"));
         //default: high setting
-        JRadioButton defaultBtn = new JRadioButton("Default", dataService.defaultMode);
+        JRadioButton defaultBtn = new JRadioButton("Default", data.defaultMode);
         defaultBtn.setActionCommand("Default");
         setPadding(defaultBtn, 5, 10);
-        JRadioButton highBtn = new JRadioButton("Easy", !dataService.defaultMode);
+        JRadioButton highBtn = new JRadioButton("Easy", !data.defaultMode);
         setPadding(highBtn, 5, 10);
         highBtn.setActionCommand("Easy");
 
@@ -125,12 +134,12 @@ public class NewGetX extends AnAction {
         file.setBorder(BorderFactory.createTitledBorder("Select Function"));
 
         //Use folder
-        folderBox = new JCheckBox("useFolder", dataService.useFolder);
+        folderBox = new JCheckBox("useFolder", data.useFolder);
         setMargin(folderBox, 5, 10);
         file.add(folderBox);
 
         //Use prefix
-        prefixBox = new JCheckBox("usePrefix", dataService.usePrefix);
+        prefixBox = new JCheckBox("usePrefix", data.usePrefix);
         setMargin(prefixBox, 5, 10);
         file.add(prefixBox);
 
@@ -204,33 +213,29 @@ public class NewGetX extends AnAction {
 
         switch (type) {
             case "Default":
-                System.out.println("1111111111111111111111");
-                dataService.defaultMode = true;
+                data.defaultMode = true;
                 generateDefault(folder, prefixName);
                 break;
             case "Easy":
-                System.out.println("22222222222222");
-                dataService.defaultMode = false;
+                data.defaultMode = false;
                 generateEasy(folder, prefixName);
                 break;
         }
         //deal folder and folder value
-        dataService.useFolder = folderBox.isSelected();
-        dataService.usePrefix = prefixBox.isSelected();
-
-        dataService.loadState(dataService);
+        data.useFolder = folderBox.isSelected();
+        data.usePrefix = prefixBox.isSelected();
     }
 
     private void generateDefault(String folder, String prefixName) {
         String path = psiPath + folder;
         generateFile("state.dart", path, prefixName + "state.dart");
-        generateFile("logic.dart", path, prefixName + "logic.dart");
+        generateFile("logic.dart", path, prefixName + canModifyLogic.toLowerCase() + ".dart");
         generateFile("view.dart", path, prefixName + "view.dart");
     }
 
     private void generateEasy(String folder, String prefixName) {
         String path = psiPath + folder;
-        generateFile("easy/logic.dart", path, prefixName + "logic.dart");
+        generateFile("easy/logic.dart", path, prefixName + canModifyLogic.toLowerCase() + ".dart");
         generateFile("easy/view.dart", path, prefixName + "view.dart");
     }
 
@@ -246,10 +251,11 @@ public class NewGetX extends AnAction {
         content = content.replaceAll("\\$name", nameTextField.getText());
         //Adding a prefix requires modifying the imported class name
         if (prefixBox.isSelected()) {
-            String prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, nameTextField.getText()) + "_";
-            content = content.replaceAll("logic.dart", prefixName + "logic.dart");
-            content = content.replaceAll("state.dart", prefixName + "state.dart");
+            content = content.replaceAll("logic.dart", outFileName);
+            content = content.replaceAll("state.dart", outFileName);
         }
+        //replace logic name
+        content = content.replaceAll("Logic", canModifyLogic);
 
         //Write file
         try {

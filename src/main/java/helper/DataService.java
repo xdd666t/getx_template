@@ -12,13 +12,16 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
     })
 public class DataService implements PersistentStateComponent<DataService> {
     //default true: use high mode
-    public boolean defaultMode = true;
+    public boolean defaultMode = GetXConfig.defaultMode;
 
     //default true
-    public boolean useFolder = true;
+    public boolean useFolder = GetXConfig.useFolder;
 
     //default false
-    public boolean usePrefix = false;
+    public boolean usePrefix = GetXConfig.usePrefix;
+
+    //Logical layer name
+    public String logicName = GetXConfig.logicName;
 
     public static DataService getInstance() {
         return ServiceManager.getService(DataService.class);

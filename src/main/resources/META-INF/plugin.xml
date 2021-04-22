@@ -52,7 +52,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- application level-->
         <applicationService serviceImplementation="helper.DataService"/>
-        <!-- project level -->
-        <!--        <projectService serviceImplementation="helper.KeepDataApp"/>-->
+        <applicationConfigurable parentId="tools" instance="setting.SettingsConfigurable"
+                                 id="SettingsConfigurable" displayName="GetX Setting"/>
     </extensions>
 </idea-plugin>
