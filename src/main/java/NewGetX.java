@@ -299,7 +299,7 @@ public class NewGetX extends AnAction {
     }
 
 
-    private KeyListener keyListener = new KeyListener() {
+    private final KeyListener keyListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
         }
@@ -315,7 +315,7 @@ public class NewGetX extends AnAction {
         }
     };
 
-    private ActionListener actionListener = new ActionListener() {
+    private final ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("Cancel")) {
