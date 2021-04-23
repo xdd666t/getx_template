@@ -248,14 +248,8 @@ public class NewGetX extends AnAction {
             content = new String(readStream(in));
         } catch (Exception e) {
         }
-        content = content.replaceAll("\\$name", nameTextField.getText());
-        //Adding a prefix requires modifying the imported class name
-        if (prefixBox.isSelected()) {
-            content = content.replaceAll("logic.dart", outFileName);
-            content = content.replaceAll("state.dart", outFileName);
-        }
-        //replace logic name
-        content = content.replaceAll("Logic", canModifyLogic);
+        //content deal
+        content = dealContent(content);
 
         //Write file
         try {
@@ -279,6 +273,21 @@ public class NewGetX extends AnAction {
         }
     }
 
+    //content need deal
+    private String dealContent(String content) {
+        content = content.replaceAll("\\$name", nameTextField.getText());
+        String prefixName = "";
+        //Adding a prefix requires modifying the imported class name
+        if (prefixBox.isSelected()) {
+            prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, nameTextField.getText()) + "_";
+        }
+        content = content.replaceAll("logic.dart", prefixName + canModifyLogic.toLowerCase() + ".dart");
+        content = content.replaceAll("state.dart", prefixName + "state.dart");
+        //replace logic name
+        content = content.replaceAll("Logic", canModifyLogic);
+
+        return content;
+    }
 
     private byte[] readStream(InputStream inStream) throws Exception {
         ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
