@@ -20,6 +20,9 @@ public class DataService implements PersistentStateComponent<DataService> {
     //default false
     public boolean usePrefix = GetXConfig.usePrefix;
 
+    //auto dispose GetXController
+    public boolean autoDispose = GetXConfig.autoDispose;
+
     //Logical layer name
     public String logicName = GetXConfig.logicName;
 

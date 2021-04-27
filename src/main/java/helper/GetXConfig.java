@@ -11,6 +11,9 @@ public class GetXConfig {
     //default false
     public static boolean usePrefix = false;
 
+    //auto dispose GetXController
+    public static boolean autoDispose = false;
+
     //Logical layer name
     public static String logicName = "Logic";
 }

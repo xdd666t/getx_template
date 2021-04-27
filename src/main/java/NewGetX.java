@@ -6,7 +6,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.JBColor;
 import helper.DataService;
-import org.bouncycastle.asn1.dvcs.Data;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
-import java.util.Locale;
 
 
 public class NewGetX extends AnAction {
@@ -34,7 +32,7 @@ public class NewGetX extends AnAction {
      * Use folder：default true
      * Use prefix：default false
      */
-    private JCheckBox folderBox, prefixBox;
+    private JCheckBox folderBox, prefixBox, disposeBox;
 
     /**
      * @param event
@@ -143,6 +141,11 @@ public class NewGetX extends AnAction {
         setMargin(prefixBox, 5, 10);
         file.add(prefixBox);
 
+        //auto dispose
+        disposeBox = new JCheckBox("autoDispose", data.autoDispose);
+        setMargin(disposeBox, 5, 10);
+        file.add(disposeBox);
+
         container.add(file);
         setDivision(container);
     }
@@ -221,9 +224,10 @@ public class NewGetX extends AnAction {
                 generateEasy(folder, prefixName);
                 break;
         }
-        //deal folder and folder value
+        //deal folder、folder value、autoDispose value
         data.useFolder = folderBox.isSelected();
         data.usePrefix = prefixBox.isSelected();
+        data.autoDispose = disposeBox.isSelected();
     }
 
     private void generateDefault(String folder, String prefixName) {
@@ -241,15 +245,8 @@ public class NewGetX extends AnAction {
 
 
     private void generateFile(String inputFileName, String filePath, String outFileName) {
-        //Get file content
-        String content = "";
-        try {
-            InputStream in = this.getClass().getResourceAsStream("/templates/" + inputFileName);
-            content = new String(readStream(in));
-        } catch (Exception e) {
-        }
         //content deal
-        content = dealContent(content);
+        String content = dealContent(inputFileName);
 
         //Write file
         try {
@@ -274,7 +271,14 @@ public class NewGetX extends AnAction {
     }
 
     //content need deal
-    private String dealContent(String content) {
+    private String dealContent(String inputFileName) {
+        String content = "";
+        try {
+            InputStream in = this.getClass().getResourceAsStream("/templates/" + inputFileName);
+            content = new String(readStream(in));
+        } catch (Exception e) {
+        }
+
         content = content.replaceAll("\\$name", nameTextField.getText());
         String prefixName = "";
         //Adding a prefix requires modifying the imported class name
