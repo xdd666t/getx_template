@@ -7,7 +7,6 @@ import com.intellij.util.ui.FormBuilder;
 import javax.swing.*;
 
 public class SettingsComponent {
-
     private JPanel mainPanel;
     private JBTextField logicName;
 
