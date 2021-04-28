@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'logic.dart';
-import 'state.dart';
 
 class $namePage extends StatefulWidget {
   @override
@@ -11,7 +10,6 @@ class $namePage extends StatefulWidget {
 
 class _$namePageState extends State<$namePage> {
   final $nameLogic logic = Get.put($nameLogic());
-  final $nameState state = Get.find<$nameLogic>().state;
 
   @override
     Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class _$namePageState extends State<$namePage> {
 
   @override
   void dispose() {
+    Get.delete<$nameLogic>();
     super.dispose();
-    logic.dispose();
   }
 }

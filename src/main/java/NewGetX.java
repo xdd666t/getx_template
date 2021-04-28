@@ -33,10 +33,6 @@ public class NewGetX extends AnAction {
      * Use prefix：default false
      */
     private JCheckBox folderBox, prefixBox, disposeBox;
-
-    /**
-     * @param event
-     */
     private String canModifyLogic;
 
     @Override
@@ -85,15 +81,13 @@ public class NewGetX extends AnAction {
         jDialog.setModal(true);
         //Set padding
         ((JPanel) jDialog.getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jDialog.setSize(400, 320);
+        jDialog.setSize(400, 335);
         jDialog.setLocationRelativeTo(null);
         jDialog.setVisible(true);
     }
 
     /**
      * Main module
-     *
-     * @param container
      */
     private void setModule(Container container) {
         //Two rows and two columns
@@ -122,21 +116,19 @@ public class NewGetX extends AnAction {
 
     /**
      * Generate file
-     *
-     * @param container
      */
     private void setCodeFile(Container container) {
         //Select build file
         JPanel file = new JPanel();
-        file.setLayout(new GridLayout(1, 2));
+        file.setLayout(new GridLayout(2, 2));
         file.setBorder(BorderFactory.createTitledBorder("Select Function"));
 
-        //Use folder
+        //use folder
         folderBox = new JCheckBox("useFolder", data.useFolder);
         setMargin(folderBox, 5, 10);
         file.add(folderBox);
 
-        //Use prefix
+        //use prefix
         prefixBox = new JCheckBox("usePrefix", data.usePrefix);
         setMargin(prefixBox, 5, 10);
         file.add(prefixBox);
@@ -153,8 +145,6 @@ public class NewGetX extends AnAction {
 
     /**
      * Generate file name and button
-     *
-     * @param container
      */
     private void setNameAndConfirm(Container container) {
         JPanel nameField = new JPanel();
@@ -199,35 +189,40 @@ public class NewGetX extends AnAction {
 
     private void createFile() {
         String type = templateGroup.getSelection().getActionCommand();
+        //deal default value
+        if ("Default".equals(type)) {
+            data.defaultMode = true;
+        } else if ("Easy".equals(type)) {
+            data.defaultMode = false;
+        }
+        data.useFolder = folderBox.isSelected();
+        data.usePrefix = prefixBox.isSelected();
+        data.autoDispose = disposeBox.isSelected();
+
+
         String name = nameTextField.getText();
         String prefix = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name);
         String folder = "";
         String prefixName = "";
 
         //Add folder
-        if (folderBox.isSelected()) {
+        if (data.useFolder) {
             folder = "/" + prefix;
         }
 
         //Add prefix
-        if (prefixBox.isSelected()) {
+        if (data.usePrefix) {
             prefixName = prefix + "_";
         }
 
         switch (type) {
             case "Default":
-                data.defaultMode = true;
                 generateDefault(folder, prefixName);
                 break;
             case "Easy":
-                data.defaultMode = false;
                 generateEasy(folder, prefixName);
                 break;
         }
-        //deal folder、folder value、autoDispose value
-        data.useFolder = folderBox.isSelected();
-        data.usePrefix = prefixBox.isSelected();
-        data.autoDispose = disposeBox.isSelected();
     }
 
     private void generateDefault(String folder, String prefixName) {
@@ -272,9 +267,16 @@ public class NewGetX extends AnAction {
 
     //content need deal
     private String dealContent(String inputFileName) {
+        //deal auto dispose
+        String autoDispose = "";
+        if (data.autoDispose) {
+            autoDispose = "auto/";
+        }
+
+        //read file
         String content = "";
         try {
-            InputStream in = this.getClass().getResourceAsStream("/templates/" + inputFileName);
+            InputStream in = this.getClass().getResourceAsStream("/templates/" + autoDispose + inputFileName);
             content = new String(readStream(in));
         } catch (Exception e) {
         }
@@ -282,7 +284,7 @@ public class NewGetX extends AnAction {
         content = content.replaceAll("\\$name", nameTextField.getText());
         String prefixName = "";
         //Adding a prefix requires modifying the imported class name
-        if (prefixBox.isSelected()) {
+        if (data.usePrefix) {
             prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, nameTextField.getText()) + "_";
         }
         content = content.replaceAll("logic.dart", prefixName + canModifyLogic.toLowerCase() + ".dart");

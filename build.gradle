@@ -14,7 +14,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '1.5.1'
+version '1.5.2'
 
 // must!!!
 sourceCompatibility = 1.8
@@ -48,6 +48,7 @@ patchPluginXml {
     <ul>
         <li>add memory function</li>
         <li>support to modify Logic name</li>
+        <li>add GetxController auto dispose</li>
     </ul>
 
     <h1>1.3.x</h1>
