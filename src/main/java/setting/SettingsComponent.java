@@ -7,27 +7,24 @@ import com.intellij.util.ui.FormBuilder;
 import javax.swing.*;
 
 public class SettingsComponent {
-    private JPanel mainPanel;
-    private JBTextField logicName;
+    public JPanel mainPanel;
+    public JBTextField logicName;
+    public JBTextField stateName;
+    public JBTextField viewName;
+    public JBTextField viewFileName;
 
     public SettingsComponent() {
         logicName = new JBTextField();
+        stateName = new JBTextField();
+        viewName = new JBTextField();
+        viewFileName = new JBTextField();
 
         mainPanel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(new JBLabel("Logic Name: "), logicName)
+                .addLabeledComponent(new JBLabel("State Name: "), stateName)
+                .addLabeledComponent(new JBLabel("View Name: "), viewName)
+                .addLabeledComponent(new JBLabel("View File Name: "), viewFileName)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
-    }
-
-    public JPanel getPanel() {
-        return mainPanel;
-    }
-
-    public String getLogicName() {
-        return logicName.getText();
-    }
-
-    public void setLogicName(String text) {
-        logicName.setText(text);
     }
 }

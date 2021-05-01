@@ -16,4 +16,11 @@ public class GetXConfig {
 
     //Logical layer name
     public static String logicName = "Logic";
+
+    //view layer name
+    public static String viewName = "Page";
+    public static String viewFileName = "View";
+
+    //state layer name
+    public static String stateName = "State";
 }

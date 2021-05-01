@@ -33,7 +33,6 @@ public class NewGetX extends AnAction {
      * Use prefix：default false
      */
     private JCheckBox folderBox, prefixBox, disposeBox;
-    private String canModifyLogic;
 
     @Override
     public void actionPerformed(AnActionEvent event) {
@@ -47,9 +46,6 @@ public class NewGetX extends AnAction {
     private void initData() {
         data = DataService.getInstance();
         jDialog = new JDialog(new JFrame(), "GetX Template Code Produce");
-
-        //can modify name
-        canModifyLogic = data.logicName;
     }
 
     private void initView() {
@@ -70,6 +66,21 @@ public class NewGetX extends AnAction {
 
         //Choose a pop-up style
         setJDialog();
+    }
+
+    /**
+     * generate  file
+     */
+    private void save() {
+        if (nameTextField.getText() == null || "".equals(nameTextField.getText().trim())) {
+            Messages.showInfoMessage(project, "Please input the module name", "Info");
+            return;
+        }
+        dispose();
+        //Create a file
+        createFile();
+        //Refresh project
+        project.getBaseDir().refresh(false, true);
     }
 
     /**
@@ -174,19 +185,6 @@ public class NewGetX extends AnAction {
         container.add(menu);
     }
 
-
-    private void save() {
-        if (nameTextField.getText() == null || "".equals(nameTextField.getText().trim())) {
-            Messages.showInfoMessage(project, "Please input the module name", "Info");
-            return;
-        }
-        dispose();
-        //Create a file
-        createFile();
-        //Refresh project
-        project.getBaseDir().refresh(false, true);
-    }
-
     private void createFile() {
         String type = templateGroup.getSelection().getActionCommand();
         //deal default value
@@ -227,21 +225,21 @@ public class NewGetX extends AnAction {
 
     private void generateDefault(String folder, String prefixName) {
         String path = psiPath + folder;
-        generateFile("state.dart", path, prefixName + "state.dart");
-        generateFile("logic.dart", path, prefixName + canModifyLogic.toLowerCase() + ".dart");
-        generateFile("view.dart", path, prefixName + "view.dart");
+        generateFile("state.dart", path, prefixName + data.stateName.toLowerCase() + ".dart");
+        generateFile("logic.dart", path, prefixName + data.logicName.toLowerCase() + ".dart");
+        generateFile("view.dart", path, prefixName + data.viewFileName.toLowerCase() + ".dart");
     }
 
     private void generateEasy(String folder, String prefixName) {
         String path = psiPath + folder;
-        generateFile("easy/logic.dart", path, prefixName + canModifyLogic.toLowerCase() + ".dart");
-        generateFile("easy/view.dart", path, prefixName + "view.dart");
+        generateFile("easy/logic.dart", path, prefixName + data.logicName.toLowerCase() + ".dart");
+        generateFile("easy/view.dart", path, prefixName + data.viewFileName.toLowerCase() + ".dart");
     }
 
 
     private void generateFile(String inputFileName, String filePath, String outFileName) {
         //content deal
-        String content = dealContent(inputFileName);
+        String content = dealContent(inputFileName, outFileName);
 
         //Write file
         try {
@@ -266,7 +264,7 @@ public class NewGetX extends AnAction {
     }
 
     //content need deal
-    private String dealContent(String inputFileName) {
+    private String dealContent(String inputFileName, String outFileName) {
         //deal auto dispose
         String autoDispose = "";
         if (data.autoDispose) {
@@ -281,16 +279,35 @@ public class NewGetX extends AnAction {
         } catch (Exception e) {
         }
 
-        content = content.replaceAll("\\$name", nameTextField.getText());
+
         String prefixName = "";
         //Adding a prefix requires modifying the imported class name
         if (data.usePrefix) {
             prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, nameTextField.getText()) + "_";
         }
-        content = content.replaceAll("logic.dart", prefixName + canModifyLogic.toLowerCase() + ".dart");
-        content = content.replaceAll("state.dart", prefixName + "state.dart");
-        //replace logic name
-        content = content.replaceAll("Logic", canModifyLogic);
+        content = content.replaceAll("logic.dart", prefixName + data.logicName.toLowerCase() + ".dart");
+        content = content.replaceAll("state.dart", prefixName + data.stateName.toLowerCase() + ".dart");
+        //replace logic
+        if (outFileName.contains(data.logicName.toLowerCase())) {
+            content = content.replaceAll("Logic", data.logicName);
+            content = content.replaceAll("State", data.stateName);
+            content = content.replaceAll("state", data.stateName.toLowerCase());
+        }
+        //replace state
+        if (outFileName.contains(data.stateName.toLowerCase())) {
+            content = content.replaceAll("State", data.stateName);
+        }
+        //replace view
+        if (outFileName.contains(data.viewFileName.toLowerCase())) {
+            content = content.replaceAll("Page", data.viewName);
+            content = content.replaceAll("Logic", data.logicName);
+            content = content.replaceAll("logic", data.logicName.toLowerCase());
+            content = content.replaceAll("\\$nameState", "\\$name" + data.stateName);
+            content = content.replaceAll("state", data.stateName.toLowerCase());
+        }
+
+
+        content = content.replaceAll("\\$name", nameTextField.getText());
 
         return content;
     }

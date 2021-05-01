@@ -9,8 +9,8 @@ import javax.swing.*;
 
 public class SettingsConfigurable implements Configurable {
 
-    private DataService data = DataService.getInstance();
-    private SettingsComponent mySettingsComponent;
+    private final DataService data = DataService.getInstance();
+    private SettingsComponent mSetting;
 
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
@@ -21,29 +21,38 @@ public class SettingsConfigurable implements Configurable {
     @Nullable
     @Override
     public JComponent createComponent() {
-        mySettingsComponent = new SettingsComponent();
-        return mySettingsComponent.getPanel();
+        mSetting = new SettingsComponent();
+        return mSetting.mainPanel;
     }
 
     @Override
     public boolean isModified() {
         boolean modified;
-        modified = !mySettingsComponent.getLogicName().equals(data.logicName);
+        modified = !mSetting.logicName.getText().equals(data.logicName)
+                || !mSetting.stateName.getText().equals(data.stateName)
+                || !mSetting.viewName.getText().equals(data.viewName)
+                || !mSetting.viewFileName.getText().equals(data.viewFileName);
         return modified;
     }
 
     @Override
     public void apply() {
-        data.logicName = mySettingsComponent.getLogicName();
+        data.logicName = mSetting.logicName.getText();
+        data.stateName = mSetting.stateName.getText();
+        data.viewName = mSetting.viewName.getText();
+        data.viewFileName = mSetting.viewFileName.getText();
     }
 
     @Override
     public void reset() {
-        mySettingsComponent.setLogicName(data.logicName);
+        mSetting.logicName.setText(data.logicName);
+        mSetting.stateName.setText(data.stateName);
+        mSetting.viewName.setText(data.viewName);
+        mSetting.viewFileName.setText(data.viewFileName);
     }
 
     @Override
     public void disposeUIResources() {
-        mySettingsComponent = null;
+        mSetting = null;
     }
 }
