@@ -26,6 +26,6 @@ The description of the plug-in
 
 - Function: Function selection
   - useFolder: use a file. After you select it, a folder is generated. The Hump name is automatically converted to lowercase + underscore.
-  - useprefix: use the prefix, the generated file front prefix, prefix for: large hump named automatically converted to: lowercase + underline
+  - usePrefix: use the prefix, the generated file front prefix, prefix for: large hump named automatically converted to: lowercase + underline
 
 - Module Name: the Name of the Module. Use the hump Name.
