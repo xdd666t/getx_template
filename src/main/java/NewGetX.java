@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.JBColor;
 import helper.DataService;
+import helper.GetXConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,12 +108,12 @@ public class NewGetX extends AnAction {
         //Set the main module style：mode, function
         template.setBorder(BorderFactory.createTitledBorder("Select Mode"));
         //default: high setting
-        JRadioButton defaultBtn = new JRadioButton("Default", data.defaultMode);
-        defaultBtn.setActionCommand("Default");
+        JRadioButton defaultBtn = new JRadioButton(GetXConfig.defaultModelName, data.defaultMode);
+        defaultBtn.setActionCommand(GetXConfig.defaultModelName);
         setPadding(defaultBtn, 5, 10);
-        JRadioButton highBtn = new JRadioButton("Easy", !data.defaultMode);
+        JRadioButton highBtn = new JRadioButton(GetXConfig.easyModelName, !data.defaultMode);
         setPadding(highBtn, 5, 10);
-        highBtn.setActionCommand("Easy");
+        highBtn.setActionCommand(GetXConfig.easyModelName);
 
 
         template.add(defaultBtn);
@@ -188,9 +189,9 @@ public class NewGetX extends AnAction {
     private void createFile() {
         String type = templateGroup.getSelection().getActionCommand();
         //deal default value
-        if ("Default".equals(type)) {
+        if (GetXConfig.defaultModelName.equals(type)) {
             data.defaultMode = true;
-        } else if ("Easy".equals(type)) {
+        } else if (GetXConfig.easyModelName.equals(type)) {
             data.defaultMode = false;
         }
         data.useFolder = folderBox.isSelected();
@@ -214,10 +215,10 @@ public class NewGetX extends AnAction {
         }
 
         switch (type) {
-            case "Default":
+            case GetXConfig.defaultModelName:
                 generateDefault(folder, prefixName);
                 break;
-            case "Easy":
+            case GetXConfig.easyModelName:
                 generateEasy(folder, prefixName);
                 break;
         }
@@ -266,15 +267,15 @@ public class NewGetX extends AnAction {
     //content need deal
     private String dealContent(String inputFileName, String outFileName) {
         //deal auto dispose
-        String autoDispose = "";
+        String defaultFolder = "/templates/";
         if (data.autoDispose) {
-            autoDispose = "auto/";
+            defaultFolder = "auto/";
         }
 
         //read file
         String content = "";
         try {
-            InputStream in = this.getClass().getResourceAsStream("/templates/" + autoDispose + inputFileName);
+            InputStream in = this.getClass().getResourceAsStream(defaultFolder + inputFileName);
             content = new String(readStream(in));
         } catch (Exception e) {
         }

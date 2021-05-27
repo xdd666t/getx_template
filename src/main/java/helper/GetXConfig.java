@@ -23,4 +23,9 @@ public class GetXConfig {
 
     //state layer name
     public static String stateName = "State";
+
+
+    //model name
+    public static final String defaultModelName = "Default";
+    public static final String easyModelName = "Easy";
 }
