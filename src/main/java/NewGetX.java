@@ -269,7 +269,7 @@ public class NewGetX extends AnAction {
         //deal auto dispose
         String defaultFolder = "/templates/";
         if (data.autoDispose) {
-            defaultFolder = "auto/";
+            defaultFolder = defaultFolder + "auto/";
         }
 
         //read file
