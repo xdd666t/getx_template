@@ -54,5 +54,10 @@
         <applicationService serviceImplementation="helper.DataService"/>
         <applicationConfigurable parentId="tools" instance="setting.SettingsConfigurable"
                                  id="SettingsConfigurable" displayName="GetX Setting"/>
+        <!--Action-->
+        <intentionAction>
+            <className>action.WrapWithObxAction</className>
+            <category>GetX</category>
+        </intentionAction>
     </extensions>
 </idea-plugin>
