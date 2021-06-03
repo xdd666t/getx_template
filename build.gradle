@@ -14,7 +14,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '1.5.7'
+version '1.6.0'
 
 // must!!!
 sourceCompatibility = 1.8
