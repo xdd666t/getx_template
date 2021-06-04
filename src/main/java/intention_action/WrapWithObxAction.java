@@ -1,4 +1,4 @@
-package action;
+package intention_action;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -9,6 +9,6 @@ public class WrapWithObxAction extends WrapWithAction {
 
     @NotNull
     public String getText() {
-        return "Wrap with GetX-Obx";
+        return "Wrap with Obx";
     }
 }

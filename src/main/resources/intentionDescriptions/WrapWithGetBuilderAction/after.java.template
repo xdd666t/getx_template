@@ -1,0 +1,12 @@
+class Counter extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GetBuilder<SubjectController>(
+        builder: (controller) {
+          return Text('Counter');
+        },
+      ),
+    );
+  }
+}

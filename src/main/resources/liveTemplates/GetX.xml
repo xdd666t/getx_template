@@ -1,0 +1,33 @@
+<templateSet group="GetX">
+
+    <template name="getbuilder"
+              value="GetBuilder&lt;$Subject$Controller&gt;(&#10;  builder: (controller) {&#10;    return $Container$;&#10;  },&#10;)"
+              description="BlocBuilder widget" toReformat="false" toShortenFQNames="true">
+        <variable name="Subject" expression="" defaultValue="&quot;Subject&quot;" alwaysStopAt="true"/>
+        <variable name="Container" expression="" defaultValue="&quot;Container()&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="DART" value="true"/>
+        </context>
+    </template>
+
+<!--    <template name="getbuilder" description="BlocBuilder widget" toReformat="false" toShortenFQNames="true"-->
+<!--              value="GetBuilder<GetCounterEasyLogic>(-->
+<!--          builder: (controller) {-->
+<!--            return ;-->
+<!--          },-->
+<!--        )">-->
+<!--        <variable name="Subject" expression="" defaultValue="&quot;Subject&quot;" alwaysStopAt="true"/>-->
+<!--        <variable name="Container" expression="" defaultValue="&quot;Container()&quot;" alwaysStopAt="true"/>-->
+<!--        <context>-->
+<!--            <option name="DART" value="true"/>-->
+<!--        </context>-->
+<!--    </template>-->
+
+    <template name="obx" description="Generates ObxX function" toReformat="false"
+              toShortenFQNames="true" value="Obx(() =&gt; $END$),">
+        <context>
+            <option name="DART" value="true" />
+        </context>
+    </template>
+
+</templateSet>

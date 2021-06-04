@@ -1,0 +1,10 @@
+class Counter extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Obx(() {
+        return Text('Counter');
+      }),
+    );
+  }
+}

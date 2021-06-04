@@ -1,4 +1,4 @@
-package action;
+package intention_action;
 
 import com.intellij.psi.PsiElement
 

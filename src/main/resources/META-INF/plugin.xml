@@ -52,11 +52,31 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- application level-->
         <applicationService serviceImplementation="helper.DataService"/>
-        <applicationConfigurable parentId="tools" instance="setting.SettingsConfigurable"
-                                 id="SettingsConfigurable" displayName="GetX Setting"/>
-        <!--Action-->
+        <applicationConfigurable parentId="tools"
+                                 instance="setting.SettingsConfigurable"
+                                 id="SettingsConfigurable"
+                                 displayName="GetX Setting"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <defaultLiveTemplatesProvider implementation="live_templates.GetXTemplateProvider"/>
+        <liveTemplateContext implementation="live_templates.GetXContext"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!--Obx Action-->
         <intentionAction>
-            <className>action.WrapWithObxAction</className>
+            <className>intention_action.WrapWithObxAction</className>
+            <category>GetX</category>
+        </intentionAction>
+        <!--GetBuilder Action-->
+        <intentionAction>
+            <className>intention_action.WrapWithGetBuilderAction</className>
+            <category>GetX</category>
+        </intentionAction>
+        <!--GetX Action-->
+        <intentionAction>
+            <className>intention_action.WrapWithGetXAction</className>
             <category>GetX</category>
         </intentionAction>
     </extensions>

@@ -1,4 +1,4 @@
-package action;
+package intention_action;
 
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
@@ -108,7 +108,7 @@ public abstract class WrapWithAction extends PsiElementBaseIntentionAction imple
 
         // place cursors to specify types:
         final String prefixSelection = Snippets.PREFIX_SELECTION;
-        final String[] snippetArr = {Snippets.BLOC_SNIPPET_KEY, Snippets.STATE_SNIPPET_KEY, Snippets.REPOSITORY_SNIPPET_KEY};
+        final String[] snippetArr = {Snippets.GetX_SNIPPET_KEY, Snippets.STATE_SNIPPET_KEY};
 
         final CaretModel caretModel = editor.getCaretModel();
         caretModel.removeSecondaryCarets();

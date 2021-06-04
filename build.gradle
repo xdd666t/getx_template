@@ -1,13 +1,13 @@
-buildscript {
-    repositories {
-        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
-    }
-}
-
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.6.5'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
 }
+
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'idea'
 
 group 'com.tao.getx'
 // If the plug-in related properties are set here,
@@ -15,7 +15,6 @@ group 'com.tao.getx'
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
 version '1.6.0'
-
 // must!!!
 sourceCompatibility = 1.8
 
@@ -24,8 +23,17 @@ repositories {
 }
 
 dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation "com.fleshgrinder.kotlin:case-format:0.2.0"
 }
+
+//compileKotlin {
+//    kotlinOptions.jvmTarget = "1.8"
+//}
+//compileTestKotlin {
+//    kotlinOptions.jvmTarget = "1.8"
+//}
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 // updateSinceUntilBuild no restrictions on plug-in installation corresponding
@@ -34,12 +42,6 @@ intellij {
     version '2020.3.2'
     updateSinceUntilBuild false
 }
-
-//publishPlugin {
-//    token 'ssdfhasdfASDaq23jhnasdkjh'
-//    channels 'nightly'
-//}
-
 
 // Update instructions are here
 patchPluginXml {
