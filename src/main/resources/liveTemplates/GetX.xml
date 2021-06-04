@@ -1,33 +1,230 @@
 <templateSet group="GetX">
-
     <template name="getbuilder"
               value="GetBuilder&lt;$Subject$Controller&gt;(&#10;  builder: (controller) {&#10;    return $Container$;&#10;  },&#10;)"
-              description="BlocBuilder widget" toReformat="false" toShortenFQNames="true">
+              description="GetBuilder widget" toReformat="false" toShortenFQNames="true">
         <variable name="Subject" expression="" defaultValue="&quot;Subject&quot;" alwaysStopAt="true"/>
         <variable name="Container" expression="" defaultValue="&quot;Container()&quot;" alwaysStopAt="true"/>
         <context>
-            <option name="DART" value="true"/>
+            <option name="FLUTTER" value="true"/>
         </context>
     </template>
-
-<!--    <template name="getbuilder" description="BlocBuilder widget" toReformat="false" toShortenFQNames="true"-->
-<!--              value="GetBuilder<GetCounterEasyLogic>(-->
-<!--          builder: (controller) {-->
-<!--            return ;-->
-<!--          },-->
-<!--        )">-->
-<!--        <variable name="Subject" expression="" defaultValue="&quot;Subject&quot;" alwaysStopAt="true"/>-->
-<!--        <variable name="Container" expression="" defaultValue="&quot;Container()&quot;" alwaysStopAt="true"/>-->
-<!--        <context>-->
-<!--            <option name="DART" value="true"/>-->
-<!--        </context>-->
-<!--    </template>-->
-
-    <template name="obx" description="Generates ObxX function" toReformat="false"
-              toShortenFQNames="true" value="Obx(() =&gt; $END$),">
+    <template name="getobx" description="Generates Obx function" toReformat="false"
+              toShortenFQNames="true" value="Obx(() {&#10;  return Container();&#10;})">
         <context>
-            <option name="DART" value="true" />
+            <option name="FLUTTER" value="true" />
         </context>
     </template>
+    <template name="obx" description="Generates Obx function" toReformat="false"
+              toShortenFQNames="true" value="Obx(() {&#10;  return Container();&#10;})">
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+
+    <!--
+    the fast code snippet prompt from
+    https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml
+    -->
+    <template name="getcontroller"
+              description="Generates GetxController"
+              toReformat="false" toShortenFQNames="true" value="import 'package:get/get.dart';&#10;import 'package:meta/meta.dart';&#10;&#10;class $My$Controller extends GetxController {&#10;&#10;  final _$prop$ = $value$.obs;&#10;  set $prop$(value) =&gt; _$prop$.value = value;&#10;  get $prop$ =&gt; _$prop$.value;&#10;}">
+        <variable name="My" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <variable name="prop" alwaysStopAt="true" defaultValue="&quot;obj&quot;" expression="" />
+        <variable name="value" alwaysStopAt="true" defaultValue="&quot;''&quot;" expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getfinal_"
+              description="Generates accessor for Controller: getter, setter and final private var"
+              toReformat="false"
+              toShortenFQNames="true" value="&#10;final _$prop$ = $val$.obs;&#10;get $prop$ =&gt; _$prop$.value;&#10;set $prop$(val) =&gt; _$prop$.value = val;&#10;">
+        <variable name="prop" alwaysStopAt="true" defaultValue="&quot;value&quot;" expression="" />
+        <variable name="val" alwaysStopAt="true" defaultValue="&quot;''&quot;" expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getfinal" description="Generates simple final observable."
+              toReformat="false" toShortenFQNames="true" value="final $prop$ = $value$.obs;">
+        <variable name="prop" alwaysStopAt="true" defaultValue="&quot;value&quot;" expression="" />
+        <variable name="value" alwaysStopAt="true" defaultValue="&quot;''&quot;" expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getcontrollervoid"
+              description="Generates an empty GetxController"
+              toReformat="false" toShortenFQNames="true" value="import 'package:get/get.dart';&#10;import 'package:meta/meta.dart';&#10;&#10;class $My$Controller extends GetxController {&#10;$END$&#10;}">
+        <variable name="My" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getget" description="Generates a getter for a public variable."
+              toReformat="false" toShortenFQNames="true"
+              value="get $prop$ =&gt;  $otherProp$.value;$END$">
+        <variable name="prop" alwaysStopAt="true" defaultValue="&quot;prop&quot;" expression="" />
+        <variable name="otherProp" alwaysStopAt="true" defaultValue="&quot;otherProp&quot;"
+                  expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getget_" description="Generates a getter for a private variable."
+              toReformat="false" toShortenFQNames="true"
+              value="get $prop$ =&gt;  _$otherProp$.value;$END$">
+        <variable name="prop" alwaysStopAt="true" defaultValue="&quot;prop&quot;" expression="" />
+        <variable name="otherProp" alwaysStopAt="true" defaultValue="&quot;otherProp&quot;"
+                  expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getset" description="Generates a setter for a public variable."
+              toReformat="false" toShortenFQNames="true"
+              value="set $prop$(val) =&gt;  $otherProp$.value = val;$END$">
+        <variable name="prop" alwaysStopAt="true" defaultValue="&quot;prop&quot;" expression="" />
+        <variable name="otherProp" alwaysStopAt="true" defaultValue="&quot;otherProp&quot;"
+                  expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getset_" description="Generates a setter for a private variable."
+              toReformat="false" toShortenFQNames="true"
+              value="set $prop$(val) =&gt;  _$otherProp$.value = val;$END$">
+        <variable name="prop" alwaysStopAt="true" defaultValue="&quot;prop&quot;" expression="" />
+        <variable name="otherProp" alwaysStopAt="true" defaultValue="&quot;otherProp&quot;"
+                  expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getmodel"
+              description="Generates a base Model for data."
+              toReformat="false" toShortenFQNames="true" value="class $My$Model {&#10;&#10;  int id;&#10;  String name;&#10;&#10;  $My$Model({ this.id, this.name });&#10;&#10;  $My$Model.fromJson(Map&lt;String, dynamic&gt; json){&#10;      this.id = json['id'];&#10;      this.name = json['name'];&#10;  }&#10;&#10;  Map&lt;String, dynamic&gt; toJson() =&gt; {'id':id, 'name':name };&#10;}$END$">
+        <variable name="My" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getrxmodel"
+              description="Generates a sample RxModel."
+              toReformat="false" toShortenFQNames="true" value="import 'package:get/get.dart';&#10;&#10;class Rx$My$Model {&#10;  final id = 0.obs;&#10;  final name = 'name'.obs;&#10;}&#10;&#10;class $My$Model {&#10;  $My$Model({id, name});&#10;&#10;  final rx = Rx$My$Model();&#10;&#10;  get name =&gt; rx.name.value;&#10;  set name(value) =&gt; rx.name.value = value;&#10;&#10;  get id =&gt; rx.id.value;&#10;  set id(value) =&gt; rx.id.value = value;&#10;&#10;  $My$Model.fromJson(Map&lt;String, dynamic&gt; json) {&#10;    id = json['id'];&#10;    name = json['name'];&#10;  }&#10;&#10;  Map&lt;String, dynamic&gt; toJson() =&gt; {&#10;    'name' : name, 'id':id,&#10;  };&#10;}&#10;$END$">
+        <variable name="My" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getprovider"
+              description="Generates a sample Provider file for APIs."
+              toReformat="false" toShortenFQNames="true"
+              value="import 'dart:convert';&#10;import 'package:http/http.dart' as http;&#10;import 'package:meta/meta.dart';&#10;&#10;const baseUrl = 'http://gerador-nomes.herokuapp.com/nomes/10';&#10;&#10;class $My$ApiClient {&#10;  final http.Client httpClient;&#10;&#10;  $My$ApiClient({@required this.httpClient});&#10;&#10;  final Map&lt;String, String&gt; _defaultHeaders = {&#10;    'Content-Type': 'application/json'&#10;  };&#10;&#10;  Future&lt;List&lt;$Model$&gt;&gt; getAll() async {&#10;    try {&#10;      final response = await httpClient.get(baseUrl);&#10;      if (response.statusCode == 200) {&#10;        Map&lt;String, dynamic&gt; jsonResponse = jsonDecode(response.body);&#10;        return jsonResponse['data']&#10;            .map((json) =&gt; $Model$.fromJson(json))&#10;            .toList();&#10;      } else {&#10;        print('Error -getAll');&#10;      }&#10;    } catch (_) {}&#10;    return null;&#10;  }&#10;&#10;  Future getId(id) async {&#10;    try {&#10;      final response = await httpClient.get(baseUrl);&#10;      if (response.statusCode == 200) {&#10;        Map&lt;String, dynamic&gt; jsonResponse = jsonDecode(response.body);&#10;        // TODO: implement methods!&#10;      } else{&#10;        print('Error -getId');&#10;      }&#10;    } catch (_) {}&#10;    return null;&#10;  }&#10;&#10;  Future add(obj) async {&#10;    try {&#10;      final response = await httpClient.post(baseUrl,&#10;          headers: _defaultHeaders, body: jsonEncode(obj));&#10;      if (response.statusCode == 200) {&#10;        // TODO: implement methods!&#10;      } else {&#10;        print('Error -add');&#10;      }&#10;    } catch (_) {}&#10;    return null;&#10;  }&#10;&#10;  Future edit(obj) async {&#10;    try {&#10;      final response = await httpClient.put(baseUrl,&#10;          headers: _defaultHeaders, body: jsonEncode(obj));&#10;      if (response.statusCode == 200) {&#10;        // TODO: implement methods!&#10;      } else {&#10;        print('Error -edit');&#10;      }&#10;    } catch (_) {}&#10;    return null;&#10;  }&#10;&#10;  Future delete(obj) async {&#10;    try {&#10;      final response = await httpClient.delete(baseUrl);&#10;      if (response.statusCode == 200) {&#10;        // TODO: implement methods!&#10;      } else {&#10;        print('Error -delete');&#10;      }&#10;    } catch (_) {}&#10;    return null;&#10;  }&#10;}$END$">
+        <variable name="My" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <variable name="Model" alwaysStopAt="true" defaultValue="&quot;MyModel&quot;"
+                  expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getproviderdio"
+              description="Generates a simple sample Provider file with Dio for API."
+              toReformat="false" toShortenFQNames="true"
+              value="import 'dart:convert';&#10;import 'package:dio/dio.dart';&#10;import 'package:meta/meta.dart';&#10;&#10;const baseUrl = 'http://gerador-nomes.herokuapp.com/nomes/10';&#10;&#10;class $My$ApiClient {&#10;  final Dio httpClient;&#10;  $My$ApiClient({@required this.httpClient});&#10;&#10;  Future&lt;List&lt;$Model$&gt;&gt;getAll() async {&#10;    try {&#10;      var response = await httpClient.get(baseUrl);&#10;      if (response.statusCode == 200) {&#10;        Map&lt;String, dynamic&gt; jsonResponse = json.decode(response.data);&#10;        return jsonResponse['data'].map((obj) =&gt; $Model$.fromJson(obj)).toList();&#10;      } else {&#10;        print('Error -getAll');&#10;      }&#10;    } catch (_) {}&#10;    return null ;&#10;  }&#10;}$END$">
+        <variable name="My" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <variable name="Model" alwaysStopAt="true" defaultValue="&quot;MyModel&quot;"
+                  expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getrepo"
+              description="Generates a sample Repository file"
+              toReformat="false" toShortenFQNames="true" value="import 'package:meta/meta.dart';&#10;&#10;class $main$Repository {&#10;  final $api$ApiClient apiClient;&#10;&#10;  $main$Repository({@required this.apiClient}) : assert(apiClient != null);&#10;&#10;  getAll() {&#10;    return apiClient.getAll();&#10;  }&#10;&#10;  getId(id) {&#10;    return apiClient.getId(id);&#10;  }&#10;&#10;  delete(id) {&#10;    return apiClient.delete(id);&#10;  }&#10;&#10;  edit(obj) {&#10;    return apiClient.edit(obj);&#10;  }&#10;&#10;  add(obj) {&#10;    return apiClient.add(obj);&#10;  }&#10;}&#10;$END$&#10;">
+        <variable name="main" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <variable name="api" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getx"
+              description="GetX widget shortcut."
+              toReformat="false" toShortenFQNames="true" value="GetX&lt;$main$&gt;(&#10;  init: $main$(),&#10;  builder: (_) =&gt; Text(_.var),&#10;)$END$">
+        <variable name="main" alwaysStopAt="true" defaultValue="&quot;HomeController&quot;"
+                  expression="completeSmart()" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getpagevoid"
+              description="Generates a void Page class"
+              toReformat="false" toShortenFQNames="true" value="import 'package:flutter/material.dart';&#10;import 'package:get/get.dart';&#10;&#10;class $My$Page extends StatelessWidget {&#10;  @override&#10;  Widget build(BuildContext context) {&#10;    return Scaffold(&#10;      appBar: AppBar(title: Text('$My$ Page')),&#10;      body: Container(&#10;        child: Text('$My$ Body$END$'),&#10;      ),&#10;    );&#10;  }&#10;}">
+        <variable name="My" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getpage"
+              description="Generates a Page file with a Controller"
+              toReformat="false" toShortenFQNames="true"
+              value="import 'package:flutter/material.dart';&#10;import 'package:get/get.dart';&#10;$httpImport$&#10;class $Name$Page extends StatelessWidget {&#10;  @override&#10;  Widget build(BuildContext context) {&#10;    return Scaffold(&#10;      appBar: AppBar(title: Text('$Name$ Page')),&#10;      body: $WidgetParent$(&#10;        child: GetX&lt;$Controller$&gt;(&#10;            init: $Controller$(),&#10;            builder: (_) {&#10;              return $WidgetChild$($END$);&#10;            }),&#10;      ),&#10;    );&#10;  }&#10;}&#10;">
+        <variable name="httpImport"
+                  alwaysStopAt="true"
+                  defaultValue="&quot; &quot;" expression="enum(&quot;import 'package:http/http.dart' as http;&quot;,&quot;import 'package:dio/dio.dart';&quot;,&quot; &quot;)" />
+        <variable name="Name" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <variable name="WidgetParent" alwaysStopAt="true" defaultValue="&quot;Container&quot;"
+                  expression="" />
+        <variable name="Controller" alwaysStopAt="true" defaultValue="&quot;MyController&quot;"
+                  expression="" />
+        <variable name="WidgetChild" alwaysStopAt="true" defaultValue="&quot;Container&quot;"
+                  expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getmain" description="Generates a main file with GetMaterialApp" toReformat="false" toShortenFQNames="true"
+              value="import 'package:flutter/material.dart';
+&#10;import 'package:get/get.dart';
+&#10;&#10;void main() {&#10;  runApp(GetMaterialApp(
+      &#10;    debugShowCheckedModeBanner: false,
+      &#10;    initialRoute: '/',
+      &#10;    theme: appThemeData,
+      &#10;    defaultTransition: Transition.fade,
+      &#10;    getPages: MyRoutes.routes,
+      &#10;    home: HomePage(),
+      &#10;  ));
+      &#10;}">
+
+
+        <variable name="Name" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="" />
+        <variable name="WidgetParent" alwaysStopAt="true" defaultValue="&quot;Container&quot;"
+                  expression="" />
+        <variable name="Controller" alwaysStopAt="true" defaultValue="&quot;MyController&quot;"
+                  expression="" />
+        <variable name="WidgetChild" alwaysStopAt="true" defaultValue="&quot;Container&quot;"
+                  expression="" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getpagesroutes" description="Generate file pages" toReformat="false" toShortenFQNames="true"
+              value="import 'package:get/get.dart';&#10;part './app_routes.dart';&#10;&#10;abstract class AppPages {&#10;&#10;  static final pages = [&#10;    GetPage(name: Routes.HOME, page:()=> MyHomePage(),),&#10;  ];&#10;}
+       ">
+
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+    <template name="getpageroute"
+              description="Generate route page."
+              toReformat="false" toShortenFQNames="true" value="GetPage(name: Routes.$main$, page:()=> $page$Page()),">
+        <variable name="main" alwaysStopAt="true" defaultValue="&quot;CONST_ROUTE&quot;" expression="completeSmart()" />
+        <variable name="page" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression="completeSmart()" />
+        <context>
+            <option name="FLUTTER" value="true" />
+        </context>
+    </template>
+
 
 </templateSet>

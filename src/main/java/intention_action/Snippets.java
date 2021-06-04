@@ -9,7 +9,6 @@ public class Snippets {
     public static final String SUFFIX1 = data.logicName;
 
     public static final String GetX_SNIPPET_KEY = PREFIX_SELECTION + SUFFIX1;
-    public static final String STATE_SNIPPET_KEY = PREFIX_SELECTION + SUFFIX1;
 
 
     static String getSnippet(SnippetType snippetType, String widget) {

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class GetXContext extends TemplateContextType {
     protected GetXContext() {
-        super("GetX", "GetX");
+        super("FLUTTER", "Flutter");
     }
 
     @Override

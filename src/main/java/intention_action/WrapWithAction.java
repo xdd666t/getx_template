@@ -23,30 +23,13 @@ public abstract class WrapWithAction extends PsiElementBaseIntentionAction imple
         this.snippetType = snippetType;
     }
 
-    /**
-     * Returns text for name of this family of intentions.
-     * It is used to externalize "auto-show" state of intentions.
-     * It is also the directory name for the descriptions.
-     *
-     * @return the intention family name.
-     */
     @NotNull
     public String getFamilyName() {
         return getText();
     }
 
-    /**
-     * Checks whether this intention is available at the caret offset in file - the caret must sit on a widget call.
-     * If this condition is met, this intention's entry is shown in the available intentions list.
-     *
-     * <p>Note: this method must do its checks quickly and return.</p>
-     *
-     * @param project    a reference to the Project object being edited.
-     * @param editor     a reference to the object editing the project source
-     * @param psiElement a reference to the PSI element currently under the caret
-     * @return {@code true} if the caret is in a literal string element, so this functionality should be added to the
-     * intention menu or {@code false} for all other types of caret positions
-     */
+
+    @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, @Nullable PsiElement psiElement) {
         if (psiElement == null) {
             return false;
@@ -69,15 +52,7 @@ public abstract class WrapWithAction extends PsiElementBaseIntentionAction imple
         return true;
     }
 
-    /**
-     * Called when user selects this intention action from the available intentions list.
-     *
-     * @param project a reference to the Project object being edited.
-     * @param editor  a reference to the object editing the project source
-     * @param element a reference to the PSI element currently under the caret
-     * @throws IncorrectOperationException Thrown by underlying (Psi model) write action context
-     *                                     when manipulation of the psi tree fails.
-     */
+
     @Override
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element)
             throws IncorrectOperationException {
@@ -108,7 +83,7 @@ public abstract class WrapWithAction extends PsiElementBaseIntentionAction imple
 
         // place cursors to specify types:
         final String prefixSelection = Snippets.PREFIX_SELECTION;
-        final String[] snippetArr = {Snippets.GetX_SNIPPET_KEY, Snippets.STATE_SNIPPET_KEY};
+        final String[] snippetArr = {Snippets.GetX_SNIPPET_KEY};
 
         final CaretModel caretModel = editor.getCaretModel();
         caretModel.removeSecondaryCarets();
@@ -154,12 +129,7 @@ public abstract class WrapWithAction extends PsiElementBaseIntentionAction imple
         });
     }
 
-    /**
-     * Indicates this intention action expects the Psi framework to provide the write action context for any changes.
-     *
-     * @return {@code true} if the intention requires a write action context to be provided or {@code false} if this
-     * intention action will start a write action
-     */
+    @Override
     public boolean startInWriteAction() {
         return true;
     }
