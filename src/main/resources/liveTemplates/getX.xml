@@ -1,4 +1,4 @@
-<templateSet group="GetX">
+<templateSet group="getX">
     <template name="getbuilder"
               value="GetBuilder&lt;$Subject$Controller&gt;(&#10;  builder: (controller) {&#10;    return $Container$;&#10;  },&#10;)"
               description="GetBuilder widget" toReformat="false" toShortenFQNames="true">

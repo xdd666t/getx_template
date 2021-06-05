@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 public class GetXTemplateProvider implements DefaultLiveTemplatesProvider {
     @Override
     public String[] getDefaultLiveTemplateFiles() {
-        return new String[]{"liveTemplates/GetX"};
+        return new String[]{"liveTemplates/getX"};
     }
 
     @Nullable
