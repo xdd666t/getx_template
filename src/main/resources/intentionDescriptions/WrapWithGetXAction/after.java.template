@@ -2,9 +2,13 @@ class Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() {
-        return Text('Counter');
-      }),
+      body: GetX<SubjectController>(
+        init: SubjectController(),
+        initState: (_) {},
+        builder: (controller) {
+          return Text('Counter');
+        },
+      ),
     );
   }
 }

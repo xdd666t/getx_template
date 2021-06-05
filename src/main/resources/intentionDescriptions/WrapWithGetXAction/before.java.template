@@ -2,13 +2,7 @@ class Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetX<TestWidgetLogic>(
-        init: TestWidgetLogic(),
-        initState: (_) {},
-        builder: (logic) {
-          return Text('Counter');
-        },
-      ),
+      body: Text('Counter'),
     );
   }
 }
