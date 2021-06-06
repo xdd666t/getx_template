@@ -35,7 +35,7 @@
     <actions>
         <!-- Add your actions here -->
         <action id="com.tao.NewGetX" class="NewGetX" text="GetX" description="create GetX template code"
-                icon="/image/icon.jpg">
+                icon="/image/getx_icon.png">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
     </actions>
