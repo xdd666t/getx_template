@@ -5,7 +5,10 @@
 ## GetX usage
 
 - Gold digging:  [Flutter GetX use --- simple charm!](https://github.com/CNAD666/getx_template/blob/main/docs/Use%20of%20Flutter%20GetX---simple%20charm!.md)
-- some statement：the fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
+
+# some statement
+
+- the fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
 
 ## Renderings
 
@@ -16,7 +19,15 @@
 
 ![getx_template](https://cdn.jsdelivr.net/gh/CNAD666/MyData/pic/flutter/blog/getx_plugin_show.gif)
 
-## Description
+- Alt + Enter ： GetBuilder、Obx、GetX
+
+![image-20210605150230810](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/android/flutter/blog/20210605150908.png)
+
+- enter the **get**  prefix
+
+![image-20210605150122801](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/android/flutter/blog/20210605150851.png)
+
+## Dprefix
 
 The description of the plug-in
 
@@ -30,3 +41,4 @@ The description of the plug-in
   - usePrefix: use the prefix, the generated file front prefix, prefix for: large hump named automatically converted to: lowercase + underline
 
 - Module Name: the Name of the Module. Use the hump Name.
+
