@@ -52,18 +52,18 @@ public class NewGetX extends AnAction {
     private void initView() {
         //Set function button
         Container container = jDialog.getContentPane();
-        container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
         //Set the main module style: mode, function
         //deal default value
-        setModule(container);
+        setMode(container);
 
         //Setting options: whether to use prefix
         //deal default value
         setCodeFile(container);
 
-        //Generate file name and OK cancel button
-        setNameAndConfirm(container);
+        //Generate module name and OK cancel button
+        setModuleAndConfirm(container);
 
         //Choose a pop-up style
         setJDialog();
@@ -93,7 +93,7 @@ public class NewGetX extends AnAction {
         jDialog.setModal(true);
         //Set padding
         ((JPanel) jDialog.getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jDialog.setSize(400, 335);
+        jDialog.setSize(430, 370);
         jDialog.setLocationRelativeTo(null);
         jDialog.setVisible(true);
     }
@@ -101,7 +101,7 @@ public class NewGetX extends AnAction {
     /**
      * Main module
      */
-    private void setModule(Container container) {
+    private void setMode(Container container) {
         //Two rows and two columns
         JPanel template = new JPanel();
         template.setLayout(new GridLayout(1, 2));
@@ -158,11 +158,11 @@ public class NewGetX extends AnAction {
     /**
      * Generate file name and button
      */
-    private void setNameAndConfirm(Container container) {
+    private void setModuleAndConfirm(Container container) {
         JPanel nameField = new JPanel();
         nameField.setLayout(new FlowLayout());
         nameField.setBorder(BorderFactory.createTitledBorder("Module Name"));
-        nameTextField = new JTextField(30);
+        nameTextField = new JTextField(28);
         nameTextField.addKeyListener(keyListener);
         nameField.add(nameTextField);
         container.add(nameField);
