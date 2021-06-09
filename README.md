@@ -19,11 +19,15 @@
 
 ![getx_template](https://cdn.jsdelivr.net/gh/CNAD666/MyData/pic/flutter/blog/getx_plugin_show.gif)
 
+- Support to modify suffix
+
+![image-20210608153359876](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210608153418.png)
+
 - Alt + Enter ： GetBuilder、Obx、GetX
 
 ![image-20210605150230810](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/android/flutter/blog/20210605150908.png)
 
-- enter the **get**  prefix
+- Enter the **get**  prefix
 
 ![image-20210605150122801](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/android/flutter/blog/20210605150851.png)
 
