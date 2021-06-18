@@ -12,9 +12,9 @@
 
 ## Renderings
 
-- Plug-in effect
+- Plugin effect
 
-  - Take a look at the effect diagram used by the plug-in. The style refers to the fish_redux plug-in style.
+  - Take a look at the effect diagram used by the plugin. The style refers to the fish_redux plugin style.
   - There are some optional functions, so make it into a multi-button style, you can operate according to your own needs
 
 ![getx_template](https://cdn.jsdelivr.net/gh/CNAD666/MyData/pic/flutter/blog/getx_plugin_show.gif)
