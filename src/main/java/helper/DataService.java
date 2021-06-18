@@ -23,6 +23,9 @@ public class DataService implements PersistentStateComponent<DataService> {
     //auto dispose GetXController
     public boolean autoDispose = GetXConfig.autoDispose;
 
+    //add Lifecycle
+    public boolean addLifecycle = GetXConfig.addLifecycle;
+
     //Logical layer name
     public String logicName = GetXConfig.logicName;
 

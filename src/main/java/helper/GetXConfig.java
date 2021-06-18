@@ -14,6 +14,9 @@ public class GetXConfig {
     //auto dispose GetXController
     public static boolean autoDispose = false;
 
+    //add Lifecycle
+    public static boolean addLifecycle = false;
+
     //Logical layer name
     public static String logicName = "Logic";
 

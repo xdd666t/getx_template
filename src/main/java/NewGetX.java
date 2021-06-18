@@ -33,7 +33,7 @@ public class NewGetX extends AnAction {
      * Use folder：default true
      * Use prefix：default false
      */
-    private JCheckBox folderBox, prefixBox, disposeBox;
+    private JCheckBox folderBox, prefixBox, disposeBox, lifecycleBox;
 
     @Override
     public void actionPerformed(AnActionEvent event) {
@@ -150,6 +150,11 @@ public class NewGetX extends AnAction {
         setMargin(disposeBox, 5, 10);
         file.add(disposeBox);
 
+        //add lifecycle
+        lifecycleBox = new JCheckBox("addLifecycle", data.addLifecycle);
+        setMargin(lifecycleBox, 5, 10);
+        file.add(lifecycleBox);
+
         container.add(file);
         setDivision(container);
     }
@@ -197,6 +202,7 @@ public class NewGetX extends AnAction {
         data.useFolder = folderBox.isSelected();
         data.usePrefix = prefixBox.isSelected();
         data.autoDispose = disposeBox.isSelected();
+        data.addLifecycle = lifecycleBox.isSelected();
 
 
         String name = nameTextField.getText();
@@ -268,8 +274,13 @@ public class NewGetX extends AnAction {
     private String dealContent(String inputFileName, String outFileName) {
         //deal auto dispose
         String defaultFolder = "/templates/";
-        if (data.autoDispose) {
+        if (data.autoDispose && inputFileName.contains("view.dart")) {
             defaultFolder = defaultFolder + "auto/";
+        }
+
+        //add lifecycle
+        if (data.addLifecycle && inputFileName.contains("logic.dart")) {
+            defaultFolder = defaultFolder + "lifecycle/";
         }
 
         //read file
