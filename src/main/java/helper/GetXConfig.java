@@ -17,6 +17,9 @@ public class GetXConfig {
     //add Lifecycle
     public static boolean addLifecycle = false;
 
+    //add binding
+    public static boolean addBinding = false;
+
     //Logical layer name
     public static String logicName = "Logic";
 

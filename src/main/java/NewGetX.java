@@ -29,11 +29,14 @@ public class NewGetX extends AnAction {
     private JTextField nameTextField;
     private ButtonGroup templateGroup;
     /**
-     * Checkbox
-     * Use folder：default true
-     * Use prefix：default false
+     * File Function
      */
-    private JCheckBox folderBox, prefixBox, disposeBox, lifecycleBox;
+    private JCheckBox folderBox, prefixBox;
+
+    /**
+     * High function
+     */
+    private JCheckBox disposeBox, lifecycleBox, bindingBox;
 
     @Override
     public void actionPerformed(AnActionEvent event) {
@@ -58,9 +61,8 @@ public class NewGetX extends AnAction {
         //deal default value
         setMode(container);
 
-        //Setting options: whether to use prefix
-        //deal default value
-        setCodeFile(container);
+        //deal setting about file
+        setFunction(container);
 
         //Generate module name and OK cancel button
         setModuleAndConfirm(container);
@@ -92,8 +94,8 @@ public class NewGetX extends AnAction {
         // and the focus will not shift even if you click on other areas
         jDialog.setModal(true);
         //Set padding
-        ((JPanel) jDialog.getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jDialog.setSize(430, 370);
+        ((JPanel) jDialog.getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
+        jDialog.setSize(430, 400);
         jDialog.setLocationRelativeTo(null);
         jDialog.setVisible(true);
     }
@@ -129,10 +131,10 @@ public class NewGetX extends AnAction {
     /**
      * Generate file
      */
-    private void setCodeFile(Container container) {
+    private void setFunction(Container container) {
         //Select build file
         JPanel file = new JPanel();
-        file.setLayout(new GridLayout(2, 2));
+        file.setLayout(new GridLayout(3, 2));
         file.setBorder(BorderFactory.createTitledBorder("Select Function"));
 
         //use folder
@@ -155,10 +157,14 @@ public class NewGetX extends AnAction {
         setMargin(lifecycleBox, 5, 10);
         file.add(lifecycleBox);
 
+        //add binding
+        bindingBox = new JCheckBox("addBinding", data.addBinding);
+        setMargin(bindingBox, 5, 10);
+        file.add(bindingBox);
+
         container.add(file);
         setDivision(container);
     }
-
 
     /**
      * Generate file name and button
@@ -203,6 +209,7 @@ public class NewGetX extends AnAction {
         data.usePrefix = prefixBox.isSelected();
         data.autoDispose = disposeBox.isSelected();
         data.addLifecycle = lifecycleBox.isSelected();
+        data.addBinding = bindingBox.isSelected();
 
 
         String name = nameTextField.getText();
@@ -220,25 +227,28 @@ public class NewGetX extends AnAction {
             prefixName = prefix + "_";
         }
 
+        String path = psiPath + folder;
         switch (type) {
             case GetXConfig.defaultModelName:
-                generateDefault(folder, prefixName);
+                generateDefault(path, prefixName);
                 break;
             case GetXConfig.easyModelName:
-                generateEasy(folder, prefixName);
+                generateEasy(path, prefixName);
                 break;
+        }
+        //Add binding file
+        if (data.addBinding) {
+            generateFile("binding.dart", path, prefixName + "binding.dart");
         }
     }
 
-    private void generateDefault(String folder, String prefixName) {
-        String path = psiPath + folder;
+    private void generateDefault(String path, String prefixName) {
         generateFile("state.dart", path, prefixName + data.stateName.toLowerCase() + ".dart");
         generateFile("logic.dart", path, prefixName + data.logicName.toLowerCase() + ".dart");
         generateFile("view.dart", path, prefixName + data.viewFileName.toLowerCase() + ".dart");
     }
 
-    private void generateEasy(String folder, String prefixName) {
-        String path = psiPath + folder;
+    private void generateEasy(String path, String prefixName) {
         generateFile("easy/logic.dart", path, prefixName + data.logicName.toLowerCase() + ".dart");
         generateFile("easy/view.dart", path, prefixName + data.viewFileName.toLowerCase() + ".dart");
     }
@@ -289,18 +299,27 @@ public class NewGetX extends AnAction {
             InputStream in = this.getClass().getResourceAsStream(defaultFolder + inputFileName);
             content = new String(readStream(in));
         } catch (Exception e) {
+            //some error
         }
-
 
         String prefixName = "";
         //Adding a prefix requires modifying the imported class name
         if (data.usePrefix) {
             prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, nameTextField.getText()) + "_";
         }
-        content = content.replaceAll("logic.dart", prefixName + data.logicName.toLowerCase() + ".dart");
-        content = content.replaceAll("state.dart", prefixName + data.stateName.toLowerCase() + ".dart");
+
+        //replace binding
+        if (outFileName.contains("binding") && data.addBinding) {
+            content = content.replaceAll("Logic", data.logicName);
+            content = content.replaceAll("logic.dart", prefixName + data.logicName.toLowerCase() + ".dart");
+        }
+        //replace view about addBinding
+        if (outFileName.contains(data.viewFileName.toLowerCase()) && data.addBinding) {
+            content = content.replaceAll("\\$nameLogic logic = Get.put\\(\\$nameLogic\\(\\)\\)", "logic = Get.find<\\$nameLogic>\\(\\)");
+        }
         //replace logic
         if (outFileName.contains(data.logicName.toLowerCase())) {
+            content = content.replaceAll("state.dart", prefixName + data.stateName.toLowerCase() + ".dart");
             content = content.replaceAll("Logic", data.logicName);
             content = content.replaceAll("State", data.stateName);
             content = content.replaceAll("state", data.stateName.toLowerCase());
@@ -311,13 +330,14 @@ public class NewGetX extends AnAction {
         }
         //replace view
         if (outFileName.contains(data.viewFileName.toLowerCase())) {
+            content = content.replaceAll("logic.dart", prefixName + data.logicName.toLowerCase() + ".dart");
+            content = content.replaceAll("state.dart", prefixName + data.stateName.toLowerCase() + ".dart");
             content = content.replaceAll("Page", data.viewName);
             content = content.replaceAll("Logic", data.logicName);
             content = content.replaceAll("logic", data.logicName.toLowerCase());
             content = content.replaceAll("\\$nameState", "\\$name" + data.stateName);
             content = content.replaceAll("state", data.stateName.toLowerCase());
         }
-
 
         content = content.replaceAll("\\$name", nameTextField.getText());
 

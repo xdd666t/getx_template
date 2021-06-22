@@ -26,6 +26,9 @@ public class DataService implements PersistentStateComponent<DataService> {
     //add Lifecycle
     public boolean addLifecycle = GetXConfig.addLifecycle;
 
+    //add binding
+    public boolean addBinding = GetXConfig.addBinding;
+
     //Logical layer name
     public String logicName = GetXConfig.logicName;
 

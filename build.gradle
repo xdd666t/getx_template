@@ -14,7 +14,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '2.1.5'
+version '2.1.6'
 // must!!!
 sourceCompatibility = 1.8
 
@@ -54,6 +54,7 @@ patchPluginXml {
         <li>fast snippet come from getx-snippets-intelliJ</li>
         <li>optimized layout</li>
         <li>add prefect lifecycle function</li>
+        <li>add binding</li>
     </ul>
 
     <h1>1.5.x</h1>
