@@ -1,58 +1,46 @@
-package setting;
+package setting
 
-import com.intellij.openapi.options.Configurable;
-import helper.DataService;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.openapi.options.Configurable
+import helper.DataService.Companion.instance
+import org.jetbrains.annotations.Nls
+import javax.swing.JComponent
 
-import javax.swing.*;
-
-public class SettingsConfigurable implements Configurable {
-
-    private final DataService data = DataService.getInstance();
-    private SettingsComponent mSetting;
+class SettingsConfigurable : Configurable {
+    private val data = instance
+    private var mSetting: SettingsComponent? = null
 
     @Nls(capitalization = Nls.Capitalization.Title)
-    @Override
-    public String getDisplayName() {
-        return "GetX Setting";
+    override fun getDisplayName(): String {
+        return "GetX Setting"
     }
 
-    @Nullable
-    @Override
-    public JComponent createComponent() {
-        mSetting = new SettingsComponent();
-        return mSetting.mainPanel;
+    override fun createComponent(): JComponent {
+        mSetting = SettingsComponent()
+        return mSetting!!.mainPanel
     }
 
-    @Override
-    public boolean isModified() {
-        boolean modified;
-        modified = !mSetting.logicName.getText().equals(data.logicName)
-                || !mSetting.stateName.getText().equals(data.stateName)
-                || !mSetting.viewName.getText().equals(data.viewName)
-                || !mSetting.viewFileName.getText().equals(data.viewFileName);
-        return modified;
+    override fun isModified(): Boolean {
+        return (mSetting!!.logicName.text != data.logicName
+                || mSetting!!.stateName.text != data.stateName
+                || mSetting!!.viewName.text != data.viewName
+                || mSetting!!.viewFileName.text != data.viewFileName)
     }
 
-    @Override
-    public void apply() {
-        data.logicName = mSetting.logicName.getText();
-        data.stateName = mSetting.stateName.getText();
-        data.viewName = mSetting.viewName.getText();
-        data.viewFileName = mSetting.viewFileName.getText();
+    override fun apply() {
+        data.logicName = mSetting!!.logicName.text
+        data.stateName = mSetting!!.stateName.text
+        data.viewName = mSetting!!.viewName.text
+        data.viewFileName = mSetting!!.viewFileName.text
     }
 
-    @Override
-    public void reset() {
-        mSetting.logicName.setText(data.logicName);
-        mSetting.stateName.setText(data.stateName);
-        mSetting.viewName.setText(data.viewName);
-        mSetting.viewFileName.setText(data.viewFileName);
+    override fun reset() {
+        mSetting!!.logicName.text = data.logicName
+        mSetting!!.stateName.text = data.stateName
+        mSetting!!.viewName.text = data.viewName
+        mSetting!!.viewFileName.text = data.viewFileName
     }
 
-    @Override
-    public void disposeUIResources() {
-        mSetting = null;
+    override fun disposeUIResources() {
+        mSetting = null
     }
 }

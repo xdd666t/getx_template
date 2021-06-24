@@ -1,49 +1,50 @@
-package intention_action;
+package intention_action
 
-import helper.DataService;
+import helper.DataService.Companion.instance
+import java.util.*
 
-public class Snippets {
-    public static final DataService data = DataService.getInstance();
+object Snippets {
+    private val data = instance
+    const val PREFIX_SELECTION = "Subject"
+    private val SUFFIX1 = data.logicName
+    val GetX_SNIPPET_KEY = PREFIX_SELECTION + SUFFIX1
 
-    public static final String PREFIX_SELECTION = "Subject";
-    public static final String SUFFIX1 = data.logicName;
-
-    public static final String GetX_SNIPPET_KEY = PREFIX_SELECTION + SUFFIX1;
-
-    static String getSnippet(SnippetType snippetType, String widget) {
-        switch (snippetType) {
-            case Obx:
-                return snippetObx(widget);
-            case GetBuilder:
-                return snippetGetBuilder(widget);
-            case GetX:
-                return snippetGetX(widget);
-            default:
-                return "";
+    fun getSnippet(snippetType: SnippetType?, widget: String): String {
+        return when (snippetType) {
+            SnippetType.Obx -> snippetObx(widget)
+            SnippetType.GetBuilder -> snippetGetBuilder(widget)
+            SnippetType.GetX -> snippetGetX(widget)
+            else -> ""
         }
     }
 
-    private static String snippetObx(String widget) {
-        return String.format("Obx(() {\n" +
-                "  return %1$s;\n" +
-                "})", widget);
+    private fun snippetObx(widget: String): String {
+        return String.format(
+            """Obx(() {
+  return %1${"$"}s;
+})""", widget
+        )
     }
 
-    private static String snippetGetBuilder(String widget) {
-        return String.format("GetBuilder<%1$s>(\n" +
-                "  builder: (%2$s) {\n" +
-                "    return %3$s;\n" +
-                "  },\n" +
-                ")", GetX_SNIPPET_KEY, data.logicName.toLowerCase(), widget);
+    private fun snippetGetBuilder(widget: String): String {
+        return String.format(
+            """GetBuilder<%1${"$"}s>(
+  builder: (%2${"$"}s) {
+    return %3${"$"}s;
+  },
+)""", GetX_SNIPPET_KEY, data.logicName.lowercase(Locale.getDefault()), widget
+        )
     }
 
-    private static String snippetGetX(String widget) {
-        return String.format("GetX<%1$s>(\n" +
-                "  init: %1$s(),\n" +
-                "  initState: (_) {},\n" +
-                "  builder: (%2$s) {\n" +
-                "    return %3$s;\n" +
-                "  },\n" +
-                ")", GetX_SNIPPET_KEY, data.logicName.toLowerCase(), widget);
+    private fun snippetGetX(widget: String): String {
+        return String.format(
+            """GetX<%1${"$"}s>(
+  init: %1${"$"}s(),
+  initState: (_) {},
+  builder: (%2${"$"}s) {
+    return %3${"$"}s;
+  },
+)""", GetX_SNIPPET_KEY, data.logicName.lowercase(Locale.getDefault()), widget
+        )
     }
 }

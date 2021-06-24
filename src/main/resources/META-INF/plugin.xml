@@ -49,8 +49,9 @@
                                  displayName="GetX Setting"/>
     </extensions>
 
+    <!--  https://plugins.jetbrains.com/docs/intellij/template-support.html#completing-the-live-template-implementation  -->
     <extensions defaultExtensionNs="com.intellij">
-        <defaultLiveTemplatesProvider implementation="live_templates.GetXTemplateProvider"/>
+        <defaultLiveTemplates file="liveTemplates/getX"/>
         <liveTemplateContext implementation="live_templates.GetXContext"/>
     </extensions>
 

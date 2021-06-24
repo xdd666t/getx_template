@@ -1,140 +1,112 @@
-package intention_action;
+package intention_action
 
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.codeStyle.CodeStyleManager;
-import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
+import com.intellij.psi.codeStyle.CodeStyleManager
+import com.intellij.util.IncorrectOperationException
+import intention_action.WrapHelper.callExpressionFinder
+import intention_action.WrapHelper.isSelectionValid
 
-public abstract class WrapWithAction extends PsiElementBaseIntentionAction implements IntentionAction {
-    final SnippetType snippetType;
-    PsiElement callExpressionElement;
+abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElementBaseIntentionAction(), IntentionAction {
+    private var psiElement: PsiElement? = null
 
-    public WrapWithAction(SnippetType snippetType) {
-        this.snippetType = snippetType;
+    override fun getFamilyName(): String {
+        return text
     }
 
-    @NotNull
-    public String getFamilyName() {
-        return getText();
+    override fun isAvailable(project: Project, editor: Editor?, element: PsiElement): Boolean {
+        if (editor == null) {
+            return false
+        }
+        val currentFile = getCurrentFile(project, editor)
+        if (currentFile != null && !currentFile.name.endsWith(".dart")) {
+            return false
+        }
+        if (element.toString() != "PsiElement(IDENTIFIER)") {
+            return false
+        }
+        psiElement = callExpressionFinder(element)
+        return psiElement != null
     }
 
-
-    @Override
-    public boolean isAvailable(@NotNull Project project, Editor editor, @Nullable PsiElement psiElement) {
-        if (psiElement == null) {
-            return false;
-        }
-
-        final PsiFile currentFile = getCurrentFile(project, editor);
-        if (currentFile != null && !currentFile.getName().endsWith(".dart")) {
-            return false;
-        }
-
-        if (!psiElement.toString().equals("PsiElement(IDENTIFIER)")) {
-            return false;
-        }
-
-        callExpressionElement = WrapHelper.callExpressionFinder(psiElement);
-        if (callExpressionElement == null) {
-            return false;
-        }
-
-        return true;
+    @Throws(IncorrectOperationException::class)
+    override fun invoke(project: Project, editor: Editor, element: PsiElement) {
+        val runnable = Runnable { invokeSnippetAction(project, editor, snippetType) }
+        WriteCommandAction.runWriteCommandAction(project, runnable)
     }
 
-
-    @Override
-    public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element)
-            throws IncorrectOperationException {
-        Runnable runnable = () -> invokeSnippetAction(project, editor, snippetType);
-        WriteCommandAction.runWriteCommandAction(project, runnable);
-    }
-
-    protected void invokeSnippetAction(@NotNull Project project, Editor editor, SnippetType snippetType) {
-        final Document document = editor.getDocument();
-
-        final PsiElement element = callExpressionElement;
-        final TextRange elementSelectionRange = element.getTextRange();
-        final int offsetStart = elementSelectionRange.getStartOffset();
-        final int offsetEnd = elementSelectionRange.getEndOffset();
-
-        if (!WrapHelper.isSelectionValid(offsetStart, offsetEnd)) {
-            return;
+    private fun invokeSnippetAction(project: Project, editor: Editor, snippetType: SnippetType?) {
+        val document = editor.document
+        val element = psiElement
+        val elementSelectionRange = element!!.textRange
+        val offsetStart = elementSelectionRange.startOffset
+        val offsetEnd = elementSelectionRange.endOffset
+        if (!isSelectionValid(offsetStart, offsetEnd)) {
+            return
         }
-
-        final String selectedText = document.getText(TextRange.create(offsetStart, offsetEnd));
-        final String replaceWith = Snippets.getSnippet(snippetType, selectedText);
+        val selectedText = document.getText(TextRange.create(offsetStart, offsetEnd))
+        val replaceWith = Snippets.getSnippet(snippetType, selectedText)
 
         // wrap the widget:
-        WriteCommandAction.runWriteCommandAction(project, () -> {
-                    document.replaceString(offsetStart, offsetEnd, replaceWith);
-                }
-        );
-
-        // place cursors to specify types:
-        final String prefixSelection = Snippets.PREFIX_SELECTION;
-        final String[] snippetArr = {Snippets.GetX_SNIPPET_KEY};
-
-        final CaretModel caretModel = editor.getCaretModel();
-        caretModel.removeSecondaryCarets();
-
-        for (String snippet : snippetArr) {
-            if (!replaceWith.contains(snippet)) {
-                continue;
-            }
-
-            final int caretOffset = offsetStart + replaceWith.indexOf(snippet);
-            final VisualPosition visualPos = editor.offsetToVisualPosition(caretOffset);
-            caretModel.addCaret(visualPos);
-
-            // select snippet prefix keys:
-            final Caret currentCaret = caretModel.getCurrentCaret();
-            currentCaret.setSelection(caretOffset, caretOffset + prefixSelection.length());
+        WriteCommandAction.runWriteCommandAction(project) {
+            document.replaceString(offsetStart, offsetEnd, replaceWith)
         }
 
-        final Caret initialCaret = caretModel.getAllCarets().get(0);
+        // place cursors to specify types:
+        val prefixSelection = Snippets.PREFIX_SELECTION
+        val snippetArr = arrayOf(Snippets.GetX_SNIPPET_KEY)
+        val caretModel = editor.caretModel
+        caretModel.removeSecondaryCarets()
+        for (snippet in snippetArr) {
+            if (!replaceWith.contains(snippet!!)) {
+                continue
+            }
+            val caretOffset = offsetStart + replaceWith.indexOf(snippet)
+            val visualPos = editor.offsetToVisualPosition(caretOffset)
+            caretModel.addCaret(visualPos)
+
+            // select snippet prefix keys:
+            val currentCaret = caretModel.currentCaret
+            currentCaret.setSelection(caretOffset, caretOffset + prefixSelection.length)
+        }
+        val initialCaret = caretModel.allCarets[0]
         if (!initialCaret.hasSelection()) {
             // initial position from where was triggered the intention action
-            caretModel.removeCaret(initialCaret);
+            caretModel.removeCaret(initialCaret)
         }
 
         // reformat file:
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            PsiDocumentManager.getInstance(project).commitDocument(document);
-            final PsiFile currentFile = getCurrentFile(project, editor);
+        ApplicationManager.getApplication().runWriteAction {
+            PsiDocumentManager.getInstance(project).commitDocument(document)
+            val currentFile = getCurrentFile(project, editor)
             if (currentFile != null) {
-                final String unformattedText = document.getText();
-                final int unformattedLineCount = document.getLineCount();
-
-                CodeStyleManager.getInstance(project).reformat(currentFile);
-
-                final int formattedLineCount = document.getLineCount();
+                val unformattedText = document.text
+                val unformattedLineCount = document.lineCount
+                CodeStyleManager.getInstance(project).reformat(currentFile)
+                val formattedLineCount = document.lineCount
 
                 // file was incorrectly formatted, revert formatting
                 if (formattedLineCount > unformattedLineCount + 3) {
-                    document.setText(unformattedText);
-                    PsiDocumentManager.getInstance(project).commitDocument(document);
+                    document.setText(unformattedText)
+                    PsiDocumentManager.getInstance(project).commitDocument(document)
                 }
             }
-        });
+        }
     }
 
-    @Override
-    public boolean startInWriteAction() {
-        return true;
+    override fun startInWriteAction(): Boolean {
+        return true
     }
 
-    private PsiFile getCurrentFile(Project project, Editor editor) {
-        return PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
+    private fun getCurrentFile(project: Project, editor: Editor): PsiFile? {
+        return PsiDocumentManager.getInstance(project).getPsiFile(editor.document)
     }
 }

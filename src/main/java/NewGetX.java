@@ -3,6 +3,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.JBColor;
 import helper.DataService;
