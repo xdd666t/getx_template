@@ -1,37 +1,36 @@
-package helper;
+package helper
 
 // set default value
-public class GetXConfig {
+object GetXConfig {
     //default true: use high mode
-    public static boolean defaultMode = true;
+    const val defaultMode = true
 
     //default true
-    public static boolean useFolder = true;
+    const val useFolder = true
 
     //default false
-    public static boolean usePrefix = false;
+    const val usePrefix = false
 
     //auto dispose GetXController
-    public static boolean autoDispose = false;
+    const val autoDispose = false
 
     //add Lifecycle
-    public static boolean addLifecycle = false;
+    const val addLifecycle = false
 
     //add binding
-    public static boolean addBinding = false;
+    const val addBinding = false
 
     //Logical layer name
-    public static String logicName = "Logic";
+    const val logicName = "Logic"
 
     //view layer name
-    public static String viewName = "Page";
-    public static String viewFileName = "View";
+    const val viewName = "Page"
+    const val viewFileName = "View"
 
     //state layer name
-    public static String stateName = "State";
-
+    const val stateName = "State"
 
     //model name
-    public static final String defaultModelName = "Default";
-    public static final String easyModelName = "Easy";
+    const val defaultModelName = "Default"
+    const val easyModelName = "Easy"
 }

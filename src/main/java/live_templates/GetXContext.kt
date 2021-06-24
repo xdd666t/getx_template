@@ -1,16 +1,10 @@
-package live_templates;
+package live_templates
 
-import com.intellij.codeInsight.template.TemplateContextType;
-import com.intellij.psi.PsiFile;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.codeInsight.template.TemplateContextType
+import com.intellij.psi.PsiFile
 
-public class GetXContext extends TemplateContextType {
-    protected GetXContext() {
-        super("FLUTTER", "Flutter");
-    }
-
-    @Override
-    public boolean isInContext(@NotNull PsiFile file, int offset) {
-        return file.getName().endsWith(".dart");
+class GetXContext internal constructor() : TemplateContextType("FLUTTER", "Flutter") {
+    override fun isInContext(file: PsiFile, offset: Int): Boolean {
+        return file.name.endsWith(".dart")
     }
 }

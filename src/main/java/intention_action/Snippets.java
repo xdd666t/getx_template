@@ -10,7 +10,6 @@ public class Snippets {
 
     public static final String GetX_SNIPPET_KEY = PREFIX_SELECTION + SUFFIX1;
 
-
     static String getSnippet(SnippetType snippetType, String widget) {
         switch (snippetType) {
             case Obx:

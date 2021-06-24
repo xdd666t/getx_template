@@ -1,5 +1,5 @@
-package intention_action;
+package intention_action
 
-enum SnippetType {
-    Obx, GetBuilder, GetX,
+enum class SnippetType {
+    Obx, GetBuilder, GetX
 }

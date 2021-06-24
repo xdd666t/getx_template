@@ -1,14 +1,20 @@
-package intention_action;
+package intention_action
 
-import org.jetbrains.annotations.NotNull;
-
-public class WrapWithGetBuilderAction extends WrapWithAction {
-    public WrapWithGetBuilderAction() {
-        super(SnippetType.GetBuilder);
+class WrapWithGetBuilderAction : WrapWithAction(SnippetType.GetBuilder) {
+    override fun getText(): String {
+        return "Wrap with GetBuilder"
     }
+}
 
-    @NotNull
-    public String getText() {
-        return "Wrap with GetBuilder";
+class WrapWithGetXAction : WrapWithAction(SnippetType.GetX) {
+    override fun getText(): String {
+        return "Wrap with GetX"
+    }
+}
+
+
+class WrapWithObxAction : WrapWithAction(SnippetType.Obx) {
+    override fun getText(): String {
+        return "Wrap with Obx"
     }
 }

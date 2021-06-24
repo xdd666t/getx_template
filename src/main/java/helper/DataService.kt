@@ -1,56 +1,66 @@
-package helper;
+package helper
 
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.Storage;
-import com.intellij.util.xmlb.XmlSerializerUtil;
+import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.components.State
+import com.intellij.openapi.components.Storage
+import helper.DataService
+import helper.GetXConfig
+import com.intellij.util.xmlb.XmlSerializerUtil
 
 //custom save location
-@com.intellij.openapi.components.State(
-        name = "DataService",
-        storages = {@Storage(value = "DataService.xml")
-        })
-public class DataService implements PersistentStateComponent<DataService> {
+@State(name = "DataService", storages = [Storage(value = "DataService.xml")])
+class DataService : PersistentStateComponent<DataService> {
     //default true: use high mode
-    public boolean defaultMode = GetXConfig.defaultMode;
+    @JvmField
+    var defaultMode = GetXConfig.defaultMode
 
     //default true
-    public boolean useFolder = GetXConfig.useFolder;
+    @JvmField
+    var useFolder = GetXConfig.useFolder
 
     //default false
-    public boolean usePrefix = GetXConfig.usePrefix;
+    @JvmField
+    var usePrefix = GetXConfig.usePrefix
 
     //auto dispose GetXController
-    public boolean autoDispose = GetXConfig.autoDispose;
+    @JvmField
+    var autoDispose = GetXConfig.autoDispose
 
     //add Lifecycle
-    public boolean addLifecycle = GetXConfig.addLifecycle;
+    @JvmField
+    var addLifecycle = GetXConfig.addLifecycle
 
     //add binding
-    public boolean addBinding = GetXConfig.addBinding;
+    @JvmField
+    var addBinding = GetXConfig.addBinding
 
     //Logical layer name
-    public String logicName = GetXConfig.logicName;
+    @JvmField
+    var logicName = GetXConfig.logicName
 
     //view layer name
-    public String viewName = GetXConfig.viewName;
-    public String viewFileName = GetXConfig.viewFileName;
+    @JvmField
+    var viewName = GetXConfig.viewName
+
+    @JvmField
+    var viewFileName = GetXConfig.viewFileName
 
     //state layer name
-    public String stateName = GetXConfig.stateName;
+    @JvmField
+    var stateName = GetXConfig.stateName
 
-    public static DataService getInstance() {
-        return ServiceManager.getService(DataService.class);
+    override fun getState(): DataService {
+        return this
     }
 
-    @Override
-    public DataService getState() {
-        return this;
+    override fun loadState(state: DataService) {
+        XmlSerializerUtil.copyBean(state, this)
     }
 
-    @Override
-    public void loadState(DataService state) {
-        XmlSerializerUtil.copyBean(state, this);
+    companion object {
+        @JvmStatic
+        val instance: DataService
+            get() = ServiceManager.getService(DataService::class.java)
     }
 }
-
