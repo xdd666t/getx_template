@@ -212,7 +212,7 @@ public class NewGetX extends AnAction {
         data.addBinding = bindingBox.isSelected();
 
 
-        String name = nameTextField.getText();
+        String name = upperCase(nameTextField.getText());
         String prefix = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name);
         String folder = "";
         String prefixName = "";
@@ -230,33 +230,33 @@ public class NewGetX extends AnAction {
         String path = psiPath + folder;
         switch (type) {
             case GetXConfig.defaultModelName:
-                generateDefault(path, prefixName);
+                generateDefault(name, path, prefixName);
                 break;
             case GetXConfig.easyModelName:
-                generateEasy(path, prefixName);
+                generateEasy(name, path, prefixName);
                 break;
         }
         //Add binding file
         if (data.addBinding) {
-            generateFile("binding.dart", path, prefixName + "binding.dart");
+            generateFile(name, "binding.dart", path, prefixName + "binding.dart");
         }
     }
 
-    private void generateDefault(String path, String prefixName) {
-        generateFile("state.dart", path, prefixName + data.stateName.toLowerCase() + ".dart");
-        generateFile("logic.dart", path, prefixName + data.logicName.toLowerCase() + ".dart");
-        generateFile("view.dart", path, prefixName + data.viewFileName.toLowerCase() + ".dart");
+    private void generateDefault(String name, String path, String prefixName) {
+        generateFile(name, "state.dart", path, prefixName + data.stateName.toLowerCase() + ".dart");
+        generateFile(name, "logic.dart", path, prefixName + data.logicName.toLowerCase() + ".dart");
+        generateFile(name, "view.dart", path, prefixName + data.viewFileName.toLowerCase() + ".dart");
     }
 
-    private void generateEasy(String path, String prefixName) {
-        generateFile("easy/logic.dart", path, prefixName + data.logicName.toLowerCase() + ".dart");
-        generateFile("easy/view.dart", path, prefixName + data.viewFileName.toLowerCase() + ".dart");
+    private void generateEasy(String name, String path, String prefixName) {
+        generateFile(name, "easy/logic.dart", path, prefixName + data.logicName.toLowerCase() + ".dart");
+        generateFile(name, "easy/view.dart", path, prefixName + data.viewFileName.toLowerCase() + ".dart");
     }
 
 
-    private void generateFile(String inputFileName, String filePath, String outFileName) {
+    private void generateFile(String name, String inputFileName, String filePath, String outFileName) {
         //content deal
-        String content = dealContent(inputFileName, outFileName);
+        String content = dealContent(name, inputFileName, outFileName);
 
         //Write file
         try {
@@ -281,7 +281,7 @@ public class NewGetX extends AnAction {
     }
 
     //content need deal
-    private String dealContent(String inputFileName, String outFileName) {
+    private String dealContent(String name, String inputFileName, String outFileName) {
         //deal auto dispose
         String defaultFolder = "/templates/";
         if (data.autoDispose && inputFileName.contains("view.dart")) {
@@ -305,7 +305,7 @@ public class NewGetX extends AnAction {
         String prefixName = "";
         //Adding a prefix requires modifying the imported class name
         if (data.usePrefix) {
-            prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, nameTextField.getText()) + "_";
+            prefixName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name) + "_";
         }
 
         //replace binding
@@ -339,7 +339,7 @@ public class NewGetX extends AnAction {
             content = content.replaceAll("state", data.stateName.toLowerCase());
         }
 
-        content = content.replaceAll("\\$name", nameTextField.getText());
+        content = content.replaceAll("\\$name", name);
 
         return content;
     }
@@ -402,6 +402,10 @@ public class NewGetX extends AnAction {
         //Separate the spacing between modules
         JPanel margin = new JPanel();
         container.add(margin);
+    }
+
+    public String upperCase(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
     private void dispose() {
