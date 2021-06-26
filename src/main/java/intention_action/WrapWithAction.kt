@@ -12,8 +12,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.util.IncorrectOperationException
-import intention_action.WrapHelper.callExpressionFinder
-import intention_action.WrapHelper.isSelectionValid
 
 abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElementBaseIntentionAction(), IntentionAction {
     private var psiElement: PsiElement? = null
@@ -33,7 +31,7 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
         if (element.toString() != "PsiElement(IDENTIFIER)") {
             return false
         }
-        psiElement = callExpressionFinder(element)
+        psiElement = WrapHelper.callExpressionFinder(element)
         return psiElement != null
     }
 
@@ -49,7 +47,7 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
         val elementSelectionRange = element!!.textRange
         val offsetStart = elementSelectionRange.startOffset
         val offsetEnd = elementSelectionRange.endOffset
-        if (!isSelectionValid(offsetStart, offsetEnd)) {
+        if (!WrapHelper.isSelectionValid(offsetStart, offsetEnd)) {
             return
         }
         val selectedText = document.getText(TextRange.create(offsetStart, offsetEnd))
@@ -66,7 +64,7 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
         val caretModel = editor.caretModel
         caretModel.removeSecondaryCarets()
         for (snippet in snippetArr) {
-            if (!replaceWith.contains(snippet!!)) {
+            if (!replaceWith.contains(snippet)) {
                 continue
             }
             val caretOffset = offsetStart + replaceWith.indexOf(snippet)

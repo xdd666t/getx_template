@@ -1,5 +1,5 @@
-class $nameState {
-  $nameState() {
+class @nameState {
+  @nameState() {
     ///Initialize variables
   }
 }

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
 
-class $nameLogic extends GetxController {
+class @nameLogic extends GetxController {
 
 }

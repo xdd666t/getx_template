@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'logic.dart';
 import 'state.dart';
 
-class $namePage extends StatefulWidget {
+class @namePage extends StatefulWidget {
   @override
-  _$namePageState createState() => _$namePageState();
+  _@namePageState createState() => _@namePageState();
 }
 
-class _$namePageState extends State<$namePage> {
-  final $nameLogic logic = Get.put($nameLogic());
-  final $nameState state = Get.find<$nameLogic>().state;
+class _@namePageState extends State<@namePage> {
+  final @nameLogic logic = Get.put(@nameLogic());
+  final @nameState state = Get.find<@nameLogic>().state;
 
   @override
     Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class _$namePageState extends State<$namePage> {
 
   @override
   void dispose() {
-    Get.delete<$nameLogic>();
+    Get.delete<@nameLogic>();
     super.dispose();
   }
 }

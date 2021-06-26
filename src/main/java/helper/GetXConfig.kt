@@ -2,8 +2,8 @@ package helper
 
 // set default value
 object GetXConfig {
-    //default true: use high mode
-    const val defaultMode = true
+    // 0:default  1:easy
+    const val defaultMode = 0
 
     //default true
     const val useFolder = true
