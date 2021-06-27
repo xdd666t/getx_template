@@ -46,6 +46,12 @@ intellij {
 // Update instructions are here
 patchPluginXml {
     changeNotes """
+     <h1>3.0.x</h1>
+     <ul>
+        <li>migrate kotlin</li>
+        <li>capitalize the first letter of the module name</li>
+    </ul>
+
     <h1>2.1.x</h1>
     <ul>
         <li>Major update!!!</li>
