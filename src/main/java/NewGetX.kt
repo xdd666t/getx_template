@@ -244,16 +244,16 @@ class NewGetX : AnAction() {
 
     private fun generateEasy(name: String, path: String, prefixName: String) {
         generateFile(
-            name,
-            "easy/logic.dart",
-            path,
-            "${prefixName}${data.logicName.lowercase(Locale.getDefault())}.dart"
+                name,
+                "easy/logic.dart",
+                path,
+                "${prefixName}${data.logicName.lowercase(Locale.getDefault())}.dart"
         )
         generateFile(
-            name,
-            "easy/view.dart",
-            path,
-            "${prefixName}${data.viewFileName.lowercase(Locale.getDefault())}.dart"
+                name,
+                "easy/view.dart",
+                path,
+                "${prefixName}${data.viewFileName.lowercase(Locale.getDefault())}.dart"
         )
     }
 
@@ -312,22 +312,22 @@ class NewGetX : AnAction() {
         if (outFileName.contains("binding") && data.addBinding) {
             content = content.replace("Logic".toRegex(), data.logicName)
             content = content.replace(
-                "logic.dart".toRegex(),
-                "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
+                    "logic.dart".toRegex(),
+                    "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
             )
         }
         //replace view about addBinding
         if (outFileName.contains(data.viewFileName.lowercase(Locale.getDefault())) && data.addBinding) {
             content = content.replace(
-                "@nameLogic logic = Get.put\\(@nameLogic\\(\\)\\)".toRegex(),
-                "logic = Get.find<@nameLogic>()"
+                    "@nameLogic logic = Get.put\\(@nameLogic\\(\\)\\)".toRegex(),
+                    "logic = Get.find<@nameLogic>()"
             )
         }
         //replace logic
         if (outFileName.contains(data.logicName.lowercase(Locale.getDefault()))) {
             content = content.replace(
-                "state.dart".toRegex(),
-                "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
+                    "state.dart".toRegex(),
+                    "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
             )
             content = content.replace("Logic".toRegex(), data.logicName)
             content = content.replace("State".toRegex(), data.stateName)
@@ -340,12 +340,12 @@ class NewGetX : AnAction() {
         //replace view
         if (outFileName.contains(data.viewFileName.lowercase(Locale.getDefault()))) {
             content = content.replace(
-                "logic.dart".toRegex(),
-                "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
+                    "logic.dart".toRegex(),
+                    "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
             )
             content = content.replace(
-                "state.dart".toRegex(),
-                "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
+                    "state.dart".toRegex(),
+                    "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
             )
             content = content.replace("Page".toRegex(), data.viewName)
             content = content.replace("Logic".toRegex(), data.logicName)
