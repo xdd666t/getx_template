@@ -34,9 +34,7 @@
 ## Dprefix
 
 - Model: Generate the GetX model
-  
   - Default: Default mode, three files are generated: state, logic, view
-  
   - Easy: Simple mode, two files are generated: logic, view
 
 - Function: Function selection
