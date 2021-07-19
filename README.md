@@ -10,7 +10,7 @@
 
 - the fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
 
-## Renderings
+## Description
 
 - Plugin effect
 
@@ -31,7 +31,7 @@
 
 ![image-20210605150122801](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/android/flutter/blog/20210605150851.png)
 
-## Dprefix
+## Features
 
 - Model: Generate the GetX model
   - Default: Default mode, three files are generated: state, logic, view
