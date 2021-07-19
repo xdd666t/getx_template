@@ -50,7 +50,7 @@
 
 - addBinding: automatically add binding files
   - If you know what binding is, it is recommended to enable this function
-     - If you don't understand the concept and function of binding, it is not recommended to turn it on; not using binding will not affect development
+  - If you don't understand the concept and function of binding, it is not recommended to turn it on; not using binding will not affect development
 
 - Module Name: The name of the module, please use the big camel case as much as possible; capitalize the first letter
 
