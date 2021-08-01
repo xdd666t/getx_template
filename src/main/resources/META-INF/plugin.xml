@@ -34,7 +34,7 @@
     <!-- Write plugin actions -->
     <actions>
         <!-- Add your actions here -->
-        <action id="com.tao.NewGetX" class="NewGetX" text="GetX" description="create GetX template code"
+        <action id="com.tao.NewGetX" class="NewGetX" text="GetX" description="Create getX template code"
                 icon="/image/getx_icon.png">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
@@ -51,7 +51,7 @@
 
     <!--  https://plugins.jetbrains.com/docs/intellij/template-support.html#completing-the-live-template-implementation  -->
     <extensions defaultExtensionNs="com.intellij">
-        <defaultLiveTemplates file="liveTemplates/getX"/>
+        <defaultLiveTemplates file="liveTemplates/getX.xml"/>
         <liveTemplateContext implementation="live_templates.GetXContext"/>
     </extensions>
 
