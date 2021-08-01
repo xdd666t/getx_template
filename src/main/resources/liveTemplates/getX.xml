@@ -1,3 +1,5 @@
+<!--HtmlEncode-->
+<!--https://tool.chinaz.com/tools/htmlencode.aspx-->
 <templateSet group="getX">
     <template name="getbuilder"
               value="GetBuilder&lt;$Subject$Controller&gt;(&#10;  builder: (controller) {&#10;    return $Container$;&#10;  },&#10;)"
@@ -384,8 +386,6 @@
   &#10;    home: HomePage(),
   &#10;  ));
   &#10;}">
-
-
         <variable name="Name" alwaysStopAt="true" defaultValue="&quot;My&quot;" expression=""/>
         <variable name="WidgetParent" alwaysStopAt="true" defaultValue="&quot;Container&quot;"
                   expression=""/>
@@ -397,6 +397,4 @@
             <option name="FLUTTER" value="true"/>
         </context>
     </template>
-
-
 </templateSet>
