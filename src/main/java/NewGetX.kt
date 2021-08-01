@@ -19,7 +19,7 @@ class NewGetX : AnAction() {
     private var data: DataService = DataService.instance
 
     /**
-     * Overall popup entity
+     * module name
      */
     private lateinit var moduleName: String
 
