@@ -73,7 +73,6 @@ class NewGetX : AnAction() {
     }
 
     private fun createFile() {
-
         val name = upperCase(moduleName)
         val prefix = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name)
         var folder = ""

@@ -33,6 +33,7 @@ class GetXTemplateView(private val getXListener: GetXListener) {
 
     private val keyListener: KeyListener = object : KeyListener {
         override fun keyTyped(e: KeyEvent) {}
+
         override fun keyPressed(e: KeyEvent) {
             if (e.keyCode == KeyEvent.VK_ENTER) confirm()
             if (e.keyCode == KeyEvent.VK_ESCAPE) dispose()
@@ -40,6 +41,7 @@ class GetXTemplateView(private val getXListener: GetXListener) {
 
         override fun keyReleased(e: KeyEvent) {}
     }
+
     private val actionListener = ActionListener { e ->
         if (e.actionCommand == "Cancel") {
             dispose()
