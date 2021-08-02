@@ -6,6 +6,12 @@ class WrapWithGetBuilderAction : WrapWithAction(SnippetType.GetBuilder) {
     }
 }
 
+class WrapWithGetBuilderAutoDisposeAction : WrapWithAction(SnippetType.GetBuilderAutoDispose) {
+    override fun getText(): String {
+        return "Wrap with GetBuilder (Auto Dispose)"
+    }
+}
+
 class WrapWithGetXAction : WrapWithAction(SnippetType.GetX) {
     override fun getText(): String {
         return "Wrap with GetX"

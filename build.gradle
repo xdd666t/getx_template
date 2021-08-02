@@ -14,7 +14,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '3.0.5'
+version '3.0.6'
 // must!!!
 sourceCompatibility = 1.8
 
@@ -52,6 +52,7 @@ patchPluginXml {
         <li>capitalize the first letter of the module name</li>
         <li>add some snippets code</li>
         <li>view and logic separate</li>
+        <li>GetBuilder adds automatic dispose Wrap Widget</li>
     </ul>
 
     <h1>2.1.x</h1>

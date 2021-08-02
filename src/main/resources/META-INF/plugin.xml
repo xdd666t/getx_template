@@ -66,6 +66,11 @@
             <className>intention_action.WrapWithGetBuilderAction</className>
             <category>GetX</category>
         </intentionAction>
+        <!--GetBuilder(Auto Dispose) Action-->
+        <intentionAction>
+            <className>intention_action.WrapWithGetBuilderAutoDisposeAction</className>
+            <category>GetX</category>
+        </intentionAction>
         <!--GetX Action-->
         <intentionAction>
             <className>intention_action.WrapWithGetXAction</className>
