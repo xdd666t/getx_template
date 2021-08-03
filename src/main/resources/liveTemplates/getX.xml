@@ -203,7 +203,7 @@
     </template>
 
     <!--
-    the fast code snippet prompt from
+    The quick snippet code below hints from
     https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml
     -->
     <template name="getcontroller"
