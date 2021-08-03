@@ -55,9 +55,9 @@
               toShortenFQNames="true"
               value="import 'package:get/get.dart';
 &#10;
-&#10;class GetRoute {
+&#10;class RouteGet {
 &#10;  ///root page
-&#10;  static final String main = &quot;/&quot;;
+&#10;  static const String main = &quot;/&quot;;
 &#10;
 &#10;  ///pages map
 &#10;  static final List&lt;GetPage&gt; getPages = [
