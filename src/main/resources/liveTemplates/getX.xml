@@ -51,7 +51,7 @@
             <option name="FLUTTER" value="true"/>
         </context>
     </template>
-    <template name="getpageroutemap" description="Generates getPage route map" toReformat="false"
+    <template name="getroutepagemap" description="Generates getPage route map" toReformat="false"
               toShortenFQNames="true"
               value="import 'package:get/get.dart';
 &#10;
@@ -69,7 +69,7 @@
             <option name="FLUTTER" value="true"/>
         </context>
     </template>
-    <template name="getpageroute" description="Generates getPage route" toReformat="false"
+    <template name="getroutepage" description="Generates getPage route" toReformat="false"
               toShortenFQNames="true"
               value="GetPage(name: xxxPage, page: () =&gt; XxxPage()),">
         <context>
