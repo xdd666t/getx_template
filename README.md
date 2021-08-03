@@ -23,9 +23,9 @@
 
 ![image-20210608153359876](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210608153418.png)
 
-- Alt + Enter ： GetBuilder、Obx、GetX
+- Alt + Enter ： GetBuilder、GetBuilder（Auto Dispose）、Obx、GetX
 
-![image-20210605150230810](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/android/flutter/blog/20210605150908.png)
+![image-20210802160603092](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210802162033.png)
 
 - Enter the **get**  prefix
 
