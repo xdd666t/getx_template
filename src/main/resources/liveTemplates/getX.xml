@@ -76,7 +76,7 @@
             <option name="FLUTTER" value="true"/>
         </context>
     </template>
-    <template name="getroute" description="Generates route" toReformat="false"
+    <template name="getroutename" description="Generates route name" toReformat="false"
               toShortenFQNames="true"
               value="static const String $Name$Page = &quot;/$Name$Page&quot;;">
         <variable name="Name" expression="" defaultValue="&quot;Name&quot;" alwaysStopAt="true"/>
