@@ -26,6 +26,7 @@ class GetXTemplateView(private val getXListener: GetXListener) {
      */
     lateinit var folderBox: JCheckBox
     lateinit var prefixBox: JCheckBox
+    lateinit var pageViewBox: JCheckBox
     lateinit var disposeBox: JCheckBox
     lateinit var lifecycleBox: JCheckBox
     lateinit var bindingBox: JCheckBox
@@ -42,8 +43,8 @@ class GetXTemplateView(private val getXListener: GetXListener) {
         override fun keyReleased(e: KeyEvent) {}
     }
 
-    private val actionListener = ActionListener { e ->
-        if (e.actionCommand == "Cancel") {
+    private val actionListener = ActionListener {
+        if (it.actionCommand == "Cancel") {
             dispose()
         } else {
             confirm()
@@ -118,6 +119,16 @@ class GetXTemplateView(private val getXListener: GetXListener) {
         setMargin(prefixBox)
         function.add(prefixBox)
 
+        //pageView
+        pageViewBox = JCheckBox("isPageView", data.isPageView)
+        setMargin(pageViewBox)
+        function.add(pageViewBox)
+
+        //add binding
+        bindingBox = JCheckBox("addBinding", data.addBinding)
+        setMargin(bindingBox)
+        function.add(bindingBox)
+
         //auto dispose
         disposeBox = JCheckBox("autoDispose", data.autoDispose)
         setMargin(disposeBox)
@@ -128,13 +139,21 @@ class GetXTemplateView(private val getXListener: GetXListener) {
         setMargin(lifecycleBox)
         function.add(lifecycleBox)
 
-        //add binding
-        bindingBox = JCheckBox("addBinding", data.addBinding)
-        setMargin(bindingBox)
-        function.add(bindingBox)
-
         container.add(function)
         setSpacing(container)
+
+
+        /// deal listener
+        pageViewBox.addActionListener {
+            if (disposeBox.isSelected && pageViewBox.isSelected) {
+                disposeBox.isSelected = false
+            }
+        }
+        disposeBox.addActionListener {
+            if (disposeBox.isSelected && pageViewBox.isSelected) {
+                pageViewBox.isSelected = false
+            }
+        }
     }
 
     /**

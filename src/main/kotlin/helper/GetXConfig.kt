@@ -11,6 +11,9 @@ object GetXConfig {
     //default false
     const val usePrefix = false
 
+    //pageView
+    const val isPageView = false
+
     //auto dispose GetXController
     const val autoDispose = false
 

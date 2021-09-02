@@ -3,23 +3,12 @@ import 'package:get/get.dart';
 
 import 'logic.dart';
 
-class @namePage extends StatefulWidget {
-  @override
-  _@namePageState createState() => _@namePageState();
-}
-
-class _@namePageState extends State<@namePage> {
+class @namePage extends StatelessWidget {
   final logic = Get.put(@nameLogic());
   final state = Get.find<@nameLogic>().state;
 
   @override
   Widget build(BuildContext context) {
     return Container();
-  }
-
-  @override
-  void dispose() {
-    Get.delete<@nameLogic>();
-    super.dispose();
   }
 }

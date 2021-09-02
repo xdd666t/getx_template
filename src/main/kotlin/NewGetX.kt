@@ -49,6 +49,7 @@ class NewGetX : AnAction() {
                 }
                 data.useFolder = view.folderBox.isSelected
                 data.usePrefix = view.prefixBox.isSelected
+                data.isPageView = view.pageViewBox.isSelected
                 data.autoDispose = view.disposeBox.isSelected
                 data.addLifecycle = view.lifecycleBox.isSelected
                 data.addBinding = view.bindingBox.isSelected
@@ -145,15 +146,23 @@ class NewGetX : AnAction() {
 
     //content need deal
     private fun dealContent(name: String, inputFileName: String, outFileName: String): String {
-        //deal auto dispose
-        var defaultFolder = "/templates/"
-        if (data.autoDispose && inputFileName.contains("view.dart")) {
-            defaultFolder += "auto/"
+        //deal auto dispose or pageView
+        var defaultFolder = "/templates/normal/"
+
+        // view.dart
+        if (inputFileName.contains("view.dart")) {
+            if (data.autoDispose) {
+                defaultFolder = "/templates/auto/"
+            }
+
+            if (data.isPageView) {
+                defaultFolder = "/templates/pageView/"
+            }
         }
 
         //add lifecycle
         if (data.addLifecycle && inputFileName.contains("logic.dart")) {
-            defaultFolder += "lifecycle/"
+            defaultFolder = "/templates/lifecycle/"
         }
 
         //read file

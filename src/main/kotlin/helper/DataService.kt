@@ -23,6 +23,10 @@ class DataService : PersistentStateComponent<DataService> {
     @JvmField
     var usePrefix = GetXConfig.usePrefix
 
+    //default false
+    @JvmField
+    var isPageView = GetXConfig.isPageView
+
     //auto dispose GetXController
     @JvmField
     var autoDispose = GetXConfig.autoDispose

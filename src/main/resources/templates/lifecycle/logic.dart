@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'state.dart';
 
 class @nameLogic extends GetxController {
-  final state = @nameState();
+  final @nameState state = @nameState();
 
   @override
   void onReady() {
