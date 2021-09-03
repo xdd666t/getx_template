@@ -29,12 +29,12 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
     lateinit var folderBox: JCheckBox
     lateinit var prefixBox: JCheckBox
     lateinit var pageViewBox: JCheckBox
-    lateinit var disposeBox: JCheckBox
     lateinit var bindingBox: JCheckBox
 
     /**
      * select Function：minor Function
      */
+    lateinit var disposeBox: JCheckBox
     lateinit var lifecycleBox: JCheckBox
     lateinit var lintNormBox: JCheckBox
 
@@ -175,6 +175,10 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val tab = JBTabbedPane()
         tab.addTab("Main", main)
         tab.addTab("Minor", minor)
+        tab.addChangeListener{
+            data.funTabIndex = tab.selectedIndex
+        }
+        tab.selectedIndex = data.funTabIndex
 
         function.add(tab)
         container.add(function)
@@ -199,6 +203,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
     private fun setModuleAndConfirm(container: Container) {
         //input module name
         //Row：Box.createHorizontalBox() | Column：Box.createVerticalBox()
+        //add Module Name
         val nameField = JPanel()
         val tempTextField = JPanel()
         tempTextField.border = BorderFactory.createEmptyBorder(0, 0, 5, 0)
@@ -207,10 +212,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         nameTextField.addKeyListener(keyListener)
         tempTextField.add(nameTextField)
         nameField.add(tempTextField)
-
-        //add Module Name
         container.add(nameField)
-        setSpacing(container)
 
         //OK cancel button
         val cancel = JButton("Cancel")
@@ -219,12 +221,11 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val ok = JButton("OK")
         ok.foreground = JBColor.BLUE
         ok.addActionListener(actionListener)
-
         val menu = JPanel()
         menu.layout = FlowLayout()
         menu.add(cancel)
         menu.add(ok)
-        menu.border = BorderFactory.createEmptyBorder(0, 0, 10, 0)
+        menu.border = BorderFactory.createEmptyBorder(10, 0, 10, 0)
 
         container.add(menu)
     }
@@ -237,7 +238,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         // and the focus will not shift even if you click on other areas
         jDialog.isModal = true
         //Set padding
-        (jDialog.contentPane as JPanel).border = BorderFactory.createEmptyBorder(10, 10, 15, 10)
+        (jDialog.contentPane as JPanel).border = BorderFactory.createEmptyBorder(10, 10, 10, 10)
         //auto layout
         jDialog.pack()
         jDialog.setLocationRelativeTo(null)

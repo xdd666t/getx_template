@@ -58,6 +58,10 @@ class DataService : PersistentStateComponent<DataService> {
     @JvmField
     var stateName = GetXConfig.stateName
 
+    //function tab index
+    @JvmField
+    var funTabIndex = GetXConfig.funTabIndex
+
     override fun getState(): DataService {
         return this
     }

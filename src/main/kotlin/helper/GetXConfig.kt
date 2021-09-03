@@ -39,4 +39,7 @@ object GetXConfig {
     //model name
     const val defaultModelName = "Default"
     const val easyModelName = "Easy"
+
+    //function tab index
+    const val funTabIndex = 0
 }
