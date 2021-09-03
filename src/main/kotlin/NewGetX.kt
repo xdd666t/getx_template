@@ -190,8 +190,8 @@ class NewGetX : AnAction() {
         //replace view about addBinding
         if (outFileName.contains(data.viewFileName.lowercase(Locale.getDefault())) && data.addBinding) {
             content = content.replace(
-                "@nameLogic logic = Get.put\\(@nameLogic\\(\\)\\)".toRegex(),
-                "logic = Get.find<@nameLogic>()"
+                "Get.put\\(@nameLogic\\(\\)\\)".toRegex(),
+                "Get.find<@nameLogic>()"
             )
         }
         //replace logic
