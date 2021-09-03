@@ -1,5 +1,5 @@
-<!--HtmlEncode-->
-<!--https://tool.chinaz.com/tools/htmlencode.aspx-->
+<!-- HtmlEncode -->
+<!-- https://tool.chinaz.com/tools/htmlencode.aspx -->
 <templateSet group="getX">
     <template name="getbuilder"
               value="GetBuilder&lt;$Subject$Controller&gt;(&#10;  builder: (controller) {&#10;    return $Container$;&#10;  },&#10;)"

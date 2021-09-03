@@ -9,7 +9,7 @@ class @namePage extends StatefulWidget {
 }
 
 class _@namePageState extends State<@namePage> {
-  final logic = Get.put(@nameLogic());
+  final @nameLogic logic = Get.put(@nameLogic());
 
   @override
   Widget build(BuildContext context) {

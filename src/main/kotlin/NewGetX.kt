@@ -53,6 +53,7 @@ class NewGetX : AnAction() {
                 data.autoDispose = view.disposeBox.isSelected
                 data.addLifecycle = view.lifecycleBox.isSelected
                 data.addBinding = view.bindingBox.isSelected
+                data.lintNorm = view.lintNormBox.isSelected
             }
         })
     }
@@ -74,8 +75,7 @@ class NewGetX : AnAction() {
     }
 
     private fun createFile() {
-        val name = upperCase(moduleName)
-        val prefix = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name)
+        val prefix = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, upperCase(moduleName))
         var folder = ""
         var prefixName = ""
 
@@ -90,44 +90,42 @@ class NewGetX : AnAction() {
         }
         val path = psiPath + folder
         when (data.defaultMode) {
-            0 -> generateDefault(name, path, prefixName)
-            1 -> generateEasy(name, path, prefixName)
+            0 -> generateDefault(path, prefixName)
+            1 -> generateEasy(path, prefixName)
         }
         //Add binding file
         if (data.addBinding) {
-            generateFile(name, "binding.dart", path, "${prefixName}binding.dart")
+            generateFile("binding.dart", path, "${prefixName}binding.dart")
         }
     }
 
-    private fun generateDefault(name: String, path: String, prefixName: String) {
-        generateFile(name, "state.dart", path, "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart")
-        generateFile(name, "logic.dart", path, "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart")
-        generateFile(name, "view.dart", path, "$prefixName${data.viewFileName.lowercase(Locale.getDefault())}.dart")
+    private fun generateDefault(path: String, prefixName: String) {
+        generateFile("state.dart", path, "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart")
+        generateFile("logic.dart", path, "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart")
+        generateFile("view.dart", path, "$prefixName${data.viewFileName.lowercase(Locale.getDefault())}.dart")
     }
 
-    private fun generateEasy(name: String, path: String, prefixName: String) {
+    private fun generateEasy(path: String, prefixName: String) {
         generateFile(
-            name,
             "easy/logic.dart",
             path,
             "${prefixName}${data.logicName.lowercase(Locale.getDefault())}.dart"
         )
         generateFile(
-            name,
             "easy/view.dart",
             path,
             "${prefixName}${data.viewFileName.lowercase(Locale.getDefault())}.dart"
         )
     }
 
-    private fun generateFile(name: String, inputFileName: String, filePath: String, outFileName: String) {
+    private fun generateFile(inputFileName: String, filePath: String, outFileName: String) {
         //content deal
-        val content = dealContent(name, inputFileName, outFileName)
+        val content = dealContent(inputFileName)
 
         //Write file
         try {
             val folder = File(filePath)
-            // if file doesnt exists, then create it
+            // if file not exists, then create it
             if (!folder.exists()) {
                 folder.mkdirs()
             }
@@ -145,7 +143,120 @@ class NewGetX : AnAction() {
     }
 
     //content need deal
-    private fun dealContent(name: String, inputFileName: String, outFileName: String): String {
+    private fun dealContent(inputFileName: String): String {
+        //module name
+        val name = upperCase(moduleName)
+        //Adding a prefix requires modifying the imported class name
+        var prefixName = ""
+        if (data.usePrefix) {
+            prefixName = "${CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name)}_"
+        }
+
+        //select suitable file, return suitable content
+        var content = getSuitableContent(inputFileName)
+
+        //replace view file
+        content = replaceView(content, inputFileName, prefixName)
+
+        //replace logic file
+        content = replaceLogic(content, inputFileName, prefixName)
+
+        //replace binding file
+        content = replaceBinding(content, inputFileName, prefixName)
+
+        //replace state file
+        content = replaceState(content, inputFileName)
+
+        content = content.replace("@name".toRegex(), name)
+
+        return content
+    }
+
+    private fun replaceLogic(content: String, inputFileName: String, prefixName: String): String {
+        var tempContent = content
+
+        if (!inputFileName.contains("logic.dart")) {
+            return tempContent
+        }
+
+        tempContent = tempContent.replace(
+            "state.dart".toRegex(),
+            "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
+        )
+        tempContent = tempContent.replace("Logic".toRegex(), data.logicName)
+        tempContent = tempContent.replace("State".toRegex(), data.stateName)
+        tempContent = tempContent.replace("state".toRegex(), data.stateName.lowercase(Locale.getDefault()))
+
+        return tempContent
+    }
+
+    private fun replaceView(content: String, inputFileName: String, prefixName: String): String {
+        var tempContent = content
+
+        if (!inputFileName.contains("view.dart")) {
+            return tempContent
+        }
+
+        //deal binding function
+        if (data.addBinding) {
+            tempContent = tempContent.replace("Get.put\\(@nameLogic\\(\\)\\)".toRegex(), "Get.find<@nameLogic>()")
+        }
+
+        //deal lint norm
+        if (!data.lintNorm) {
+            tempContent = tempContent.replace("\\s*\nimport 'state.dart';".toRegex(), "")
+            tempContent = tempContent.replace("final @nameLogic".toRegex(), "final")
+            tempContent = tempContent.replace("final @nameState".toRegex(), "final")
+        }
+
+        tempContent = tempContent.replace(
+            "logic.dart".toRegex(),
+            "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
+        )
+        tempContent = tempContent.replace(
+            "state.dart".toRegex(),
+            "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
+        )
+        tempContent = tempContent.replace("Page".toRegex(), data.viewName)
+        tempContent = tempContent.replace("Logic".toRegex(), data.logicName)
+        tempContent = tempContent.replace("logic".toRegex(), data.logicName.lowercase(Locale.getDefault()))
+        tempContent = tempContent.replace("@nameState".toRegex(), "@name${data.stateName}")
+        tempContent = tempContent.replace("state".toRegex(), data.stateName.lowercase(Locale.getDefault()))
+
+        return tempContent
+    }
+
+    private fun replaceState(content: String, inputFileName: String): String {
+        var tempContent = content
+
+        if (!inputFileName.contains("state.dart")) {
+            return tempContent
+        }
+
+        tempContent = tempContent.replace("State".toRegex(), data.stateName)
+
+        return tempContent
+    }
+
+    private fun replaceBinding(content: String, inputFileName: String, prefixName: String): String {
+        var tempContent = content
+
+        if (!inputFileName.contains("binding.dart")) {
+            return tempContent
+        }
+
+        if (data.addBinding) {
+            tempContent = tempContent.replace("Logic".toRegex(), data.logicName)
+            tempContent = tempContent.replace(
+                "logic.dart".toRegex(),
+                "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
+            )
+        }
+
+        return tempContent
+    }
+
+    private fun getSuitableContent(inputFileName: String): String {
         //deal auto dispose or pageView
         var defaultFolder = "/templates/normal/"
 
@@ -173,58 +284,7 @@ class NewGetX : AnAction() {
         } catch (e: Exception) {
             //some error
         }
-        var prefixName = ""
-        //Adding a prefix requires modifying the imported class name
-        if (data.usePrefix) {
-            prefixName = "${CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name)}_"
-        }
 
-        //replace binding
-        if (outFileName.contains("binding") && data.addBinding) {
-            content = content.replace("Logic".toRegex(), data.logicName)
-            content = content.replace(
-                "logic.dart".toRegex(),
-                "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
-            )
-        }
-        //replace view about addBinding
-        if (outFileName.contains(data.viewFileName.lowercase(Locale.getDefault())) && data.addBinding) {
-            content = content.replace(
-                "Get.put\\(@nameLogic\\(\\)\\)".toRegex(),
-                "Get.find<@nameLogic>()"
-            )
-        }
-        //replace logic
-        if (outFileName.contains(data.logicName.lowercase(Locale.getDefault()))) {
-            content = content.replace(
-                "state.dart".toRegex(),
-                "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
-            )
-            content = content.replace("Logic".toRegex(), data.logicName)
-            content = content.replace("State".toRegex(), data.stateName)
-            content = content.replace("state".toRegex(), data.stateName.lowercase(Locale.getDefault()))
-        }
-        //replace state
-        if (outFileName.contains(data.stateName.lowercase(Locale.getDefault()))) {
-            content = content.replace("State".toRegex(), data.stateName)
-        }
-        //replace view
-        if (outFileName.contains(data.viewFileName.lowercase(Locale.getDefault()))) {
-            content = content.replace(
-                "logic.dart".toRegex(),
-                "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
-            )
-            content = content.replace(
-                "state.dart".toRegex(),
-                "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
-            )
-            content = content.replace("Page".toRegex(), data.viewName)
-            content = content.replace("Logic".toRegex(), data.logicName)
-            content = content.replace("logic".toRegex(), data.logicName.lowercase(Locale.getDefault()))
-            content = content.replace("@nameState".toRegex(), "@name${data.stateName}")
-            content = content.replace("state".toRegex(), data.stateName.lowercase(Locale.getDefault()))
-        }
-        content = content.replace("@name".toRegex(), name)
         return content
     }
 

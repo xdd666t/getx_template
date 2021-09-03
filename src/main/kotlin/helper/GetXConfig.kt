@@ -23,6 +23,9 @@ object GetXConfig {
     //add binding
     const val addBinding = false
 
+    //support lint norm
+    const val lintNorm = false
+
     //Logical layer name
     const val logicName = "Logic"
 

@@ -39,6 +39,10 @@ class DataService : PersistentStateComponent<DataService> {
     @JvmField
     var addBinding = GetXConfig.addBinding
 
+    //support lint norm
+    @JvmField
+    var lintNorm = GetXConfig.lintNorm
+
     //Logical layer name
     @JvmField
     var logicName = GetXConfig.logicName

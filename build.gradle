@@ -14,7 +14,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '3.0.9'
+version '3.1.0'
 // must!!!
 sourceCompatibility = 1.8
 
@@ -46,6 +46,12 @@ intellij {
 // Update instructions are here
 patchPluginXml {
     changeNotes """
+      <h1>3.1.x</h1>
+      <ul>
+        <li>Significantly optimize the layout</li>
+        <li>Support lint normal</li>
+     </ul>
+
      <h1>3.0.x</h1>
      <ul>
         <li>migrate kotlin</li>
