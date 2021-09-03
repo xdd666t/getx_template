@@ -72,7 +72,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val minorFunction = getMinorFunction()
         setFunctionTab(main = mainFunction, minor = minorFunction, container = container)
 
-        //Generate module name and OK cancel button
+        //Generate module name and ok cancel button
         setModuleAndConfirm(container)
 
         //Choose a pop-up style
@@ -161,9 +161,6 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         setMargin(lintNormBox)
         minorFunction.add(lintNormBox)
 
-        //empty node
-        minorFunction.add(JPanel())
-
         return minorFunction
     }
 
@@ -171,7 +168,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val function = JPanel()
         function.border = BorderFactory.createTitledBorder("Select Function")
 
-        // 添加选项卡
+        //add tab
         val tab = JBTabbedPane()
         tab.addTab("Main", main)
         tab.addTab("Minor", minor)
