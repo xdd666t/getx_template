@@ -50,10 +50,14 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         override fun keyReleased(e: KeyEvent) {}
     }
 
-    private val actionListener = ActionListener {
+    private val actionChangeListener = ActionListener {
+        //data change
+        getXListener.onDataChange(this)
+
+        //click btn
         if (it.actionCommand == "Cancel") {
             dispose()
-        } else {
+        } else if (it.actionCommand == "OK"){
             confirm()
         }
     }
@@ -92,12 +96,14 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         //default model
         val defaultBtn = JRadioButton(GetXConfig.defaultModelName, data.defaultMode == 0)
         defaultBtn.actionCommand = GetXConfig.defaultModelName
+        defaultBtn.addActionListener(actionChangeListener)
         setBtnPadding(defaultBtn)
         template.add(defaultBtn)
 
         //easy model
         val easyBtn = JRadioButton(GetXConfig.easyModelName, data.defaultMode == 1)
         easyBtn.actionCommand = GetXConfig.easyModelName
+        easyBtn.addActionListener(actionChangeListener)
         setBtnPadding(easyBtn)
         template.add(easyBtn)
 
@@ -119,21 +125,25 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
 
         //use folder
         folderBox = JCheckBox("useFolder", data.useFolder)
+        folderBox.addActionListener(actionChangeListener)
         setMargin(folderBox)
         mainFunction.add(folderBox)
 
         //use prefix
         prefixBox = JCheckBox("usePrefix", data.usePrefix)
+        prefixBox.addActionListener(actionChangeListener)
         setMargin(prefixBox)
         mainFunction.add(prefixBox)
 
         //pageView
         pageViewBox = JCheckBox("isPageView", data.isPageView)
+        pageViewBox.addActionListener(actionChangeListener)
         setMargin(pageViewBox)
         mainFunction.add(pageViewBox)
 
         //add binding
         bindingBox = JCheckBox("addBinding", data.addBinding)
+        bindingBox.addActionListener(actionChangeListener)
         setMargin(bindingBox)
         mainFunction.add(bindingBox)
 
@@ -148,16 +158,19 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
 
         //add lifecycle
         lifecycleBox = JCheckBox("addLifecycle", data.addLifecycle)
+        lifecycleBox.addActionListener(actionChangeListener)
         setMargin(lifecycleBox)
         minorFunction.add(lifecycleBox)
 
         //auto dispose
         disposeBox = JCheckBox("autoDispose", data.autoDispose)
+        disposeBox.addActionListener(actionChangeListener)
         setMargin(disposeBox)
         minorFunction.add(disposeBox)
 
         //support lint normal
         lintNormBox = JCheckBox("lintNorm", data.lintNorm)
+        lintNormBox.addActionListener(actionChangeListener)
         setMargin(lintNormBox)
         minorFunction.add(lintNormBox)
 
@@ -172,7 +185,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val tab = JBTabbedPane()
         tab.addTab("Main", main)
         tab.addTab("Minor", minor)
-        tab.addChangeListener{
+        tab.addChangeListener {
             data.funTabIndex = tab.selectedIndex
         }
         tab.selectedIndex = data.funTabIndex
@@ -214,10 +227,10 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         //OK cancel button
         val cancel = JButton("Cancel")
         cancel.foreground = JBColor.RED
-        cancel.addActionListener(actionListener)
+        cancel.addActionListener(actionChangeListener)
         val ok = JButton("OK")
         ok.foreground = JBColor.BLUE
-        ok.addActionListener(actionListener)
+        ok.addActionListener(actionChangeListener)
         val menu = JPanel()
         menu.layout = FlowLayout()
         menu.add(cancel)
@@ -257,7 +270,8 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
     }
 
     private fun confirm() {
-        getXListener.onData(this)
+        //data change, deal TextField listener
+        getXListener.onDataChange(this)
 
         if (getXListener.onSave()) {
             dispose()
@@ -272,5 +286,5 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
 interface GetXListener {
     fun onSave(): Boolean
 
-    fun onData(view: GetXTemplateView)
+    fun onDataChange(view: GetXTemplateView)
 }

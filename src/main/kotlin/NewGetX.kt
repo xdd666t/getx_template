@@ -37,16 +37,19 @@ class NewGetX : AnAction() {
                 return save()
             }
 
-            override fun onData(view: GetXTemplateView) {
+            override fun onDataChange(view: GetXTemplateView) {
+                //module name
                 moduleName = view.nameTextField.text
-                val modelType = view.templateGroup.selection.actionCommand
 
                 //deal default value
+                val modelType = view.templateGroup.selection.actionCommand
                 if (GetXConfig.defaultModelName == modelType) {
                     data.defaultMode = 0
                 } else if (GetXConfig.easyModelName == modelType) {
                     data.defaultMode = 1
                 }
+
+                //function area
                 data.useFolder = view.folderBox.isSelected
                 data.usePrefix = view.prefixBox.isSelected
                 data.isPageView = view.pageViewBox.isSelected
