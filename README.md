@@ -1,6 +1,6 @@
 # getx_template
 
-语言: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://juejin.cn/post/6924104248275763208)
+语言: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://juejin.cn/post/7005003323753365517)
 
 ## GetX usage
 
