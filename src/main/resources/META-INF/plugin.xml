@@ -18,6 +18,7 @@
         <h3>GetX Use Article</h3>
         <li>使用：<a href="https://juejin.cn/post/6924104248275763208"> Flutter GetX使用---简洁的魅力！</a></li>
         <li>原理：<a href="https://juejin.cn/post/6984593635681517582"> Flutter GetX深度剖析 | 我们终将走出自己的路</a></li>
+        <li>插件说明：<a href="https://juejin.cn/post/7005003323753365517"> 本IDEA插件超详细使用教程 </a></li>
         <h3>Statement</h3>
         <li>Part of fast code snippet prompt come from <a href="https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml"> getx-snippets-intelliJ</a></li>
     </ul>

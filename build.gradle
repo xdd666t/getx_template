@@ -51,6 +51,7 @@ patchPluginXml {
         <li>Significantly optimize the layout</li>
         <li>Support lint norm</li>
         <li>Optimize the prompt function：“get" ---prefix adjustment---> "getx"</li>
+        <li>Add an article about how to use the plugin</li>
      </ul>
 
      <h1>3.0.x</h1>

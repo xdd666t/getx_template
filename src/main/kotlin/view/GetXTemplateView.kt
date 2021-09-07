@@ -218,7 +218,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val tempTextField = JPanel()
         tempTextField.border = BorderFactory.createEmptyBorder(0, 0, 5, 0)
         nameField.border = BorderFactory.createTitledBorder("Module Name")
-        nameTextField = JTextField(31)
+        nameTextField = JTextField(32)
         nameTextField.addKeyListener(keyListener)
         tempTextField.add(nameTextField)
         nameField.add(tempTextField)
