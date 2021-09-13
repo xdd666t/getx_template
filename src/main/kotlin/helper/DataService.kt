@@ -15,74 +15,74 @@ class DataService : PersistentStateComponent<DataService> {
     //default true: use default mode
     @JvmField
     @OptionTag(converter = ModeInfoConverter::class)
-    var modeDefault = GetXConfig.modeDefault
+    var modeDefault =  ModeInfo(name = "Default", selected = true)
 
     //default false：default not use easy mode
     @JvmField
     @OptionTag(converter = ModeInfoConverter::class)
-    var modeEasy = GetXConfig.modeEasy
+    var modeEasy = ModeInfo(name = "Easy", selected = false)
 
     //default true
     @JvmField
-    var useFolder = GetXConfig.useFolder
+    var useFolder = true
 
     //default false
     @JvmField
-    var usePrefix = GetXConfig.usePrefix
+    var usePrefix = false
 
     //default false
     @JvmField
-    var isPageView = GetXConfig.isPageView
+    var isPageView = false
 
     //auto dispose GetXController
     @JvmField
-    var autoDispose = GetXConfig.autoDispose
+    var autoDispose = false
 
     //add Lifecycle
     @JvmField
-    var addLifecycle = GetXConfig.addLifecycle
+    var addLifecycle = false
 
     //add binding
     @JvmField
-    var addBinding = GetXConfig.addBinding
+    var addBinding = false
 
     //support lint norm
     @JvmField
-    var lintNorm = GetXConfig.lintNorm
+    var lintNorm = false
 
     //Logical layer name
     @JvmField
-    var logicName = GetXConfig.logicName
+    var logicName = "Logic"
 
     //view layer name
     @JvmField
-    var viewName = GetXConfig.viewName
+    var viewName = "Page"
 
     @JvmField
-    var viewFileName = GetXConfig.viewFileName
+    var viewFileName = "View"
 
     //state layer name
     @JvmField
-    var stateName = GetXConfig.stateName
+    var stateName = "State"
 
     //function tab index
     @JvmField
-    var funTabIndex = GetXConfig.funTabIndex
+    var funTabIndex = 0
 
     ///default true
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templatePage = GetXConfig.templatePage
+    var templatePage = TemplateInfo(view = "Page", selected = true, name = "Page")
 
     ///default false
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templateComponent = GetXConfig.templateComponent
+    var templateComponent = TemplateInfo(view = "Component", selected = false, name = "Component")
 
     ///default false
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templateCustom = GetXConfig.templateCustom
+    var templateCustom = TemplateInfo(view = "Widget", selected = false, name = "Custom")
 
 
     override fun getState(): DataService {

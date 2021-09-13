@@ -6,7 +6,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.Messages
 import helper.*
-import helper.GetXConfig.templatePage
 import view.GetXListener
 import view.GetXTemplateView
 import java.io.*

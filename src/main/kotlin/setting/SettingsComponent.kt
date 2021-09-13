@@ -1,66 +1,85 @@
 package setting
 
-import javax.swing.JPanel
+import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
-import com.intellij.ui.components.JBLabel
-import com.intellij.ui.components.Label
-import com.intellij.ui.components.Panel
 import java.awt.Container
 import javax.swing.BorderFactory
+import javax.swing.BoxLayout
+import javax.swing.JFrame
+import javax.swing.JPanel
+
 
 class SettingsComponent {
     @JvmField
-    var mainPanel: JPanel
+    var mainPanel: JPanel = JPanel()
 
     @JvmField
-    var logicName: JBTextField = JBTextField()
+    var page = PageSetting()
 
     @JvmField
-    var stateName: JBTextField = JBTextField()
+    var component = ComponentSetting()
 
     @JvmField
-    var viewName: JBTextField = JBTextField()
+    var custom = CustomSetting()
 
-    @JvmField
-    var viewFileName: JBTextField = JBTextField()
 
     init {
-        val margin = JPanel()
-        margin.border = BorderFactory.createEmptyBorder(0, 0, 20, 0)
-
-        val page = FormBuilder.createFormBuilder()
-            .addLabeledComponent(Label("Template：Page"), JPanel())
-            .addLabeledComponent(JBLabel("Logic Name: "), logicName)
-            .addLabeledComponent(JBLabel("State Name: "), stateName)
-            .addLabeledComponent(JBLabel("View Name: "), viewName)
-            .addLabeledComponent(JBLabel("View File Name: "), viewFileName)
-            .addComponentFillVertically(JPanel(), 0)
-            .addLabeledComponent(Label(""), margin)
-            .panel
-
-        val component = FormBuilder.createFormBuilder()
-            .addLabeledComponent(Label("Template：Component"), JPanel())
-            .addLabeledComponent(JBLabel("Logic Name: "), logicName)
-            .addLabeledComponent(JBLabel("State Name: "), stateName)
-            .addLabeledComponent(JBLabel("View Name: "), viewName)
-            .addLabeledComponent(JBLabel("View File Name: "), viewFileName)
-            .addComponentFillVertically(JPanel(), 0)
-            .addLabeledComponent(Label(""), margin)
-            .panel
-
-        val custom  = FormBuilder.createFormBuilder()
-            .addLabeledComponent(Label("Template：Custom"), JPanel())
-            .addLabeledComponent(JBLabel("Logic Name: "), logicName)
-            .addLabeledComponent(JBLabel("State Name: "), stateName)
-            .addLabeledComponent(JBLabel("View Name: "), viewName)
-            .addLabeledComponent(JBLabel("View File Name: "), viewFileName)
+        mainPanel = FormBuilder.createFormBuilder()
+            .addLabeledComponent(JBLabel("Template-Page"), JPanel())
+            .addLabeledComponent(JBLabel("LogicName: "), page.logic)
+            .addLabeledComponent(JBLabel("StateName: "), page.state)
+            .addLabeledComponent(JBLabel("ViewName: "), page.view)
+            .addLabeledComponent(JBLabel("ViewFileName: "), page.viewFile)
+            .addLabeledComponent(JBLabel(""), dealMargin(JPanel()))
+            .addLabeledComponent(JBLabel("Template-Component"), JPanel())
+            .addLabeledComponent(JBLabel("LogicName: "), component.logic)
+            .addLabeledComponent(JBLabel("StateName: "), component.state)
+            .addLabeledComponent(JBLabel("ViewName: "), component.view)
+            .addLabeledComponent(JBLabel("ViewFileName: "), component.viewFile)
+            .addLabeledComponent(JBLabel(""), dealMargin(JPanel()))
+            .addLabeledComponent(JBLabel("Template-Custom"), JPanel())
+            .addLabeledComponent(JBLabel("LogicName: "), custom.logic)
+            .addLabeledComponent(JBLabel("StateName: "),custom.state)
+            .addLabeledComponent(JBLabel("ViewName: "), custom.view)
+            .addLabeledComponent(JBLabel("ViewFileName: "), custom.viewFile)
             .addComponentFillVertically(JPanel(), 0)
             .panel
-
-        mainPanel = JPanel()
-        mainPanel.add(page)
-        mainPanel.add(component)
-        mainPanel.add(custom)
     }
+
+
+    private fun dealMargin(jPanel: JPanel): JPanel {
+        jPanel.border = BorderFactory.createEmptyBorder(0, 0, 10, 0)
+        return jPanel
+    }
+}
+
+class PageSetting{
+    var logic = JBTextField()
+
+    var state = JBTextField()
+
+    var view = JBTextField()
+
+    var viewFile = JBTextField()
+}
+
+class ComponentSetting {
+    var logic = JBTextField()
+
+    var state = JBTextField()
+
+    var view = JBTextField()
+
+    var viewFile = JBTextField()
+}
+
+class CustomSetting {
+    var logic = JBTextField()
+
+    var state = JBTextField()
+
+    var view = JBTextField()
+
+    var viewFile = JBTextField()
 }
