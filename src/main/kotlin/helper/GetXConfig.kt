@@ -3,7 +3,7 @@ package helper
 import com.google.gson.Gson
 import com.intellij.util.xmlb.Converter
 
-class ModeInfo(
+data class ModeInfo(
     val name: String = "Default",
     var selected: Boolean = true,
 )
