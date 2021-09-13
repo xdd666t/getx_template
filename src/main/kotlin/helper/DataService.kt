@@ -4,16 +4,23 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
-import helper.DataService
-import helper.GetXConfig
 import com.intellij.util.xmlb.XmlSerializerUtil
+import com.intellij.util.xmlb.annotations.OptionTag
+
+//val modeInfoConverter: KClass<out Converter<ModeInfoConverter>> = ModeInfoConverter::class;
 
 //custom save location
 @State(name = "DataService", storages = [Storage(value = "DataService.xml")])
 class DataService : PersistentStateComponent<DataService> {
-    //default true: use high mode
+    //default true: use default mode
     @JvmField
-    var defaultMode = GetXConfig.defaultMode
+    @OptionTag(converter = ModeInfoConverter::class)
+    var modeDefault = GetXConfig.modeDefault
+
+    //default false：default not use easy mode
+    @JvmField
+    @OptionTag(converter = ModeInfoConverter::class)
+    var modeEasy = GetXConfig.modeEasy
 
     //default true
     @JvmField
@@ -61,6 +68,22 @@ class DataService : PersistentStateComponent<DataService> {
     //function tab index
     @JvmField
     var funTabIndex = GetXConfig.funTabIndex
+
+    ///default true
+    @JvmField
+    @OptionTag(converter = TemplateInfoConverter::class)
+    var templatePage = GetXConfig.templatePage
+
+    ///default false
+    @JvmField
+    @OptionTag(converter = TemplateInfoConverter::class)
+    var templateComponent = GetXConfig.templateComponent
+
+    ///default false
+    @JvmField
+    @OptionTag(converter = TemplateInfoConverter::class)
+    var templateCustom = GetXConfig.templateCustom
+
 
     override fun getState(): DataService {
         return this

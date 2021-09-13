@@ -1,9 +1,15 @@
 package helper
 
+import com.google.gson.Gson
+import com.intellij.util.xmlb.Converter
+
 // set default value
 object GetXConfig {
-    // 0:default  1:easy
-    const val defaultMode = 0
+    //default mode
+    var modeDefault = ModeInfo(name = "Default", selected = true)
+
+    //default mode
+    var modeEasy = ModeInfo(name = "Easy", selected = false)
 
     //default true
     const val useFolder = true
@@ -36,10 +42,61 @@ object GetXConfig {
     //state layer name
     const val stateName = "State"
 
-    //model name
-    const val defaultModelName = "Default"
-    const val easyModelName = "Easy"
+    //page template name
+    var templatePage = TemplateInfo(view = "Page", selected = true, name = "Page")
+
+    //component template name
+    var templateComponent = TemplateInfo(view = "Component", selected = false, name = "Component")
+
+    //custom template name
+    var templateCustom = TemplateInfo(view = "Widget", selected = false, name = "Custom")
 
     //function tab index
     const val funTabIndex = 0
+}
+
+class ModeInfo(
+    val name: String = "Default",
+    var selected: Boolean = true,
+)
+
+data class TemplateInfo(
+    var logic: String = "Logic",
+    var view: String = "Page",
+    var viewFile: String = "View",
+    var state: String = "State",
+    var selected: Boolean = false,
+    val name: String = "",
+)
+
+class ModeInfoConverter : Converter<ModeInfo>() {
+    override fun toString(value: ModeInfo): String? {
+        val gson = Gson()
+        println("++++++++++++++++++++++++")
+        println(value)
+        return gson.toJson(value)
+    }
+
+    override fun fromString(value: String): ModeInfo? {
+        val gson = Gson()
+        println("------------------------")
+        println(value)
+        return gson.fromJson(value, ModeInfo::class.java)
+    }
+}
+
+class TemplateInfoConverter : Converter<TemplateInfo>() {
+    override fun toString(value: TemplateInfo): String? {
+        val gson = Gson()
+        println("++++++++++++++++++++++++")
+        println(value)
+        return gson.toJson(value)
+    }
+
+    override fun fromString(value: String): TemplateInfo? {
+        val gson = Gson()
+        println("------------------------")
+        println(value)
+        return gson.fromJson(value, TemplateInfo::class.java)
+    }
 }

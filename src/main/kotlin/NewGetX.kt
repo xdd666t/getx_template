@@ -5,12 +5,13 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.Messages
-import helper.DataService
-import helper.GetXConfig
+import helper.*
+import helper.GetXConfig.templatePage
 import view.GetXListener
 import view.GetXTemplateView
 import java.io.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class NewGetX : AnAction() {
@@ -42,12 +43,9 @@ class NewGetX : AnAction() {
                 moduleName = view.nameTextField.text
 
                 //deal default value
-                val modelType = view.templateGroup.selection.actionCommand
-                if (GetXConfig.defaultModelName == modelType) {
-                    data.defaultMode = 0
-                } else if (GetXConfig.easyModelName == modelType) {
-                    data.defaultMode = 1
-                }
+                val modelType = view.modeGroup.selection.actionCommand
+                data.modeDefault.selected = (data.modeDefault.name == modelType)
+                data.modeEasy.selected = (data.modeEasy.name == modelType)
 
                 //function area
                 data.useFolder = view.folderBox.isSelected
@@ -57,6 +55,23 @@ class NewGetX : AnAction() {
                 data.addLifecycle = view.lifecycleBox.isSelected
                 data.addBinding = view.bindingBox.isSelected
                 data.lintNorm = view.lintNormBox.isSelected
+                val templateType = view.templateGroup.selection.actionCommand
+                data.templatePage.selected = (data.templatePage.name == templateType)
+                data.templateComponent.selected = (data.templateComponent.name == templateType)
+                data.templateCustom.selected = (data.templateCustom.name == templateType)
+                val list = ArrayList<TemplateInfo>().apply {
+                    add(data.templatePage)
+                    add(data.templateComponent)
+                    add(data.templateCustom)
+                }
+                for (item in list) {
+                    if (item.selected) {
+                        data.logicName = item.logic
+                        data.stateName = item.state
+                        data.viewName = item.view
+                        data.viewFileName = item.viewFile
+                    }
+                }
             }
         })
     }
@@ -92,9 +107,10 @@ class NewGetX : AnAction() {
             prefixName = "${prefix}_"
         }
         val path = psiPath + folder
-        when (data.defaultMode) {
-            0 -> generateDefault(path, prefixName)
-            1 -> generateEasy(path, prefixName)
+        if (data.modeDefault.selected) {
+            generateDefault(path, prefixName)
+        } else if (data.modeEasy.selected) {
+            generateEasy(path, prefixName)
         }
         //Add binding file
         if (data.addBinding) {

@@ -18,7 +18,6 @@ class WrapWithGetXAction : WrapWithAction(SnippetType.GetX) {
     }
 }
 
-
 class WrapWithObxAction : WrapWithAction(SnippetType.Obx) {
     override fun getText(): String {
         return "Wrap with Obx"

@@ -3,7 +3,6 @@ package view
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBTabbedPane
 import helper.DataService
-import helper.GetXConfig
 import java.awt.Container
 import java.awt.FlowLayout
 import java.awt.GridLayout
@@ -21,7 +20,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
      */
     private var jDialog: JDialog = JDialog(JFrame(), "GetX Template Code Produce")
     lateinit var nameTextField: JTextField
-    lateinit var templateGroup: ButtonGroup
+    lateinit var modeGroup: ButtonGroup
 
     /**
      * select Function：main Function
@@ -37,6 +36,11 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
     lateinit var disposeBox: JCheckBox
     lateinit var lifecycleBox: JCheckBox
     lateinit var lintNormBox: JCheckBox
+
+    /**
+     * select Template：Template Function
+     */
+    lateinit var templateGroup: ButtonGroup
 
 
     private val keyListener: KeyListener = object : KeyListener {
@@ -57,7 +61,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         //click btn
         if (it.actionCommand == "Cancel") {
             dispose()
-        } else if (it.actionCommand == "OK"){
+        } else if (it.actionCommand == "OK") {
             confirm()
         }
     }
@@ -71,10 +75,11 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         //deal default value
         setMode(container)
 
-        //deal main function, minor function
-        val mainFunction = getMainFunction()
-        val minorFunction = getMinorFunction()
-        setFunctionTab(main = mainFunction, minor = minorFunction, container = container)
+        //deal main function, minor function, template function
+        val main = getMainFunction()
+        val minor = getMinorFunction()
+        val template = getTemplateFunction()
+        setFunctionTab(main = main, minor = minor, template = template, container = container)
 
         //Generate module name and ok cancel button
         setModuleAndConfirm(container)
@@ -94,22 +99,22 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         template.border = BorderFactory.createTitledBorder("Select Mode")
 
         //default model
-        val defaultBtn = JRadioButton(GetXConfig.defaultModelName, data.defaultMode == 0)
-        defaultBtn.actionCommand = GetXConfig.defaultModelName
+        val defaultBtn = JRadioButton(data.modeDefault.name, data.modeDefault.selected)
+        defaultBtn.actionCommand = data.modeDefault.name
         defaultBtn.addActionListener(actionChangeListener)
         setBtnPadding(defaultBtn)
         template.add(defaultBtn)
 
         //easy model
-        val easyBtn = JRadioButton(GetXConfig.easyModelName, data.defaultMode == 1)
-        easyBtn.actionCommand = GetXConfig.easyModelName
+        val easyBtn = JRadioButton(data.modeEasy.name, data.modeEasy.selected)
+        easyBtn.actionCommand = data.modeEasy.name
         easyBtn.addActionListener(actionChangeListener)
         setBtnPadding(easyBtn)
         template.add(easyBtn)
 
-        templateGroup = ButtonGroup()
-        templateGroup.add(defaultBtn)
-        templateGroup.add(easyBtn)
+        modeGroup = ButtonGroup()
+        modeGroup.add(defaultBtn)
+        modeGroup.add(easyBtn)
 
         container.add(template)
         setSpacing(container)
@@ -120,64 +125,101 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
      */
     private fun getMainFunction(): JPanel {
         //Main Function
-        val mainFunction = JPanel()
-        mainFunction.layout = GridLayout(2, 2)
+        val main = JPanel()
+        main.layout = GridLayout(2, 2)
 
         //use folder
         folderBox = JCheckBox("useFolder", data.useFolder)
         folderBox.addActionListener(actionChangeListener)
         setMargin(folderBox)
-        mainFunction.add(folderBox)
+        main.add(folderBox)
 
         //use prefix
         prefixBox = JCheckBox("usePrefix", data.usePrefix)
         prefixBox.addActionListener(actionChangeListener)
         setMargin(prefixBox)
-        mainFunction.add(prefixBox)
+        main.add(prefixBox)
 
         //pageView
         pageViewBox = JCheckBox("isPageView", data.isPageView)
         pageViewBox.addActionListener(actionChangeListener)
         setMargin(pageViewBox)
-        mainFunction.add(pageViewBox)
+        main.add(pageViewBox)
 
         //add binding
         bindingBox = JCheckBox("addBinding", data.addBinding)
         bindingBox.addActionListener(actionChangeListener)
         setMargin(bindingBox)
-        mainFunction.add(bindingBox)
+        main.add(bindingBox)
 
-        return mainFunction
+        return main
     }
 
 
     private fun getMinorFunction(): JPanel {
         //Minor Function
-        val minorFunction = JPanel()
-        minorFunction.layout = GridLayout(2, 2)
+        val minor = JPanel()
+        minor.layout = GridLayout(2, 2)
 
         //add lifecycle
         lifecycleBox = JCheckBox("addLifecycle", data.addLifecycle)
         lifecycleBox.addActionListener(actionChangeListener)
         setMargin(lifecycleBox)
-        minorFunction.add(lifecycleBox)
+        minor.add(lifecycleBox)
 
         //auto dispose
         disposeBox = JCheckBox("autoDispose", data.autoDispose)
         disposeBox.addActionListener(actionChangeListener)
         setMargin(disposeBox)
-        minorFunction.add(disposeBox)
+        minor.add(disposeBox)
 
         //support lint normal
         lintNormBox = JCheckBox("lintNorm", data.lintNorm)
         lintNormBox.addActionListener(actionChangeListener)
         setMargin(lintNormBox)
-        minorFunction.add(lintNormBox)
+        minor.add(lintNormBox)
 
-        return minorFunction
+        return minor
     }
 
-    private fun setFunctionTab(main: JPanel, minor: JPanel, container: Container) {
+    private fun getTemplateFunction(): JPanel {
+        //Minor Function
+        val template = JPanel()
+        template.layout = GridLayout(2, 2)
+
+        //add page
+        val pageBtn = JRadioButton(data.templatePage.name, data.templatePage.selected)
+        pageBtn.actionCommand = data.templatePage.name
+        pageBtn.addActionListener(actionChangeListener)
+        setBtnPadding(template = pageBtn)
+        template.add(pageBtn)
+
+        //add component
+        val componentBtn = JRadioButton(data.templateComponent.name, data.templateComponent.selected)
+        componentBtn.actionCommand = data.templateComponent.name
+        componentBtn.addActionListener(actionChangeListener)
+        setBtnPadding(template = componentBtn)
+        template.add(componentBtn)
+
+        //add custom
+        val customBtn = JRadioButton(data.templateCustom.name, data.templateCustom.selected)
+        customBtn.actionCommand = data.templateCustom.name
+        customBtn.addActionListener(actionChangeListener)
+        setBtnPadding(template = customBtn)
+        template.add(customBtn)
+
+        templateGroup = ButtonGroup()
+        templateGroup.add(pageBtn)
+        templateGroup.add(componentBtn)
+        templateGroup.add(customBtn)
+
+        //empty placeholder
+        template.add(JPanel())
+
+        return template
+    }
+
+    private fun setFunctionTab(main: JPanel, minor: JPanel, template: JPanel, container: Container) {
         val function = JPanel()
         function.border = BorderFactory.createTitledBorder("Select Function")
 
@@ -185,6 +227,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val tab = JBTabbedPane()
         tab.addTab("Main", main)
         tab.addTab("Minor", minor)
+        tab.addTab("Template", template)
         tab.addChangeListener {
             data.funTabIndex = tab.selectedIndex
         }
@@ -205,6 +248,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
                 pageViewBox.isSelected = false
             }
         }
+
     }
 
     /**
@@ -255,12 +299,13 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         jDialog.isVisible = true
     }
 
-    private fun setBtnPadding(btn: JRadioButton) {
-        btn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
+    private fun setBtnPadding(mode: JRadioButton = JRadioButton(), template: JRadioButton = JRadioButton()) {
+        mode.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
+        template.border = BorderFactory.createEmptyBorder(5, 0, 10, 100)
     }
 
-    private fun setMargin(btn: JCheckBox) {
-        btn.border = BorderFactory.createEmptyBorder(5, 0, 10, 100)
+    private fun setMargin(box: JCheckBox) {
+        box.border = BorderFactory.createEmptyBorder(5, 0, 10, 100)
     }
 
     private fun setSpacing(container: Container) {
