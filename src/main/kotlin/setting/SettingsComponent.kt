@@ -1,13 +1,11 @@
 package setting
 
+import com.intellij.ui.IdeBorderFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
 import java.awt.Container
-import javax.swing.BorderFactory
-import javax.swing.BoxLayout
-import javax.swing.JFrame
-import javax.swing.JPanel
+import javax.swing.*
 
 
 class SettingsComponent {
@@ -25,6 +23,8 @@ class SettingsComponent {
 
 
     init {
+//        mainPanel.border =  IdeBorderFactory.createTitledBorder("Component")
+
         mainPanel = FormBuilder.createFormBuilder()
             .addLabeledComponent(JBLabel("Template-Page"), JPanel())
             .addLabeledComponent(JBLabel("LogicName: "), page.logic)
@@ -52,6 +52,16 @@ class SettingsComponent {
         jPanel.border = BorderFactory.createEmptyBorder(0, 0, 10, 0)
         return jPanel
     }
+
+//    private fun titledPanel(title: String, body: JPanel.() -> Unit): JComponent {
+//        val innerPanel = JPanel()
+//        innerPanel.body()
+//        return JPanel(migLayout()).apply {
+//            border = IdeBorderFactory.createTitledBorder(title)
+//            add(innerPanel)
+//            add(JPanel(), fillX())
+//        }
+//    }
 }
 
 class PageSetting{
