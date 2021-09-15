@@ -259,13 +259,13 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         //Row：Box.createHorizontalBox() | Column：Box.createVerticalBox()
         //add Module Name
         val nameField = JPanel()
-        val tempTextField = JPanel()
-        tempTextField.border = BorderFactory.createEmptyBorder(0, 0, 5, 0)
+        val padding = JPanel()
+        padding.border = BorderFactory.createEmptyBorder(0, 0, 5, 0)
         nameField.border = BorderFactory.createTitledBorder("Module Name")
         nameTextField = JTextField(33)
         nameTextField.addKeyListener(keyListener)
-        tempTextField.add(nameTextField)
-        nameField.add(tempTextField)
+        padding.add(nameTextField)
+        nameField.add(padding)
         container.add(nameField)
 
         //OK cancel button

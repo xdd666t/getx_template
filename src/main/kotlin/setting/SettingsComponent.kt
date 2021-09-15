@@ -1,16 +1,25 @@
 package setting
 
+import com.intellij.refactoring.suggested.main
 import com.intellij.ui.IdeBorderFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
+import net.miginfocom.layout.CC
+import net.miginfocom.layout.LC
+import net.miginfocom.swing.MigLayout
+import java.awt.AWTEventMulticaster.add
+import java.awt.BorderLayout
 import java.awt.Container
+import java.awt.Dimension
+import java.awt.Toolkit
+import javax.naming.CompositeName
 import javax.swing.*
 
 
 class SettingsComponent {
     @JvmField
-    var mainPanel: JPanel = JPanel()
+    var mainPanel = JPanel()
 
     @JvmField
     var page = PageSetting()
@@ -23,28 +32,45 @@ class SettingsComponent {
 
 
     init {
-//        mainPanel.border =  IdeBorderFactory.createTitledBorder("Component")
 
-        mainPanel = FormBuilder.createFormBuilder()
-            .addLabeledComponent(JBLabel("Template-Page"), JPanel())
-            .addLabeledComponent(JBLabel("LogicName: "), page.logic)
-            .addLabeledComponent(JBLabel("StateName: "), page.state)
-            .addLabeledComponent(JBLabel("ViewName: "), page.view)
-            .addLabeledComponent(JBLabel("ViewFileName: "), page.viewFile)
-            .addLabeledComponent(JBLabel(""), dealMargin(JPanel()))
-            .addLabeledComponent(JBLabel("Template-Component"), JPanel())
-            .addLabeledComponent(JBLabel("LogicName: "), component.logic)
-            .addLabeledComponent(JBLabel("StateName: "), component.state)
-            .addLabeledComponent(JBLabel("ViewName: "), component.view)
-            .addLabeledComponent(JBLabel("ViewFileName: "), component.viewFile)
-            .addLabeledComponent(JBLabel(""), dealMargin(JPanel()))
-            .addLabeledComponent(JBLabel("Template-Custom"), JPanel())
-            .addLabeledComponent(JBLabel("LogicName: "), custom.logic)
-            .addLabeledComponent(JBLabel("StateName: "),custom.state)
-            .addLabeledComponent(JBLabel("ViewName: "), custom.view)
-            .addLabeledComponent(JBLabel("ViewFileName: "), custom.viewFile)
-            .addComponentFillVertically(JPanel(), 0)
-            .panel
+        val temp = JPanel(migLayout()).apply {
+            border = IdeBorderFactory.createTitledBorder("Component")
+
+            add(JLabel("settings.label.translation.engine"))
+
+            val body = JPanel(migLayout()).apply {
+                add(JBTextField(20), wrap())
+            }
+
+            add(body, fillX())
+        }
+
+        mainPanel.layout = migLayoutVertical()
+        mainPanel.add(temp, fillX())
+        mainPanel.add(JPanel(), fillY())
+
+//        mainPanel = FormBuilder.createFormBuilder()
+//            .addLabeledComponent(JPanel().apply {
+//                border = IdeBorderFactory.createTitledBorder("Component")
+//            }, JPanel())
+//            .addLabeledComponent(JBLabel("LogicName: "), page.logic)
+//            .addLabeledComponent(JBLabel("StateName: "), page.state)
+//            .addLabeledComponent(JBLabel("ViewName: "), page.view)
+//            .addLabeledComponent(JBLabel("ViewFileName: "), page.viewFile)
+//            .addLabeledComponent(JBLabel(""), dealMargin(JPanel()))
+//            .addLabeledComponent(JBLabel("Template-Component"), JPanel())
+//            .addLabeledComponent(JBLabel("LogicName: "), component.logic)
+//            .addLabeledComponent(JBLabel("StateName: "), component.state)
+//            .addLabeledComponent(JBLabel("ViewName: "), component.view)
+//            .addLabeledComponent(JBLabel("ViewFileName: "), component.viewFile)
+//            .addLabeledComponent(JBLabel(""), dealMargin(JPanel()))
+//            .addLabeledComponent(JBLabel("Template-Custom"), JPanel())
+//            .addLabeledComponent(JBLabel("LogicName: "), custom.logic)
+//            .addLabeledComponent(JBLabel("StateName: "), custom.state)
+//            .addLabeledComponent(JBLabel("ViewName: "), custom.view)
+//            .addLabeledComponent(JBLabel("ViewFileName: "), custom.viewFile)
+//            .addComponentFillVertically(JPanel(), 0)
+//            .panel
     }
 
 
@@ -64,7 +90,7 @@ class SettingsComponent {
 //    }
 }
 
-class PageSetting{
+class PageSetting {
     var logic = JBTextField()
 
     var state = JBTextField()
@@ -93,3 +119,12 @@ class CustomSetting {
 
     var viewFile = JBTextField()
 }
+
+fun fillX(): CC = CC().growX().pushX()
+fun fillY(): CC = CC().growY().pushY()
+fun wrap(): CC = CC().wrap()
+fun migLayout() =
+    MigLayout(LC().fill().gridGap("0!", "0!").insets("0"))
+fun migLayoutVertical() =
+    MigLayout(LC().flowY().fill().gridGap("0!", "0!").insets("0"))
+fun fill(): CC = CC().grow().push()

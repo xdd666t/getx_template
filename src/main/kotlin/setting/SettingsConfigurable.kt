@@ -4,6 +4,7 @@ import com.intellij.openapi.options.Configurable
 import helper.DataService.Companion.instance
 import org.jetbrains.annotations.Nls
 import javax.swing.JComponent
+import javax.swing.JFrame
 
 class SettingsConfigurable : Configurable {
     private val data = instance
