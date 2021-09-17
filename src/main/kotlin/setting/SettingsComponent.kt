@@ -9,7 +9,6 @@ import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridLayout
 import javax.swing.BorderFactory
-import javax.swing.BoxLayout
 import javax.swing.JLabel
 import javax.swing.JPanel
 
@@ -38,7 +37,6 @@ class SettingsComponent {
         mainPanel.add(componentLayout, fillX())
         mainPanel.add(customLayout, fillX())
         mainPanel.add(JPanel(), fillY())
-
     }
 
     private fun dealLayout(title: String, data: Setting): JPanel {
@@ -49,26 +47,26 @@ class SettingsComponent {
             val body = JPanel().apply {
                 layout = GridLayout(2, 2)
 
-                add(dealItem(title = "ViewName", jbTextField = data.view))
+                add(dealItem(title = "ViewName", jbTextField = data.view, padding = 20))
 
-                add(dealItem(title = "LogicName", jbTextField = data.logic))
+                add(dealItem(title = "LogicName", jbTextField = data.logic, padding = 10))
 
-                add(dealItem(title = "ViewFile", jbTextField = data.viewFile))
+                add(dealItem(title = "ViewFileName", jbTextField = data.viewFile, padding = 20))
 
-                add(dealItem(title = "StateName", jbTextField = data.state))
+                add(dealItem(title = "StateName", jbTextField = data.state, padding = 10))
             }
             add(body, fillX())
         }
     }
 
-    private fun dealItem(title: String, jbTextField: JBTextField): JPanel {
+    private fun dealItem(title: String, jbTextField: JBTextField, padding: Int): JPanel {
         return JPanel().apply {
             layout = migLayout()
-            border = BorderFactory.createEmptyBorder(0,0,15,70)
+            border = BorderFactory.createEmptyBorder(0, 0, 15, 80)
 
             add(JPanel().apply {
                 layout = BorderLayout()
-                preferredSize = Dimension(80, 30)
+                preferredSize = Dimension(70 + padding, 30)
                 //left:WEST   right:EAST  top:NORTH  bottom:SOUTH  center:CENTER
                 add(JLabel(title), BorderLayout.WEST)
             })
