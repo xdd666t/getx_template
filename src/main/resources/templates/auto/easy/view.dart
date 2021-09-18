@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'logic.dart';
 
 class @namePage extends StatefulWidget {
+  const @namePage({Key? key}) : super(key: key);
+
   @override
   _@namePageState createState() => _@namePageState();
 }

@@ -222,9 +222,14 @@ class NewGetX : AnAction() {
 
         //deal lint norm
         if (!data.lintNorm) {
+            //remove lint
             tempContent = tempContent.replace("\\s*\nimport 'state.dart';".toRegex(), "")
             tempContent = tempContent.replace("final @nameLogic".toRegex(), "final")
             tempContent = tempContent.replace("final @nameState".toRegex(), "final")
+
+            //remove flutter_lints
+            tempContent = tempContent.replace("const @namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s".toRegex(), "")
+            tempContent = tempContent.replace("@namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s".toRegex(), "")
         }
 
         tempContent = tempContent.replace(
