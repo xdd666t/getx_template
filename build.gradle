@@ -14,7 +14,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '3.2.0'
+version '3.2.1'
 // must!!!
 sourceCompatibility = 1.8
 
@@ -51,6 +51,7 @@ patchPluginXml {
         <li>Add template switch function</li>
         <li>Refactor setting layout</li>
         <li>Support flutter_lints</li>
+        <li>Separate lintNorm：lint and flutter_lints</li>
      </ul>
 
       <h1>3.1.x</h1>

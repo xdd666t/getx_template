@@ -6,7 +6,7 @@ import java.util.*
 object Snippets {
     private val data = instance
     const val PREFIX_SELECTION = "Subject"
-    private val SUFFIX1 = data.logicName
+    private val SUFFIX1 = data.module.logicName
     val GetX_SNIPPET_KEY = PREFIX_SELECTION + SUFFIX1
 
     fun getSnippet(snippetType: SnippetType?, widget: String): String {
@@ -31,7 +31,7 @@ object Snippets {
         return String.format(
             """GetBuilder<%1${"$"}s>(builder: (%2${"$"}s) {
   return %3${"$"}s;
-})""", GetX_SNIPPET_KEY, data.logicName.lowercase(Locale.getDefault()), widget
+})""", GetX_SNIPPET_KEY, data.module.logicName.lowercase(Locale.getDefault()), widget
         )
     }
 
@@ -42,7 +42,7 @@ object Snippets {
   builder: (%2${"$"}s) {
     return %3${"$"}s;
   },
-)""", GetX_SNIPPET_KEY, data.logicName.lowercase(Locale.getDefault()), widget
+)""", GetX_SNIPPET_KEY, data.module.logicName.lowercase(Locale.getDefault()), widget
         )
     }
 
@@ -54,7 +54,7 @@ object Snippets {
   builder: (%2${"$"}s) {
     return %3${"$"}s;
   },
-)""", GetX_SNIPPET_KEY, data.logicName.lowercase(Locale.getDefault()), widget
+)""", GetX_SNIPPET_KEY, data.module.logicName.lowercase(Locale.getDefault()), widget
         )
     }
 }

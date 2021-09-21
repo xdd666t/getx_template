@@ -13,7 +13,7 @@ import javax.swing.*
 
 
 open class GetXTemplateView(private val getXListener: GetXListener) {
-    private var data: DataService = DataService.instance
+    private val data = DataService.instance
 
     /**
      * Overall popup entity
@@ -129,25 +129,25 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         main.layout = GridLayout(2, 2)
 
         //use folder
-        folderBox = JCheckBox("useFolder", data.useFolder)
+        folderBox = JCheckBox("useFolder", data.function.useFolder)
         folderBox.addActionListener(actionChangeListener)
         setMargin(folderBox)
         main.add(folderBox)
 
         //use prefix
-        prefixBox = JCheckBox("usePrefix", data.usePrefix)
+        prefixBox = JCheckBox("usePrefix", data.function.usePrefix)
         prefixBox.addActionListener(actionChangeListener)
         setMargin(prefixBox)
         main.add(prefixBox)
 
         //pageView
-        pageViewBox = JCheckBox("isPageView", data.isPageView)
+        pageViewBox = JCheckBox("isPageView", data.function.isPageView)
         pageViewBox.addActionListener(actionChangeListener)
         setMargin(pageViewBox)
         main.add(pageViewBox)
 
         //add binding
-        bindingBox = JCheckBox("addBinding", data.addBinding)
+        bindingBox = JCheckBox("addBinding", data.function.addBinding)
         bindingBox.addActionListener(actionChangeListener)
         setMargin(bindingBox)
         main.add(bindingBox)
@@ -162,19 +162,19 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         minor.layout = GridLayout(2, 2)
 
         //add lifecycle
-        lifecycleBox = JCheckBox("addLifecycle", data.addLifecycle)
+        lifecycleBox = JCheckBox("addLifecycle", data.function.addLifecycle)
         lifecycleBox.addActionListener(actionChangeListener)
         setMargin(lifecycleBox)
         minor.add(lifecycleBox)
 
         //auto dispose
-        disposeBox = JCheckBox("autoDispose", data.autoDispose)
+        disposeBox = JCheckBox("autoDispose", data.function.autoDispose)
         disposeBox.addActionListener(actionChangeListener)
         setMargin(disposeBox)
         minor.add(disposeBox)
 
         //support lint normal
-        lintNormBox = JCheckBox("lintNorm", data.lintNorm)
+        lintNormBox = JCheckBox("lintNorm", data.function.lintNorm)
         lintNormBox.addActionListener(actionChangeListener)
         setMargin(lintNormBox)
         minor.add(lintNormBox)
@@ -188,22 +188,22 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         template.layout = GridLayout(2, 2)
 
         //add page
-        val pageBtn = JRadioButton(data.templatePage.name, data.templatePage.selected)
-        pageBtn.actionCommand = data.templatePage.name
+        val pageBtn = JRadioButton(data.templatePage.title, data.templatePage.selected)
+        pageBtn.actionCommand = data.templatePage.title
         pageBtn.addActionListener(actionChangeListener)
         setBtnPadding(template = pageBtn)
         template.add(pageBtn)
 
         //add component
-        val componentBtn = JRadioButton(data.templateComponent.name, data.templateComponent.selected)
-        componentBtn.actionCommand = data.templateComponent.name
+        val componentBtn = JRadioButton(data.templateComponent.title, data.templateComponent.selected)
+        componentBtn.actionCommand = data.templateComponent.title
         componentBtn.addActionListener(actionChangeListener)
         setBtnPadding(template = componentBtn)
         template.add(componentBtn)
 
         //add custom
-        val customBtn = JRadioButton(data.templateCustom.name, data.templateCustom.selected)
-        customBtn.actionCommand = data.templateCustom.name
+        val customBtn = JRadioButton(data.templateCustom.title, data.templateCustom.selected)
+        customBtn.actionCommand = data.templateCustom.title
         customBtn.addActionListener(actionChangeListener)
         setBtnPadding(template = customBtn)
         template.add(customBtn)
@@ -229,9 +229,9 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         tab.addTab("Minor", minor)
         tab.addTab("Template", template)
         tab.addChangeListener {
-            data.funTabIndex = tab.selectedIndex
+            data.function.funTabIndex = tab.selectedIndex
         }
-        tab.selectedIndex = data.funTabIndex
+        tab.selectedIndex = data.function.funTabIndex
 
         function.add(tab)
         container.add(function)

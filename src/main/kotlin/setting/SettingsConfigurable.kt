@@ -1,13 +1,12 @@
 package setting
 
 import com.intellij.openapi.options.Configurable
-import helper.DataService.Companion.instance
+import helper.DataService
 import org.jetbrains.annotations.Nls
 import javax.swing.JComponent
-import javax.swing.JFrame
 
 class SettingsConfigurable : Configurable {
-    private val data = instance
+    private val data = DataService.instance
     private var mSetting: SettingsComponent? = null
 
     @Nls(capitalization = Nls.Capitalization.Title)
@@ -23,19 +22,19 @@ class SettingsConfigurable : Configurable {
     override fun isModified(): Boolean {
         return (//Page
                 mSetting!!.page.logic.text != data.templatePage.logic
-                || mSetting!!.page.state.text != data.templatePage.state
-                || mSetting!!.page.view.text != data.templatePage.view
-                || mSetting!!.page.viewFile.text != data.templatePage.viewFile
-                //Component
-                ||mSetting!!.component.logic.text != data.templateComponent.logic
-                || mSetting!!.component.state.text != data.templateComponent.state
-                || mSetting!!.component.view.text != data.templateComponent.view
-                || mSetting!!.component.viewFile.text != data.templateComponent.viewFile
-                //Custom
-                ||mSetting!!.custom.logic.text != data.templateCustom.logic
-                || mSetting!!.custom.state.text != data.templateCustom.state
-                || mSetting!!.custom.view.text != data.templateCustom.view
-                || mSetting!!.custom.viewFile.text != data.templateCustom.viewFile
+                        || mSetting!!.page.state.text != data.templatePage.state
+                        || mSetting!!.page.view.text != data.templatePage.view
+                        || mSetting!!.page.viewFile.text != data.templatePage.viewFile
+                        //Component
+                        || mSetting!!.component.logic.text != data.templateComponent.logic
+                        || mSetting!!.component.state.text != data.templateComponent.state
+                        || mSetting!!.component.view.text != data.templateComponent.view
+                        || mSetting!!.component.viewFile.text != data.templateComponent.viewFile
+                        //Custom
+                        || mSetting!!.custom.logic.text != data.templateCustom.logic
+                        || mSetting!!.custom.state.text != data.templateCustom.state
+                        || mSetting!!.custom.view.text != data.templateCustom.view
+                        || mSetting!!.custom.viewFile.text != data.templateCustom.viewFile
                 )
     }
 

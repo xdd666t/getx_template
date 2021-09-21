@@ -15,74 +15,51 @@ class DataService : PersistentStateComponent<DataService> {
     //default true: use default mode
     @JvmField
     @OptionTag(converter = ModeInfoConverter::class)
-    var modeDefault =  ModeInfo(name = "Default", selected = true)
+    var modeDefault = ModeInfo(name = "Default", selected = true)
 
     //default false：default not use easy mode
     @JvmField
     @OptionTag(converter = ModeInfoConverter::class)
     var modeEasy = ModeInfo(name = "Easy", selected = false)
 
-    //default true
+    //module name suffix
     @JvmField
-    var useFolder = true
+    @OptionTag(converter = ModuleNameSuffixConverter::class)
+    var module = ModuleNameSuffix(
+        viewName = "Page", viewFileName = "View", logicName = "Logic",
+        stateName = "State",
+    )
 
-    //default false
+    //select function
     @JvmField
-    var usePrefix = false
+    @OptionTag(converter = FunctionInfoConverter::class)
+    var function = FunctionInfo(
+        useFolder = true, usePrefix = false, isPageView = false,
+        addBinding = false, addLifecycle = false, autoDispose = false,
+        lintNorm = false, funTabIndex = 0,
+    )
 
-    //default false
+    //setting info
     @JvmField
-    var isPageView = false
-
-    //auto dispose GetXController
-    @JvmField
-    var autoDispose = false
-
-    //add Lifecycle
-    @JvmField
-    var addLifecycle = false
-
-    //add binding
-    @JvmField
-    var addBinding = false
-
-    //support lint norm
-    @JvmField
-    var lintNorm = false
-
-    //Logical layer name
-    @JvmField
-    var logicName = "Logic"
-
-    //view layer name
-    @JvmField
-    var viewName = "Page"
-
-    @JvmField
-    var viewFileName = "View"
-
-    //state layer name
-    @JvmField
-    var stateName = "State"
-
-    //function tab index
-    @JvmField
-    var funTabIndex = 0
+    @OptionTag(converter = SettingInfoConverter::class)
+    var setting = SettingInfo(
+        lint = true, flutterLints = true,
+    )
 
     ///default true
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templatePage = TemplateInfo(view = "Page", selected = true, name = "Page")
+    var templatePage = TemplateInfo(view = "Page", selected = true, title = "Page")
 
     ///default false
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templateComponent = TemplateInfo(view = "Component", selected = false, name = "Component")
+    var templateComponent = TemplateInfo(view = "Component", selected = false, title = "Component")
 
     ///default false
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templateCustom = TemplateInfo(view = "Widget", selected = false, name = "Custom")
+    var templateCustom = TemplateInfo(view = "Widget", selected = false, title = "Custom")
 
 
     override fun getState(): DataService {

@@ -5,18 +5,18 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.Messages
-import helper.*
+import helper.DataService
+import helper.TemplateInfo
 import view.GetXListener
 import view.GetXTemplateView
 import java.io.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class NewGetX : AnAction() {
     private var project: Project? = null
     private lateinit var psiPath: String
-    private var data: DataService = DataService.instance
+    private var data = DataService.instance
 
     /**
      * module name
@@ -47,28 +47,25 @@ class NewGetX : AnAction() {
                 data.modeEasy.selected = (data.modeEasy.name == modelType)
 
                 //function area
-                data.useFolder = view.folderBox.isSelected
-                data.usePrefix = view.prefixBox.isSelected
-                data.isPageView = view.pageViewBox.isSelected
-                data.autoDispose = view.disposeBox.isSelected
-                data.addLifecycle = view.lifecycleBox.isSelected
-                data.addBinding = view.bindingBox.isSelected
-                data.lintNorm = view.lintNormBox.isSelected
+                data.function.useFolder = view.folderBox.isSelected
+                data.function.usePrefix = view.prefixBox.isSelected
+                data.function.isPageView = view.pageViewBox.isSelected
+                data.function.autoDispose = view.disposeBox.isSelected
+                data.function.addLifecycle = view.lifecycleBox.isSelected
+                data.function.addBinding = view.bindingBox.isSelected
+                data.function.lintNorm = view.lintNormBox.isSelected
                 val templateType = view.templateGroup.selection.actionCommand
-                data.templatePage.selected = (data.templatePage.name == templateType)
-                data.templateComponent.selected = (data.templateComponent.name == templateType)
-                data.templateCustom.selected = (data.templateCustom.name == templateType)
                 val list = ArrayList<TemplateInfo>().apply {
-                    add(data.templatePage)
-                    add(data.templateComponent)
-                    add(data.templateCustom)
+                    add(data.templatePage.apply { selected = (data.templatePage.title == templateType) })
+                    add(data.templateComponent.apply { selected = (data.templateComponent.title == templateType) })
+                    add(data.templateCustom.apply { selected = (data.templateCustom.title == templateType) })
                 }
                 for (item in list) {
                     if (item.selected) {
-                        data.logicName = item.logic
-                        data.stateName = item.state
-                        data.viewName = item.view
-                        data.viewFileName = item.viewFile
+                        data.module.logicName = item.logic
+                        data.module.stateName = item.state
+                        data.module.viewName = item.view
+                        data.module.viewFileName = item.viewFile
                     }
                 }
             }
@@ -97,12 +94,12 @@ class NewGetX : AnAction() {
         var prefixName = ""
 
         //Add folder
-        if (data.useFolder) {
+        if (data.function.useFolder) {
             folder = "/$prefix"
         }
 
         //Add prefix
-        if (data.usePrefix) {
+        if (data.function.usePrefix) {
             prefixName = "${prefix}_"
         }
         val path = psiPath + folder
@@ -112,27 +109,27 @@ class NewGetX : AnAction() {
             generateEasy(path, prefixName)
         }
         //Add binding file
-        if (data.addBinding) {
+        if (data.function.addBinding) {
             generateFile("binding.dart", path, "${prefixName}binding.dart")
         }
     }
 
     private fun generateDefault(path: String, prefixName: String) {
-        generateFile("state.dart", path, "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart")
-        generateFile("logic.dart", path, "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart")
-        generateFile("view.dart", path, "$prefixName${data.viewFileName.lowercase(Locale.getDefault())}.dart")
+        generateFile("state.dart", path, "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart")
+        generateFile("logic.dart", path, "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart")
+        generateFile("view.dart", path, "$prefixName${data.module.viewFileName.lowercase(Locale.getDefault())}.dart")
     }
 
     private fun generateEasy(path: String, prefixName: String) {
         generateFile(
             "easy/logic.dart",
             path,
-            "${prefixName}${data.logicName.lowercase(Locale.getDefault())}.dart"
+            "${prefixName}${data.module.logicName.lowercase(Locale.getDefault())}.dart"
         )
         generateFile(
             "easy/view.dart",
             path,
-            "${prefixName}${data.viewFileName.lowercase(Locale.getDefault())}.dart"
+            "${prefixName}${data.module.viewFileName.lowercase(Locale.getDefault())}.dart"
         )
     }
 
@@ -166,7 +163,7 @@ class NewGetX : AnAction() {
         val name = upperCase(moduleName)
         //Adding a prefix requires modifying the imported class name
         var prefixName = ""
-        if (data.usePrefix) {
+        if (data.function.usePrefix) {
             prefixName = "${CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name)}_"
         }
 
@@ -192,87 +189,90 @@ class NewGetX : AnAction() {
 
     private fun replaceLogic(content: String, inputFileName: String, prefixName: String): String {
         var tempContent = content
-
         if (!inputFileName.contains("logic.dart")) {
             return tempContent
         }
 
         tempContent = tempContent.replace(
             "state.dart".toRegex(),
-            "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
+            "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart"
         )
-        tempContent = tempContent.replace("Logic".toRegex(), data.logicName)
-        tempContent = tempContent.replace("State".toRegex(), data.stateName)
-        tempContent = tempContent.replace("state".toRegex(), data.stateName.lowercase(Locale.getDefault()))
+        tempContent = tempContent.replace("Logic".toRegex(), data.module.logicName)
+        tempContent = tempContent.replace("State".toRegex(), data.module.stateName)
+        tempContent = tempContent.replace("state".toRegex(), data.module.stateName.lowercase(Locale.getDefault()))
 
         return tempContent
     }
 
     private fun replaceView(content: String, inputFileName: String, prefixName: String): String {
         var tempContent = content
-
         if (!inputFileName.contains("view.dart")) {
             return tempContent
         }
 
         //deal binding function
-        if (data.addBinding) {
+        if (data.function.addBinding) {
             tempContent = tempContent.replace("Get.put\\(@nameLogic\\(\\)\\)".toRegex(), "Get.find<@nameLogic>()")
         }
 
-        //deal lint norm
-        if (!data.lintNorm) {
-            //remove lint
+        //remove lint
+        if (!data.function.lintNorm || (!data.setting.lint && data.function.lintNorm)) {
             tempContent = tempContent.replace("\\s*\nimport 'state.dart';".toRegex(), "")
             tempContent = tempContent.replace("final @nameLogic".toRegex(), "final")
             tempContent = tempContent.replace("final @nameState".toRegex(), "final")
-
-            //remove flutter_lints
-            tempContent = tempContent.replace("const @namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s".toRegex(), "")
-            tempContent = tempContent.replace("@namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s".toRegex(), "")
+        }
+        //remove flutter_lints
+        if (!data.function.lintNorm || (!data.setting.flutterLints && data.function.lintNorm)) {
+            tempContent = tempContent.replace(
+                "const @namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s".toRegex(),
+                ""
+            )
+            tempContent = tempContent.replace(
+                "@namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s".toRegex(),
+                ""
+            )
         }
 
+        //deal suffix of custom module name
         tempContent = tempContent.replace(
             "logic.dart".toRegex(),
-            "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
+            "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart"
         )
         tempContent = tempContent.replace(
             "state.dart".toRegex(),
-            "$prefixName${data.stateName.lowercase(Locale.getDefault())}.dart"
+            "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart"
         )
-        tempContent = tempContent.replace("Page".toRegex(), data.viewName)
-        tempContent = tempContent.replace("Logic".toRegex(), data.logicName)
-        tempContent = tempContent.replace("logic".toRegex(), data.logicName.lowercase(Locale.getDefault()))
-        tempContent = tempContent.replace("@nameState".toRegex(), "@name${data.stateName}")
-        tempContent = tempContent.replace("state".toRegex(), data.stateName.lowercase(Locale.getDefault()))
+        tempContent = tempContent.replace("Page".toRegex(), data.module.viewName)
+        tempContent = tempContent.replace("Logic".toRegex(), data.module.logicName)
+        tempContent = tempContent.replace("logic".toRegex(), data.module.logicName.lowercase(Locale.getDefault()))
+        tempContent = tempContent.replace("@nameState".toRegex(), "@name${data.module.stateName}")
+        tempContent = tempContent.replace("state".toRegex(), data.module.stateName.lowercase(Locale.getDefault()))
 
         return tempContent
     }
 
     private fun replaceState(content: String, inputFileName: String): String {
         var tempContent = content
-
         if (!inputFileName.contains("state.dart")) {
             return tempContent
         }
 
-        tempContent = tempContent.replace("State".toRegex(), data.stateName)
+        tempContent = tempContent.replace("State".toRegex(), data.module.stateName)
 
         return tempContent
     }
 
     private fun replaceBinding(content: String, inputFileName: String, prefixName: String): String {
         var tempContent = content
-
         if (!inputFileName.contains("binding.dart")) {
             return tempContent
         }
 
-        if (data.addBinding) {
-            tempContent = tempContent.replace("Logic".toRegex(), data.logicName)
+        if (data.function.addBinding) {
+            tempContent = tempContent.replace("Logic".toRegex(), data.module.logicName)
             tempContent = tempContent.replace(
                 "logic.dart".toRegex(),
-                "$prefixName${data.logicName.lowercase(Locale.getDefault())}.dart"
+                "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart"
             )
         }
 
@@ -285,17 +285,17 @@ class NewGetX : AnAction() {
 
         // view.dart
         if (inputFileName.contains("view.dart")) {
-            if (data.autoDispose) {
+            if (data.function.autoDispose) {
                 defaultFolder = "/templates/auto/"
             }
 
-            if (data.isPageView) {
+            if (data.function.isPageView) {
                 defaultFolder = "/templates/pageView/"
             }
         }
 
         //add lifecycle
-        if (data.addLifecycle && inputFileName.contains("logic.dart")) {
+        if (data.function.addLifecycle && inputFileName.contains("logic.dart")) {
             defaultFolder = "/templates/lifecycle/"
         }
 
