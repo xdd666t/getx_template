@@ -43,7 +43,7 @@ class DataService : PersistentStateComponent<DataService> {
     @JvmField
     @OptionTag(converter = SettingInfoConverter::class)
     var setting = SettingInfo(
-        lint = true, flutterLints = true,
+        lint = false, flutterLints = true, lintNormIndex = 1,
     )
 
     ///default true
