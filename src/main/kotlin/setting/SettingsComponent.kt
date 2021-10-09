@@ -31,10 +31,10 @@ class SettingsComponent {
     var custom = Setting()
 
     init {
-        val functionLayout = selectFunctionSetting()
-        val pageLayout = dealLayout(title = "Page", data = page)
-        val componentLayout = dealLayout(title = "Component", data = component)
-        val customLayout = dealLayout(title = "Custom", data = custom)
+        val functionLayout = selectFunctionLayout()
+        val pageLayout = templateNameLayout(title = "Page", data = page)
+        val componentLayout = templateNameLayout(title = "Component", data = component)
+        val customLayout = templateNameLayout(title = "Custom", data = custom)
 
         mainPanel.layout = migLayoutVertical()
         mainPanel.add(functionLayout, fillX())
@@ -44,7 +44,7 @@ class SettingsComponent {
         mainPanel.add(JPanel(), fillY())
     }
 
-    private fun selectFunctionSetting(): JPanel {
+    private fun selectFunctionLayout(): JPanel {
         return JPanel().apply {
             layout = migLayout()
             border = IdeBorderFactory.createTitledBorder("SelectFunction")
@@ -53,12 +53,12 @@ class SettingsComponent {
                 layout = GridLayout(1, 3)
 
                 //separate lintNorm：lint and flutter_lints
-                add(lintNorm())
+                add(lintNormFunction())
             })
         }
     }
 
-    private fun lintNorm(): JPanel {
+    private fun lintNormFunction(): JPanel {
         return JPanel().apply {
             layout = migLayout()
 
@@ -87,7 +87,7 @@ class SettingsComponent {
         }
     }
 
-    private fun dealLayout(title: String, data: Setting): JPanel {
+    private fun templateNameLayout(title: String, data: Setting): JPanel {
         return JPanel().apply {
             layout = migLayout()
             border = IdeBorderFactory.createTitledBorder(title)
@@ -95,19 +95,19 @@ class SettingsComponent {
             val body = JPanel().apply {
                 layout = GridLayout(2, 2)
 
-                add(dealItem(title = "ViewName", jbTextField = data.view, padding = 20))
+                add(templateItem(title = "ViewName", jbTextField = data.view, padding = 20))
 
-                add(dealItem(title = "LogicName", jbTextField = data.logic, padding = 10))
+                add(templateItem(title = "LogicName", jbTextField = data.logic, padding = 10))
 
-                add(dealItem(title = "ViewFileName", jbTextField = data.viewFile, padding = 20))
+                add(templateItem(title = "ViewFileName", jbTextField = data.viewFile, padding = 20))
 
-                add(dealItem(title = "StateName", jbTextField = data.state, padding = 10))
+                add(templateItem(title = "StateName", jbTextField = data.state, padding = 10))
             }
             add(body, fillX())
         }
     }
 
-    private fun dealItem(title: String, jbTextField: JBTextField, padding: Int): JPanel {
+    private fun templateItem(title: String, jbTextField: JBTextField, padding: Int): JPanel {
         return JPanel().apply {
             layout = migLayout()
             border = BorderFactory.createEmptyBorder(0, 0, 15, 80)

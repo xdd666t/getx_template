@@ -61,12 +61,12 @@ class NewGetX : AnAction() {
                     add(data.templateCustom.apply { selected = (data.templateCustom.title == templateType) })
                 }
                 for (item in list) {
-                    if (item.selected) {
-                        data.module.logicName = item.logic
-                        data.module.stateName = item.state
-                        data.module.viewName = item.view
-                        data.module.viewFileName = item.viewFile
-                    }
+                    if (!item.selected) continue
+                    data.module.logicName = item.logic
+                    data.module.stateName = item.state
+                    data.module.viewName = item.view
+                    data.module.viewFileName = item.viewFile
+                    break
                 }
             }
         })
