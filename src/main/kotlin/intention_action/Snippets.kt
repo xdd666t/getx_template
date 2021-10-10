@@ -21,9 +21,9 @@ object Snippets {
 
     private fun snippetObx(widget: String): String {
         return String.format(
-            """Obx(() {
-  return %1${"$"}s;
-})""", widget
+            """Obx(
+  () => %1${"$"}s;
+),""", widget
         )
     }
 
