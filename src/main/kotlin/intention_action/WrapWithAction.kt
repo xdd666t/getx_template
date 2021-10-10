@@ -86,14 +86,13 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
             PsiDocumentManager.getInstance(project).commitDocument(document)
             val currentFile = getCurrentFile(project, editor)
             if (currentFile != null) {
-                val unformattedText = document.text
-                val unformattedLineCount = document.lineCount
+                val unFormattedLineCount = document.lineCount
                 CodeStyleManager.getInstance(project).reformat(currentFile)
                 val formattedLineCount = document.lineCount
 
                 // file was incorrectly formatted, revert formatting
-                if (formattedLineCount > unformattedLineCount + 3) {
-                    document.setText(unformattedText)
+                if (formattedLineCount > unFormattedLineCount + 3) {
+                    document.setText(document.text)
                     PsiDocumentManager.getInstance(project).commitDocument(document)
                 }
             }
