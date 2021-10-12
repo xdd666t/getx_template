@@ -1,4 +1,4 @@
-[![plugin](https://img.shields.io/badge/jetbrain-plugin-red)](https://plugins.jetbrains.com/plugin/15919-getx) [![stars](https://img.shields.io/github/stars/CNAD666/getx_template)](https://github.com/CNAD666/getx_template)  [![issues](https://img.shields.io/github/issues/CNAD666/getx_template?logo=github)](https://github.com/CNAD666/getx_template/issues)
+[![plugin](https://img.shields.io/badge/jetbrain-plugin-red)](https://plugins.jetbrains.com/plugin/15919-getx) [![stars](https://img.shields.io/github/stars/CNAD666/getx_template?logo=github)](https://github.com/CNAD666/getx_template)  [![issues](https://img.shields.io/github/issues/CNAD666/getx_template?logo=github)](https://github.com/CNAD666/getx_template/issues)
 
 Language: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://juejin.cn/post/7005003323753365517)
 
