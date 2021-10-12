@@ -6,22 +6,26 @@ Language: [English](https://github.com/CNAD666/getx_template/blob/main/README.md
 
 - Gold digging:  [Flutter GetX use --- simple charm!](https://github.com/CNAD666/getx_template/blob/main/docs/Use%20of%20Flutter%20GetX---simple%20charm!.md)
 
-# some statement
+# statement
 
-- some part fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
+- some fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
 
 # Description
+
+- install
+
+![image-20210906222922384](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210907091446.png)
 
 - Plugin effect
 
   - Take a look at the effect diagram used by the plugin. The style refers to the fish_redux plugin style.
   - There are some optional functions, so make it into a multi-button style, you can operate according to your own needs
 
-![getx](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210719162534.gif)
+![getx_new](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210907091503.gif)
 
 - Support to modify suffix
 
-![image-20210608153359876](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210608153418.png)
+![image-20210926111944785](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210926112248.png)
 
 - Alt + Enter ： GetBuilder、GetBuilder（Auto Dispose）、Obx、GetX
 
@@ -29,9 +33,9 @@ Language: [English](https://github.com/CNAD666/getx_template/blob/main/README.md
 
 ![image-20210802160631405](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210802162043.png)
 
-- Enter the **get**  prefix
+- Enter the **getx**  prefix
 
-![image-20210605150122801](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/android/flutter/blog/20210605150851.png)
+![image-20210922111700625](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210922111709.png)
 
 # Features
 
