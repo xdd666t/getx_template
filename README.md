@@ -1,16 +1,16 @@
-# getx_template
+[![plugin](https://img.shields.io/badge/jetbrain-plugin-red)](https://plugins.jetbrains.com/plugin/15919-getx) [![stars](https://img.shields.io/github/stars/CNAD666/getx_template)](https://github.com/CNAD666/getx_template)  [![issues](https://img.shields.io/github/issues/CNAD666/getx_template?logo=github)](https://github.com/CNAD666/getx_template/issues)
 
-语言: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://juejin.cn/post/7005003323753365517)
+Language: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://juejin.cn/post/7005003323753365517)
 
-## GetX usage
+# GetX usage
 
 - Gold digging:  [Flutter GetX use --- simple charm!](https://github.com/CNAD666/getx_template/blob/main/docs/Use%20of%20Flutter%20GetX---simple%20charm!.md)
 
 # some statement
 
-- the fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
+- some part fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
 
-## Description
+# Description
 
 - Plugin effect
 
@@ -33,7 +33,7 @@
 
 ![image-20210605150122801](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/android/flutter/blog/20210605150851.png)
 
-## Features
+# Features
 
 - Model: Generate the GetX model
   - Default: Default mode, three files are generated: state, logic, view
