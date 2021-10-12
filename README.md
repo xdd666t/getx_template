@@ -2,10 +2,6 @@
 
 Language: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://juejin.cn/post/7005003323753365517)
 
-# GetX usage
-
-- Gold digging:  [Flutter GetX use --- simple charm!](https://github.com/CNAD666/getx_template/blob/main/docs/Use%20of%20Flutter%20GetX---simple%20charm!.md)
-
 # statement
 
 - some fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
