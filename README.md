@@ -1,4 +1,4 @@
-[![plugin](https://img.shields.io/badge/jetbrain-plugin-red)](https://plugins.jetbrains.com/plugin/15919-getx) [![stars](https://img.shields.io/github/stars/CNAD666/getx_template?logo=github)](https://github.com/CNAD666/getx_template)  [![issues](https://img.shields.io/github/issues/CNAD666/getx_template?logo=github)](https://github.com/CNAD666/getx_template/issues)
+[![plugin](https://img.shields.io/badge/jetbrain-plugin-red)](https://plugins.jetbrains.com/plugin/15919-getx) [![stars](https://img.shields.io/github/stars/xdd666t/getx_template?logo=github)](https://github.com/CNAD666/getx_template) [![issues](https://img.shields.io/github/issues/xdd666t/getx_template?logo=github)](https://github.com/xdd666t/getx_template/issues) [![commit](https://img.shields.io/github/last-commit/xdd666t/getx_template?logo=github)](https://github.com/xdd666t/getx_template/commits) [![release](https://img.shields.io/github/v/release/xdd666t/getx_template)](https://github.com/xdd666t/getx_template/releases)
 
 Language: [English](https://github.com/CNAD666/getx_template/blob/main/README.md) | [中文简体](https://juejin.cn/post/7005003323753365517)
 
