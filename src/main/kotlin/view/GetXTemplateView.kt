@@ -102,14 +102,14 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val defaultBtn = JRadioButton(data.modeDefault.name, data.modeDefault.selected)
         defaultBtn.actionCommand = data.modeDefault.name
         defaultBtn.addActionListener(actionChangeListener)
-        setBtnPadding(defaultBtn)
+        defaultBtn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
         template.add(defaultBtn)
 
         //easy model
         val easyBtn = JRadioButton(data.modeEasy.name, data.modeEasy.selected)
         easyBtn.actionCommand = data.modeEasy.name
         easyBtn.addActionListener(actionChangeListener)
-        setBtnPadding(easyBtn)
+        easyBtn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
         template.add(easyBtn)
 
         modeGroup = ButtonGroup()
@@ -143,13 +143,13 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         //pageView
         pageViewBox = JCheckBox("isPageView", data.function.isPageView)
         pageViewBox.addActionListener(actionChangeListener)
-        setMargin(pageViewBox)
+        setBottomMargin(pageViewBox)
         main.add(pageViewBox)
 
         //add binding
         bindingBox = JCheckBox("addBinding", data.function.addBinding)
         bindingBox.addActionListener(actionChangeListener)
-        setMargin(bindingBox)
+        setBottomMargin(bindingBox)
         main.add(bindingBox)
 
         return main
@@ -176,7 +176,7 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         //support lint normal
         lintNormBox = JCheckBox("lintNorm", data.function.lintNorm)
         lintNormBox.addActionListener(actionChangeListener)
-        setMargin(lintNormBox)
+        setBottomMargin(lintNormBox)
         minor.add(lintNormBox)
 
         return minor
@@ -191,21 +191,21 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         val pageBtn = JRadioButton(data.templatePage.title, data.templatePage.selected)
         pageBtn.actionCommand = data.templatePage.title
         pageBtn.addActionListener(actionChangeListener)
-        setBtnPadding(template = pageBtn)
+        setPadding(pageBtn)
         template.add(pageBtn)
 
         //add component
         val componentBtn = JRadioButton(data.templateComponent.title, data.templateComponent.selected)
         componentBtn.actionCommand = data.templateComponent.title
         componentBtn.addActionListener(actionChangeListener)
-        setBtnPadding(template = componentBtn)
+        setPadding(componentBtn)
         template.add(componentBtn)
 
         //add custom
         val customBtn = JRadioButton(data.templateCustom.title, data.templateCustom.selected)
         customBtn.actionCommand = data.templateCustom.title
         customBtn.addActionListener(actionChangeListener)
-        setBtnPadding(template = customBtn)
+        setBottomPadding(customBtn)
         template.add(customBtn)
 
         templateGroup = ButtonGroup()
@@ -299,13 +299,20 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         jDialog.isVisible = true
     }
 
-    private fun setBtnPadding(mode: JRadioButton = JRadioButton(), template: JRadioButton = JRadioButton()) {
-        mode.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
-        template.border = BorderFactory.createEmptyBorder(5, 0, 10, 100)
+    private fun setPadding(template: JRadioButton = JRadioButton()) {
+        template.border = BorderFactory.createEmptyBorder(10, 0, 5, 100)
+    }
+
+    private fun setBottomPadding(template: JRadioButton) {
+        template.border = BorderFactory.createEmptyBorder(5, 0, 0, 100)
     }
 
     private fun setMargin(box: JCheckBox) {
-        box.border = BorderFactory.createEmptyBorder(5, 0, 10, 100)
+        box.border = BorderFactory.createEmptyBorder(10, 0, 5, 100)
+    }
+
+    private fun setBottomMargin(box: JCheckBox) {
+        box.border = BorderFactory.createEmptyBorder(5, 0, 0, 100)
     }
 
     private fun setSpacing(container: Container) {
