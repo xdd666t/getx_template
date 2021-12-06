@@ -99,15 +99,17 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         template.border = BorderFactory.createTitledBorder("Select Mode")
 
         //default model
-        val defaultBtn = JRadioButton(data.modeDefault.name, data.modeDefault.selected)
-        defaultBtn.actionCommand = data.modeDefault.name
+        val defaultName = data.modeDefault.name
+        val defaultBtn = JRadioButton(defaultName, data.modeDefault.selected)
+        defaultBtn.actionCommand = defaultName
         defaultBtn.addActionListener(actionChangeListener)
         defaultBtn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
         template.add(defaultBtn)
 
         //easy model
-        val easyBtn = JRadioButton(data.modeEasy.name, data.modeEasy.selected)
-        easyBtn.actionCommand = data.modeEasy.name
+        val easyName = data.modeEasy.name
+        val easyBtn = JRadioButton(easyName, data.modeEasy.selected)
+        easyBtn.actionCommand = easyName
         easyBtn.addActionListener(actionChangeListener)
         easyBtn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
         template.add(easyBtn)
@@ -188,22 +190,25 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         template.layout = GridLayout(2, 2)
 
         //add page
-        val pageBtn = JRadioButton(data.templatePage.title, data.templatePage.selected)
-        pageBtn.actionCommand = data.templatePage.title
+        val pageName = "Page"
+        val pageBtn = JRadioButton(pageName, data.templatePage.selected)
+        pageBtn.actionCommand = pageName
         pageBtn.addActionListener(actionChangeListener)
         setPadding(pageBtn)
         template.add(pageBtn)
 
         //add component
-        val componentBtn = JRadioButton(data.templateComponent.title, data.templateComponent.selected)
-        componentBtn.actionCommand = data.templateComponent.title
+        val componentName = "Component"
+        val componentBtn = JRadioButton(componentName, data.templateComponent.selected)
+        componentBtn.actionCommand = componentName
         componentBtn.addActionListener(actionChangeListener)
         setPadding(componentBtn)
         template.add(componentBtn)
 
         //add custom
-        val customBtn = JRadioButton(data.templateCustom.title, data.templateCustom.selected)
-        customBtn.actionCommand = data.templateCustom.title
+        val customName = "Custom"
+        val customBtn = JRadioButton(customName, data.templateCustom.selected)
+        customBtn.actionCommand = customName
         customBtn.addActionListener(actionChangeListener)
         setBottomPadding(customBtn)
         template.add(customBtn)

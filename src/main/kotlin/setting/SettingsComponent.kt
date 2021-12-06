@@ -2,6 +2,7 @@ package setting
 
 import com.intellij.ui.IdeBorderFactory
 import com.intellij.ui.components.JBTextField
+import com.intellij.ui.layout.selected
 import helper.DataService
 import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
@@ -9,10 +10,7 @@ import net.miginfocom.swing.MigLayout
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridLayout
-import javax.swing.BorderFactory
-import javax.swing.JComboBox
-import javax.swing.JLabel
-import javax.swing.JPanel
+import javax.swing.*
 
 
 class SettingsComponent {
@@ -54,6 +52,29 @@ class SettingsComponent {
 
                 //separate lintNorm：lint and flutter_lints
                 add(lintNormFunction())
+
+                //open folder suffix
+                add(useFolderSuffix())
+            })
+        }
+    }
+
+    private fun useFolderSuffix(): JPanel {
+        return JPanel().apply {
+            layout = migLayout()
+
+            add(JLabel().apply {
+                border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
+            })
+            add(JLabel().apply {
+                text = "useFolderSuffix："
+                border = BorderFactory.createEmptyBorder()
+            })
+            add(JCheckBox().apply {
+                border = BorderFactory.createEmptyBorder()
+                addActionListener {
+                    data.setting.useFolderSuffix = isSelected
+                }
             })
         }
     }

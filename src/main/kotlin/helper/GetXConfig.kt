@@ -9,12 +9,14 @@ data class ModeInfo(
 )
 
 data class TemplateInfo(
+    //btn name
+    val name: String = "Default",
+
     var logic: String = "Logic",
     var view: String = "Page",
     var viewFile: String = "View",
     var state: String = "State",
     var selected: Boolean = false,
-    val title: String = "",
 )
 
 ///select function
@@ -55,7 +57,9 @@ data class SettingInfo(
     //pub: flutter_lints
     var flutterLints: Boolean = true,
     //set lintNorm default index
-    var lintNormIndex: Int = 0
+    var lintNormIndex: Int = 0,
+    //open folder suffix
+    var useFolderSuffix: Boolean = false,
 )
 
 class ModuleNameSuffixConverter : Converter<ModuleNameSuffix>() {

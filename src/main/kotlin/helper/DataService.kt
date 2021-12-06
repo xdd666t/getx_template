@@ -49,17 +49,17 @@ class DataService : PersistentStateComponent<DataService> {
     ///default true
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templatePage = TemplateInfo(view = "Page", selected = true, title = "Page")
+    var templatePage = TemplateInfo(name = "Page", view = "Page", selected = true)
 
     ///default false
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templateComponent = TemplateInfo(view = "Component", selected = false, title = "Component")
+    var templateComponent = TemplateInfo(name = "Component", view = "Component", selected = false)
 
     ///default false
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templateCustom = TemplateInfo(view = "Widget", selected = false, title = "Custom")
+    var templateCustom = TemplateInfo(name = "Custom", view = "Widget", selected = false)
 
 
     override fun getState(): DataService {

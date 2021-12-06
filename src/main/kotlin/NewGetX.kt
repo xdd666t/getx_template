@@ -56,9 +56,9 @@ class NewGetX : AnAction() {
                 data.function.lintNorm = view.lintNormBox.isSelected
                 val templateType = view.templateGroup.selection.actionCommand
                 val list = ArrayList<TemplateInfo>().apply {
-                    add(data.templatePage.apply { selected = (data.templatePage.title == templateType) })
-                    add(data.templateComponent.apply { selected = (data.templateComponent.title == templateType) })
-                    add(data.templateCustom.apply { selected = (data.templateCustom.title == templateType) })
+                    add(data.templatePage.apply { selected = (data.templatePage.name == templateType) })
+                    add(data.templateComponent.apply { selected = (data.templateComponent.name == templateType) })
+                    add(data.templateCustom.apply { selected = (data.templateCustom.name == templateType) })
                 }
                 for (item in list) {
                     if (!item.selected) continue
@@ -321,7 +321,7 @@ class NewGetX : AnAction() {
                 outSteam.write(buffer, 0, len)
                 println(String(buffer))
             }
-        } catch (e: IOException) {
+        } catch (_: IOException) {
         } finally {
             outSteam.close()
             inStream.close()
