@@ -3,6 +3,7 @@ package view
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBTabbedPane
 import helper.DataService
+import helper.GetXName
 import java.awt.Container
 import java.awt.FlowLayout
 import java.awt.GridLayout
@@ -99,17 +100,15 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         template.border = BorderFactory.createTitledBorder("Select Mode")
 
         //default model
-        val defaultName = data.modeDefault.name
-        val defaultBtn = JRadioButton(defaultName, data.modeDefault.selected)
-        defaultBtn.actionCommand = defaultName
+        val defaultBtn = JRadioButton(GetXName.ModeDefault, data.modeDefault)
+        defaultBtn.actionCommand = GetXName.ModeDefault
         defaultBtn.addActionListener(actionChangeListener)
         defaultBtn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
         template.add(defaultBtn)
 
         //easy model
-        val easyName = data.modeEasy.name
-        val easyBtn = JRadioButton(easyName, data.modeEasy.selected)
-        easyBtn.actionCommand = easyName
+        val easyBtn = JRadioButton(GetXName.ModeEasy, data.modeEasy)
+        easyBtn.actionCommand = GetXName.ModeEasy
         easyBtn.addActionListener(actionChangeListener)
         easyBtn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
         template.add(easyBtn)
@@ -131,25 +130,25 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         main.layout = GridLayout(2, 2)
 
         //use folder
-        folderBox = JCheckBox("useFolder", data.function.useFolder)
+        folderBox = JCheckBox(GetXName.mainUseFolder, data.function.useFolder)
         folderBox.addActionListener(actionChangeListener)
         setMargin(folderBox)
         main.add(folderBox)
 
         //use prefix
-        prefixBox = JCheckBox("usePrefix", data.function.usePrefix)
+        prefixBox = JCheckBox(GetXName.mainUsePrefix, data.function.usePrefix)
         prefixBox.addActionListener(actionChangeListener)
         setMargin(prefixBox)
         main.add(prefixBox)
 
         //pageView
-        pageViewBox = JCheckBox("isPageView", data.function.isPageView)
+        pageViewBox = JCheckBox(GetXName.mainIsPageView, data.function.isPageView)
         pageViewBox.addActionListener(actionChangeListener)
         setBottomMargin(pageViewBox)
         main.add(pageViewBox)
 
         //add binding
-        bindingBox = JCheckBox("addBinding", data.function.addBinding)
+        bindingBox = JCheckBox(GetXName.mainAddBinding, data.function.addBinding)
         bindingBox.addActionListener(actionChangeListener)
         setBottomMargin(bindingBox)
         main.add(bindingBox)
@@ -164,19 +163,19 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         minor.layout = GridLayout(2, 2)
 
         //add lifecycle
-        lifecycleBox = JCheckBox("addLifecycle", data.function.addLifecycle)
+        lifecycleBox = JCheckBox(GetXName.minorAddLifecycle, data.function.addLifecycle)
         lifecycleBox.addActionListener(actionChangeListener)
         setMargin(lifecycleBox)
         minor.add(lifecycleBox)
 
         //auto dispose
-        disposeBox = JCheckBox("autoDispose", data.function.autoDispose)
+        disposeBox = JCheckBox(GetXName.minorAutoDispose, data.function.autoDispose)
         disposeBox.addActionListener(actionChangeListener)
         setMargin(disposeBox)
         minor.add(disposeBox)
 
         //support lint normal
-        lintNormBox = JCheckBox("lintNorm", data.function.lintNorm)
+        lintNormBox = JCheckBox(GetXName.minorLintNorm, data.function.lintNorm)
         lintNormBox.addActionListener(actionChangeListener)
         setBottomMargin(lintNormBox)
         minor.add(lintNormBox)
@@ -190,25 +189,22 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
         template.layout = GridLayout(2, 2)
 
         //add page
-        val pageName = "Page"
-        val pageBtn = JRadioButton(pageName, data.templatePage.selected)
-        pageBtn.actionCommand = pageName
+        val pageBtn = JRadioButton(GetXName.templatePage, data.templatePage.selected)
+        pageBtn.actionCommand = GetXName.templatePage
         pageBtn.addActionListener(actionChangeListener)
         setPadding(pageBtn)
         template.add(pageBtn)
 
         //add component
-        val componentName = "Component"
-        val componentBtn = JRadioButton(componentName, data.templateComponent.selected)
-        componentBtn.actionCommand = componentName
+        val componentBtn = JRadioButton(GetXName.templateComponent, data.templateComponent.selected)
+        componentBtn.actionCommand = GetXName.templateComponent
         componentBtn.addActionListener(actionChangeListener)
         setPadding(componentBtn)
         template.add(componentBtn)
 
         //add custom
-        val customName = "Custom"
-        val customBtn = JRadioButton(customName, data.templateCustom.selected)
-        customBtn.actionCommand = customName
+        val customBtn = JRadioButton(GetXName.templateCustom, data.templateCustom.selected)
+        customBtn.actionCommand = GetXName.templateCustom
         customBtn.addActionListener(actionChangeListener)
         setBottomPadding(customBtn)
         template.add(customBtn)

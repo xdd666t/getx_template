@@ -14,13 +14,11 @@ import com.intellij.util.xmlb.annotations.OptionTag
 class DataService : PersistentStateComponent<DataService> {
     //default true: use default mode
     @JvmField
-    @OptionTag(converter = ModeInfoConverter::class)
-    var modeDefault = ModeInfo(name = "Default", selected = true)
+    var modeDefault = true
 
     //default false：default not use easy mode
     @JvmField
-    @OptionTag(converter = ModeInfoConverter::class)
-    var modeEasy = ModeInfo(name = "Easy", selected = false)
+    var modeEasy = false
 
     //module name suffix
     @JvmField
@@ -44,22 +42,23 @@ class DataService : PersistentStateComponent<DataService> {
     @OptionTag(converter = SettingInfoConverter::class)
     var setting = SettingInfo(
         lint = false, flutterLints = true, lintNormIndex = 1,
+        useFolderSuffix = false,
     )
 
     ///default true
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templatePage = TemplateInfo(name = "Page", view = "Page", selected = true)
+    var templatePage = TemplateInfo(view = "Page", selected = true)
 
     ///default false
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templateComponent = TemplateInfo(name = "Component", view = "Component", selected = false)
+    var templateComponent = TemplateInfo(view = "Component", selected = false)
 
     ///default false
     @JvmField
     @OptionTag(converter = TemplateInfoConverter::class)
-    var templateCustom = TemplateInfo(name = "Custom", view = "Widget", selected = false)
+    var templateCustom = TemplateInfo(view = "Widget", selected = false)
 
 
     override fun getState(): DataService {

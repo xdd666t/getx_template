@@ -3,15 +3,7 @@ package helper
 import com.google.gson.Gson
 import com.intellij.util.xmlb.Converter
 
-data class ModeInfo(
-    val name: String = "Default",
-    var selected: Boolean = true,
-)
-
 data class TemplateInfo(
-    //btn name
-    val name: String = "Default",
-
     var logic: String = "Logic",
     var view: String = "Page",
     var viewFile: String = "View",
@@ -53,11 +45,11 @@ data class ModuleNameSuffix(
 //Setting Info
 data class SettingInfo(
     //pub: lint
-    var lint: Boolean = true,
+    var lint: Boolean = false,
     //pub: flutter_lints
     var flutterLints: Boolean = true,
     //set lintNorm default index
-    var lintNormIndex: Int = 0,
+    var lintNormIndex: Int = 1,
     //open folder suffix
     var useFolderSuffix: Boolean = false,
 )
@@ -89,16 +81,6 @@ class SettingInfoConverter : Converter<SettingInfo>() {
 
     override fun fromString(value: String): SettingInfo? {
         return Gson().fromJson(value, SettingInfo::class.java)
-    }
-}
-
-class ModeInfoConverter : Converter<ModeInfo>() {
-    override fun toString(value: ModeInfo): String? {
-        return Gson().toJson(value)
-    }
-
-    override fun fromString(value: String): ModeInfo? {
-        return Gson().fromJson(value, ModeInfo::class.java)
     }
 }
 

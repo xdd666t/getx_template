@@ -47,15 +47,16 @@ class SettingsComponent {
             layout = migLayout()
             border = IdeBorderFactory.createTitledBorder("SelectFunction")
 
-            add(JPanel().apply {
-                layout = GridLayout(1, 3)
+            val body = JPanel().apply {
+                layout = GridLayout(1, 2)
 
                 //separate lintNorm：lint and flutter_lints
-                add(lintNormFunction())
+                add(lintNormFunction(), fillX())
 
                 //open folder suffix
-                add(useFolderSuffix())
-            })
+                add(useFolderSuffix(), fillX())
+            }
+            add(body, fillX())
         }
     }
 
@@ -64,18 +65,18 @@ class SettingsComponent {
             layout = migLayout()
 
             add(JLabel().apply {
-                border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
-            })
-            add(JLabel().apply {
                 text = "useFolderSuffix："
                 border = BorderFactory.createEmptyBorder()
             })
             add(JCheckBox().apply {
                 border = BorderFactory.createEmptyBorder()
+                isSelected = data.setting.useFolderSuffix
                 addActionListener {
                     data.setting.useFolderSuffix = isSelected
                 }
             })
+
+            add(JPanel(), fillX())
         }
     }
 
@@ -105,6 +106,8 @@ class SettingsComponent {
                     }
                 }
             })
+
+            add(JPanel(), fillX())
         }
     }
 
@@ -143,8 +146,6 @@ class SettingsComponent {
             add(jbTextField, fillX())
         }
     }
-
-
 }
 
 class Setting {

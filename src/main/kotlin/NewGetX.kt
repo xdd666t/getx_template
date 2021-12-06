@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.Messages
 import helper.DataService
+import helper.GetXName
 import helper.TemplateInfo
 import view.GetXListener
 import view.GetXTemplateView
@@ -43,8 +44,8 @@ class NewGetX : AnAction() {
 
                 //deal default value
                 val modelType = view.modeGroup.selection.actionCommand
-                data.modeDefault.selected = (data.modeDefault.name == modelType)
-                data.modeEasy.selected = (data.modeEasy.name == modelType)
+                data.modeDefault = (GetXName.ModeDefault == modelType)
+                data.modeEasy = (GetXName.ModeEasy == modelType)
 
                 //function area
                 data.function.useFolder = view.folderBox.isSelected
@@ -56,9 +57,9 @@ class NewGetX : AnAction() {
                 data.function.lintNorm = view.lintNormBox.isSelected
                 val templateType = view.templateGroup.selection.actionCommand
                 val list = ArrayList<TemplateInfo>().apply {
-                    add(data.templatePage.apply { selected = (data.templatePage.name == templateType) })
-                    add(data.templateComponent.apply { selected = (data.templateComponent.name == templateType) })
-                    add(data.templateCustom.apply { selected = (data.templateCustom.name == templateType) })
+                    add(data.templatePage.apply { selected = (GetXName.templatePage == templateType) })
+                    add(data.templateComponent.apply { selected = (GetXName.templateComponent == templateType) })
+                    add(data.templateCustom.apply { selected = (GetXName.templateCustom == templateType) })
                 }
                 for (item in list) {
                     if (!item.selected) continue
@@ -93,22 +94,30 @@ class NewGetX : AnAction() {
         var folder = ""
         var prefixName = ""
 
-        //Add folder
+        //add folder
         if (data.function.useFolder) {
             folder = "/$prefix"
         }
 
-        //Add prefix
+        //use folder suffix
+        if (data.setting.useFolderSuffix) {
+            folder = "${folder}_${data.module.viewName.lowercase()}"
+        }
+
+        //add prefix
         if (data.function.usePrefix) {
             prefixName = "${prefix}_"
         }
+
+        //select generate file mode
         val path = psiPath + folder
-        if (data.modeDefault.selected) {
+        if (data.modeDefault) {
             generateDefault(path, prefixName)
-        } else if (data.modeEasy.selected) {
+        } else if (data.modeEasy) {
             generateEasy(path, prefixName)
         }
-        //Add binding file
+
+        //add binding file
         if (data.function.addBinding) {
             generateFile("binding.dart", path, "${prefixName}binding.dart")
         }
