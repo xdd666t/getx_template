@@ -97,11 +97,11 @@ class NewGetX : AnAction() {
         //add folder
         if (data.function.useFolder) {
             folder = "/$prefix"
-        }
 
-        //use folder suffix
-        if (data.setting.useFolderSuffix) {
-            folder = "${folder}_${data.module.viewName.lowercase()}"
+            //use folder suffix
+            if (data.setting.useFolderSuffix) {
+                folder = "${folder}_${data.module.viewName.lowercase()}"
+            }
         }
 
         //add prefix
