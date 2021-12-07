@@ -15,7 +15,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '3.2.5'
+version '3.2.6'
 // must!!!
 sourceCompatibility = 1.8
 
@@ -48,7 +48,7 @@ patchPluginXml {
         <li>Support flutter_lints</li>
         <li>Separate lintNorm：lint and flutter_lints</li>
         <li>Fix template title is missing</li>
-        <li>Add useFolderName function in the setting</li>
+        <li>Add useFolderSuffix function in the setting</li>
      </ul>
 
       <h1>3.1.x</h1>
