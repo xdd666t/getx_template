@@ -2,9 +2,21 @@
 
 Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323753365517)
 
-# statement
+# Run this project
 
-- some fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
+**If you want to run this project，please confirm some of your configuration**
+
+- File ---> Project Structure ---> Project Settings：Project（SDK must use  jdk11）
+
+![image-20211208095732612](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100315.png)
+
+- Build, Execution, Deployment ---> Build Tools ---> Gradle
+
+![image-20211208100031275](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100323.png)
+
+# Statement
+
+- Part of fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
 
 # Description
 
