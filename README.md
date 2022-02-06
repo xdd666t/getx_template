@@ -1,19 +1,6 @@
 [![plugin](https://img.shields.io/badge/jetbrain-plugin-red)](https://plugins.jetbrains.com/plugin/15919-getx) [![stars](https://img.shields.io/github/stars/xdd666t/getx_template?logo=github)](https://github.com/CNAD666/getx_template) [![issues](https://img.shields.io/github/issues/xdd666t/getx_template?logo=github)](https://github.com/xdd666t/getx_template/issues) [![commit](https://img.shields.io/github/last-commit/xdd666t/getx_template?logo=github)](https://github.com/xdd666t/getx_template/commits) [![release](https://img.shields.io/github/v/release/xdd666t/getx_template)](https://github.com/xdd666t/getx_template/releases)
 
 Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323753365517)
-
-# Run this project
-
-**If you want to run this project，please confirm some of your configuration**
-
-- File ---> Project Structure ---> Project Settings：Project（SDK must use  jdk11）
-
-![image-20211208095732612](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100315.png)
-
-- Build, Execution, Deployment ---> Build Tools ---> Gradle
-
-![image-20211208100031275](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100323.png)
-
 # Statement
 
 - Part of fast code snippet prompt  come from [getx-snippets-intelliJ](https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml)
@@ -66,3 +53,15 @@ Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323
 
 - Module Name: The name of the module, please use the big camel case as much as possible; capitalize the first letter
 
+
+# Run this project
+
+**If you want to run this project，please confirm some of your configuration**
+
+- File ---> Project Structure ---> Project Settings：Project（SDK must use  jdk11）
+
+![image-20211208095732612](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100315.png)
+
+- Build, Execution, Deployment ---> Build Tools ---> Gradle
+
+![image-20211208100031275](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100323.png)
