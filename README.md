@@ -22,7 +22,7 @@ Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323
 
 - install
 
-![image-20210906222922384](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210907091446.png)
+![install](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20220206120123.png)
 
 - Plugin effect
 
