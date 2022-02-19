@@ -16,7 +16,7 @@ Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323
   - Take a look at the effect diagram used by the plugin. The style refers to the fish_redux plugin style.
   - There are some optional functions, so make it into a multi-button style, you can operate according to your own needs
 
-![getx_new](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210907091503.gif)
+![useFolder](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20210907092614.gif)
 
 - Support to modify suffix
 
@@ -24,11 +24,15 @@ Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323
 
 - Alt + Enter ： GetBuilder、GetBuilder（Auto Dispose）、Obx、GetX
 
+![GetBuilder](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20210907092748.gif)
+
 ![image-20210802160603092](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210802162033.png)
 
 ![image-20210802160631405](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210802162043.png)
 
 - Enter the **getx**  prefix
+
+![getxroutepagemap](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20210907092900.gif)
 
 ![image-20210922111700625](https://cdn.jsdelivr.net/gh/CNAD666/MyData@master/pic/flutter/blog/20210922111709.png)
 
