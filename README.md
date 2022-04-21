@@ -67,5 +67,6 @@ Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323
 ![image-20211208095732612](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100315.png)
 
 - Build, Execution, Deployment ---> Build Tools ---> Gradle
+  - gradle download: https://services.gradle.org/distributions/ 
 
 ![image-20211208100031275](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100323.png)
