@@ -1,8 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '1.1.4'
-//    id 'org.jetbrains.intellij' version '0.6.5'
-    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+//    id 'org.jetbrains.intellij' version '1.1.4'
+//    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+
+    id "org.jetbrains.intellij" version "1.1.6"
+    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
 }
 
 apply plugin: 'org.jetbrains.intellij'
@@ -17,15 +19,17 @@ group 'com.tao.getx'
 // The version number is modified here
 version '3.2.6'
 // must!!!
-sourceCompatibility = 1.8
+//sourceCompatibility = 1.8
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "com.fleshgrinder.kotlin:case-format:0.2.0"
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 }
@@ -34,7 +38,7 @@ dependencies {
 // updateSinceUntilBuild no restrictions on plug-in installation corresponding
 // to the idea version
 intellij {
-    version = '2021.1.1'
+    version = '2021.3.2'
     updateSinceUntilBuild = false
 }
 

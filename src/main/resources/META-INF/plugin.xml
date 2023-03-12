@@ -24,8 +24,8 @@
     </ul>
     ]]></description>
 
-    <!--  It is recommended to write the id of other plug-ins that the plug-in depends on. Do
-    not write it. In some cases, uploading the plug-in will report an error -->
+    <!--  It is recommended to write the id of other plugins that the plugin depends on. Do
+    not write it. In some cases, uploading the plugin will report an error -->
     <depends>com.intellij.modules.all</depends>
 
     <!-- Plug-in compatible with IDEA Build number-->
