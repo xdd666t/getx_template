@@ -17,7 +17,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '3.2.6'
+version '3.3.0'
 // must!!!
 //sourceCompatibility = 1.8
 compileKotlin {
@@ -45,6 +45,12 @@ intellij {
 // Update instructions are here
 patchPluginXml {
     changeNotes = """
+      <h1>3.3.x</h1>
+      <ul>
+        <li>Adjust StatefulWidget template</li>
+        <li>Optimize wrap feature</li>
+     </ul>
+
       <h1>3.2.x</h1>
       <ul>
         <li>Add template switch function</li>

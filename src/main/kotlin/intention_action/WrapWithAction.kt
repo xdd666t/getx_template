@@ -28,7 +28,7 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
         if (currentFile != null && !currentFile.name.endsWith(".dart")) {
             return false
         }
-        if (element.toString() != "PsiElement(IDENTIFIER)") {
+        if (!element.toString().contains("PsiElement")) {
             return false
         }
         psiElement = WrapHelper.callExpressionFinder(element)

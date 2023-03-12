@@ -7,7 +7,7 @@ class @namePage extends StatefulWidget {
   const @namePage({Key? key}) : super(key: key);
 
   @override
-  _@namePageState createState() => _@namePageState();
+  State<@namePage> createState() => _@namePageState();
 }
 
 class _@namePageState extends State<@namePage> {

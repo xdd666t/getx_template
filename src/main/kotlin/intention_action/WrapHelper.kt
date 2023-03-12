@@ -12,7 +12,8 @@ object WrapHelper {
                 return null
             }
 
-            if (psiElementFinder.toString() == "CALL_EXPRESSION") {
+            val str = psiElementFinder.toString()
+            if (str == "CALL_EXPRESSION" || str == "ARGUMENTS") {
                 if (psiElementFinder.text.startsWith(psiElement.text)) {
                     return psiElementFinder
                 }
