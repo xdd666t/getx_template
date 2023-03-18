@@ -26,7 +26,7 @@ data class FunctionInfo(
     //add binding
     var addBinding: Boolean = false,
     //support lint norm
-    var lintNorm: Boolean = false,
+    var lintNorm: Boolean = true,
     //function tab index
     var funTabIndex: Int = 0,
 )

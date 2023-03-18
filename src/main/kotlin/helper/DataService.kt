@@ -34,7 +34,7 @@ class DataService : PersistentStateComponent<DataService> {
     var function = FunctionInfo(
         useFolder = true, usePrefix = false, isPageView = false,
         addBinding = false, addLifecycle = false, autoDispose = false,
-        lintNorm = false, funTabIndex = 0,
+        lintNorm = true, funTabIndex = 0,
     )
 
     //setting info
