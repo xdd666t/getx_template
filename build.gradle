@@ -17,7 +17,7 @@ group 'com.tao.getx'
 // the corresponding settings in Plugin.xml will be invalid
 // The two settings below are updated frequently, so put them here
 // The version number is modified here
-version '3.3.1'
+version '3.3.2'
 // must!!!
 //sourceCompatibility = 1.8
 compileKotlin {
@@ -49,7 +49,8 @@ patchPluginXml {
       <ul>
         <li>Adjust StatefulWidget template</li>
         <li>Optimize wrap feature</li>
-        <li>lintNorm: the default value is changed to true</li>
+        <li>LintNorm: the default value is changed to true</li>
+        <li>Fix some bug</li>
      </ul>
 
       <h1>3.2.x</h1>

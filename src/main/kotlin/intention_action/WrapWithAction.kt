@@ -35,10 +35,12 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
         return psiElement != null
     }
 
-    @Throws(IncorrectOperationException::class)
     override fun invoke(project: Project, editor: Editor, element: PsiElement) {
-        val runnable = Runnable { invokeSnippetAction(project, editor, snippetType) }
-        WriteCommandAction.runWriteCommandAction(project, runnable)
+        safeUse {
+            WriteCommandAction.runWriteCommandAction(project) {
+                safeUse { invokeSnippetAction(project, editor, snippetType) }
+            }
+        }
     }
 
     private fun invokeSnippetAction(project: Project, editor: Editor, snippetType: SnippetType?) {
@@ -54,9 +56,7 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
         val replaceWith = Snippets.getSnippet(snippetType, selectedText)
 
         // wrap the widget:
-        WriteCommandAction.runWriteCommandAction(project) {
-            document.replaceString(offsetStart, offsetEnd, replaceWith)
-        }
+        document.replaceString(offsetStart, offsetEnd, replaceWith)
 
         // place cursors to specify types:
         val prefixSelection = Snippets.PREFIX_SELECTION
@@ -105,5 +105,12 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
 
     private fun getCurrentFile(project: Project, editor: Editor): PsiFile? {
         return PsiDocumentManager.getInstance(project).getPsiFile(editor.document)
+    }
+
+    private fun safeUse(invoke: () -> Unit) {
+        try {
+            invoke.invoke()
+        } catch (_: Exception) {
+        }
     }
 }
