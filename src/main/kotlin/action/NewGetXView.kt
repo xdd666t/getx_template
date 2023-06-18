@@ -1,4 +1,4 @@
-package view
+package action
 
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBTabbedPane
@@ -13,7 +13,7 @@ import java.awt.event.KeyListener
 import javax.swing.*
 
 
-open class GetXTemplateView(private val getXListener: GetXListener) {
+open class NewGetXView(private val getXListener: GetXListener) {
     private val data = DataService.instance
 
     /**
@@ -339,5 +339,5 @@ open class GetXTemplateView(private val getXListener: GetXListener) {
 interface GetXListener {
     fun onSave(): Boolean
 
-    fun onDataChange(view: GetXTemplateView)
+    fun onDataChange(view: NewGetXView)
 }

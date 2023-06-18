@@ -1,3 +1,5 @@
+package action
+
 import com.google.common.base.CaseFormat
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -8,13 +10,11 @@ import com.intellij.openapi.ui.Messages
 import helper.DataService
 import helper.GetXName
 import helper.TemplateInfo
-import view.GetXListener
-import view.GetXTemplateView
 import java.io.*
 import java.util.*
 
 
-class NewGetX : AnAction() {
+class NewGetXAction : AnAction() {
     private var project: Project? = null
     private lateinit var psiPath: String
     private var data = DataService.instance
@@ -33,12 +33,12 @@ class NewGetX : AnAction() {
     }
 
     private fun initView() {
-        GetXTemplateView(object : GetXListener {
+        NewGetXView(object : GetXListener {
             override fun onSave(): Boolean {
                 return save()
             }
 
-            override fun onDataChange(view: GetXTemplateView) {
+            override fun onDataChange(view: NewGetXView) {
                 //module name
                 moduleName = view.nameTextField.text
 

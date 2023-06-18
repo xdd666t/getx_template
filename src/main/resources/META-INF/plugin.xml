@@ -35,7 +35,7 @@
     <!-- Write plugin actions -->
     <actions>
         <!-- Add your actions here -->
-        <action id="com.tao.NewGetX" class="NewGetX" text="GetX" description="Create getX template code"
+        <action id="com.xdd.NewGetX" class="action.NewGetXAction" text="GetX" description="Create getX template code"
                 icon="/image/getx_icon.png">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
