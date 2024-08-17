@@ -13,6 +13,7 @@ object Snippets {
         return when (snippetType) {
             SnippetType.Obx -> snippetObx(widget)
             SnippetType.GetBuilder -> snippetGetBuilder(widget)
+            SnippetType.Observer -> snippetObserver(widget)
             SnippetType.GetBuilderAutoDispose -> snippetGetBuilderAutoDispose(widget)
             SnippetType.GetX -> snippetGetX(widget)
             else -> ""
@@ -32,6 +33,14 @@ object Snippets {
             """GetBuilder<%1${"$"}s>(builder: (%2${"$"}s) {
   return %3${"$"}s;
 })""", GetX_SNIPPET_KEY, data.module.logicName.lowercase(Locale.getDefault()), widget
+        )
+    }
+
+    private fun snippetObserver(widget: String): String {
+        return String.format(
+            """Observer(builder: (BuildContext context) {
+  return %1${"$"}s;
+})""", widget
         )
     }
 

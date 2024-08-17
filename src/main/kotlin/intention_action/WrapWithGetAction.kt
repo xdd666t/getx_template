@@ -23,3 +23,9 @@ class WrapWithObxAction : WrapWithAction(SnippetType.Obx) {
         return "Wrap with Obx"
     }
 }
+
+class WrapWithObserverAction : WrapWithAction(SnippetType.Observer) {
+    override fun getText(): String {
+        return "Wrap with Observer"
+    }
+}

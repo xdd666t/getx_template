@@ -49,11 +49,11 @@ tasks {
   }
 }
 
-version = "3.3.2"
+version = "3.5.0"
 tasks.patchPluginXml {
   sinceBuild.set("200")
   untilBuild.set("")
-  pluginId.set("com.xdd.flutter_getx")
+  pluginId.set("com.tao.getx")
   pluginDescription.set(markdownToHTML(File(rootDir, "pluginDescription.md").readText()))
   changeNotes.set(markdownToHTML(File(rootDir, "changeNotes.md").readText()))
 }

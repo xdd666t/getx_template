@@ -1,5 +1,5 @@
 package intention_action
 
 enum class SnippetType {
-    Obx, GetBuilder, GetBuilderAutoDispose, GetX
+    Obx, GetBuilder, Observer, GetBuilderAutoDispose, GetX,
 }

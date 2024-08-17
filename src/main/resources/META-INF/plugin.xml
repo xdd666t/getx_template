@@ -45,6 +45,11 @@
             <className>intention_action.WrapWithGetBuilderAction</className>
             <category>GetX</category>
         </intentionAction>
+        <!--Observer Action-->
+        <intentionAction>
+            <className>intention_action.WrapWithObserverAction</className>
+            <category>GetX</category>
+        </intentionAction>
         <!--GetBuilder(Auto Dispose) Action-->
         <intentionAction>
             <className>intention_action.WrapWithGetBuilderAutoDisposeAction</className>

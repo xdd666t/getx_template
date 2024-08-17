@@ -6,6 +6,7 @@ object GetXName {
     const val ModeEasy = "Easy"
 
     //main function
+    const val mainUseGetX5 = "useGetX5"
     const val mainUseFolder = "useFolder"
     const val mainUsePrefix = "usePrefix"
     const val mainIsPageView = "isPageView"
