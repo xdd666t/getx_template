@@ -1,5 +1,4 @@
 <idea-plugin>
-    <id>com.tao.getx</id>
     <!-- Plug-in name, the name displayed by the official plugin library -->
     <name>GetX</name>
     <!-- version number  -->
@@ -7,30 +6,9 @@
     <!-- homepage and email (contact address)-->
     <vendor email="xdd666@foxmail.com" url="https://github.com/CNAD666/getx_template">小呆呆666</vendor>
 
-    <!-- The description of the plug-in
-    (the default value cannot be used, it must be modified to its own.
-    And it needs to be greater than 40 characters)-->
-    <description><![CDATA[
-    <h2>Used to generate the template code of GetX framework</h2>
-    <ul>
-        <li>Right-click the File: New -> GetX</li>
-        <li>GitHub：<a href="https://github.com/CNAD666/getx_template">getx_template</a></li>
-        <h3>GetX Use Article</h3>
-        <li>使用：<a href="https://juejin.cn/post/6924104248275763208"> Flutter GetX使用---简洁的魅力！</a></li>
-        <li>原理：<a href="https://juejin.cn/post/6984593635681517582"> Flutter GetX深度剖析 | 我们终将走出自己的路</a></li>
-        <li>插件说明：<a href="https://juejin.cn/post/7005003323753365517"> 本IDEA插件超详细使用教程 </a></li>
-        <h3>Statement</h3>
-        <li>Part of fast code snippet prompt come from <a href="https://github.com/cjamcu/getx-snippets-intelliJ/blob/master/src/main/resources/liveTemplates/getx.xml"> getx-snippets-intelliJ</a></li>
-    </ul>
-    ]]></description>
-
     <!--  It is recommended to write the id of other plugins that the plugin depends on. Do
     not write it. In some cases, uploading the plugin will report an error -->
     <depends>com.intellij.modules.all</depends>
-
-    <!-- Plug-in compatible with IDEA Build number-->
-    <idea-version since-build="173"/>
-    <!--    <idea-version since-build="173" until-build="203.7148.57"/>-->
 
     <!-- Write plugin actions -->
     <actions>
@@ -53,7 +31,7 @@
     <!--  https://plugins.jetbrains.com/docs/intellij/template-support.html#completing-the-live-template-implementation  -->
     <extensions defaultExtensionNs="com.intellij">
         <defaultLiveTemplates file="liveTemplates/getX.xml"/>
-        <liveTemplateContext implementation="live_templates.GetXContext"/>
+        <liveTemplateContext implementation="live_templates.GetXContext" contextId="FLUTTER"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
