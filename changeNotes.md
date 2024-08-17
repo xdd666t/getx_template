@@ -1,3 +1,7 @@
+# 3.5.x
+- Adjust getX5
+- Add "Observer" wrap
+
 # 3.3.x
 - Adjust StatefulWidget template
 - Optimize wrap feature

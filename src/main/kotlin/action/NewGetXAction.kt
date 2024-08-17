@@ -12,6 +12,7 @@ import helper.GetXName
 import helper.TemplateInfo
 import java.io.*
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class NewGetXAction : AnAction() {
@@ -48,6 +49,7 @@ class NewGetXAction : AnAction() {
                 data.modeEasy = (GetXName.ModeEasy == modelType)
 
                 //function area
+                data.function.useGetX5 = view.getX5Box.isSelected
                 data.function.useFolder = view.folderBox.isSelected
                 data.function.usePrefix = view.prefixBox.isSelected
                 data.function.isPageView = view.pageViewBox.isSelected
@@ -119,7 +121,12 @@ class NewGetXAction : AnAction() {
 
         //add binding file
         if (data.function.addBinding) {
-            generateFile("binding.dart", path, "${prefixName}binding.dart")
+            val inputFileName = if (data.function.useGetX5) {
+                "binding_5.dart"
+            } else {
+                "binding_4.dart"
+            }
+            generateFile(inputFileName, path, "${prefixName}binding.dart")
         }
     }
 
@@ -131,14 +138,10 @@ class NewGetXAction : AnAction() {
 
     private fun generateEasy(path: String, prefixName: String) {
         generateFile(
-            "easy/logic.dart",
-            path,
-            "${prefixName}${data.module.logicName.lowercase(Locale.getDefault())}.dart"
+            "easy/logic.dart", path, "${prefixName}${data.module.logicName.lowercase(Locale.getDefault())}.dart"
         )
         generateFile(
-            "easy/view.dart",
-            path,
-            "${prefixName}${data.module.viewFileName.lowercase(Locale.getDefault())}.dart"
+            "easy/view.dart", path, "${prefixName}${data.module.viewFileName.lowercase(Locale.getDefault())}.dart"
         )
     }
 
@@ -166,6 +169,8 @@ class NewGetXAction : AnAction() {
         }
     }
 
+    private var replaceContentMap = HashMap<String, String>()
+
     //content need deal
     private fun dealContent(inputFileName: String): String {
         //module name
@@ -178,114 +183,96 @@ class NewGetXAction : AnAction() {
 
         //select suitable file, return suitable content
         var content = getSuitableContent(inputFileName)
+        replaceContentMap.clear()
 
         //replace view file
-        content = replaceView(content, inputFileName, prefixName)
+        replaceView(inputFileName, prefixName)
 
         //replace logic file
-        content = replaceLogic(content, inputFileName, prefixName)
+        replaceLogic(inputFileName, prefixName)
 
         //replace binding file
-        content = replaceBinding(content, inputFileName, prefixName)
+        replaceBinding(inputFileName, prefixName)
 
         //replace state file
-        content = replaceState(content, inputFileName)
+        replaceState(inputFileName)
 
-        content = content.replace("@name".toRegex(), name)
+        replaceContentMap["@name"] = name
+
+        replaceContentMap.forEach { (key, value) ->
+            content = content.replace(key.toRegex(), value)
+        }
 
         return content
     }
 
-    private fun replaceLogic(content: String, inputFileName: String, prefixName: String): String {
-        var tempContent = content
+    private fun replaceLogic(inputFileName: String, prefixName: String) {
         if (!inputFileName.contains("logic.dart")) {
-            return tempContent
+            return
         }
 
-        tempContent = tempContent.replace(
-            "state.dart".toRegex(),
-            "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart"
-        )
-        tempContent = tempContent.replace("Logic".toRegex(), data.module.logicName)
-        tempContent = tempContent.replace("State".toRegex(), data.module.stateName)
-        tempContent = tempContent.replace("state".toRegex(), data.module.stateName.lowercase(Locale.getDefault()))
-
-        return tempContent
+        replaceContentMap["state.dart"] = "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart"
+        replaceContentMap["Logic"] = data.module.logicName
+        replaceContentMap["State"] = data.module.stateName
+        replaceContentMap["state"] = data.module.stateName.lowercase(Locale.getDefault())
     }
 
-    private fun replaceView(content: String, inputFileName: String, prefixName: String): String {
-        var tempContent = content
+    private fun replaceView(inputFileName: String, prefixName: String) {
         if (!inputFileName.contains("view.dart")) {
-            return tempContent
+            return
+        }
+
+        // deal getX5
+        if (data.function.useGetX5) {
+            replaceContentMap["Get.find"] = "Bind.find"
+            replaceContentMap["Get.delete"] = "Bind.delete"
         }
 
         //deal binding function
         if (data.function.addBinding) {
-            tempContent = tempContent.replace("Get.put\\(@nameLogic\\(\\)\\)".toRegex(), "Get.find<@nameLogic>()")
+            replaceContentMap["Get.put\\(@nameLogic\\(\\)\\)"] = "Get.find<@nameLogic>()"
         }
 
         //remove lint
         if (!data.function.lintNorm || (!data.setting.lint && data.function.lintNorm)) {
-            tempContent = tempContent.replace("\\s*\nimport 'state.dart';".toRegex(), "")
-            tempContent = tempContent.replace("final @nameLogic".toRegex(), "final")
-            tempContent = tempContent.replace("final @nameState".toRegex(), "final")
+            replaceContentMap["\\s*\nimport 'state.dart';"] = ""
+            replaceContentMap["final @nameLogic"] = "final"
+            replaceContentMap["final @nameState"] = "final"
         }
         //remove flutter_lints
         if (!data.function.lintNorm || (!data.setting.flutterLints && data.function.lintNorm)) {
-            tempContent = tempContent.replace(
-                "const @namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s".toRegex(),
-                ""
-            )
-            tempContent = tempContent.replace(
-                "@namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s".toRegex(),
-                ""
-            )
+            replaceContentMap["const @namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s"] = ""
+            replaceContentMap["@namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s"] = ""
         }
 
         //deal suffix of custom module name
-        tempContent = tempContent.replace(
-            "logic.dart".toRegex(),
-            "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart"
-        )
-        tempContent = tempContent.replace(
-            "state.dart".toRegex(),
-            "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart"
-        )
-        tempContent = tempContent.replace("Page".toRegex(), data.module.viewName)
-        tempContent = tempContent.replace("Logic".toRegex(), data.module.logicName)
-        tempContent = tempContent.replace("logic".toRegex(), data.module.logicName.lowercase(Locale.getDefault()))
-        tempContent = tempContent.replace("@nameState".toRegex(), "@name${data.module.stateName}")
-        tempContent = tempContent.replace("state".toRegex(), data.module.stateName.lowercase(Locale.getDefault()))
+        replaceContentMap["logic.dart"] = "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart"
+        replaceContentMap["state.dart"] = "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart"
 
-        return tempContent
+        replaceContentMap["Page"] = data.module.viewName
+        replaceContentMap["Logic"] = data.module.logicName
+        replaceContentMap["logic"] = data.module.logicName.lowercase(Locale.getDefault())
+        replaceContentMap["@nameState"] = "@name${data.module.stateName}"
+        replaceContentMap["state"] = data.module.stateName.lowercase(Locale.getDefault())
     }
 
-    private fun replaceState(content: String, inputFileName: String): String {
-        var tempContent = content
+    private fun replaceState(inputFileName: String) {
         if (!inputFileName.contains("state.dart")) {
-            return tempContent
+            return
         }
 
-        tempContent = tempContent.replace("State".toRegex(), data.module.stateName)
-
-        return tempContent
+        replaceContentMap["State"] = data.module.stateName
     }
 
-    private fun replaceBinding(content: String, inputFileName: String, prefixName: String): String {
-        var tempContent = content
+    private fun replaceBinding(inputFileName: String, prefixName: String) {
         if (!inputFileName.contains("binding.dart")) {
-            return tempContent
+            return
         }
 
         if (data.function.addBinding) {
-            tempContent = tempContent.replace("Logic".toRegex(), data.module.logicName)
-            tempContent = tempContent.replace(
-                "logic.dart".toRegex(),
-                "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart"
-            )
+            replaceContentMap["Logic"] = data.module.logicName
+            replaceContentMap["logic.dart"] = "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart"
         }
-
-        return tempContent
     }
 
     private fun getSuitableContent(inputFileName: String): String {

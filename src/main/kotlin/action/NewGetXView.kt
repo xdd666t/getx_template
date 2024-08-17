@@ -26,10 +26,10 @@ open class NewGetXView(private val getXListener: GetXListener) {
     /**
      * select Function：main Function
      */
+    lateinit var getX5Box: JCheckBox
     lateinit var folderBox: JCheckBox
     lateinit var prefixBox: JCheckBox
     lateinit var pageViewBox: JCheckBox
-    lateinit var bindingBox: JCheckBox
 
     /**
      * select Function：minor Function
@@ -37,6 +37,7 @@ open class NewGetXView(private val getXListener: GetXListener) {
     lateinit var disposeBox: JCheckBox
     lateinit var lifecycleBox: JCheckBox
     lateinit var lintNormBox: JCheckBox
+    lateinit var bindingBox: JCheckBox
 
     /**
      * select Template：Template Function
@@ -129,6 +130,12 @@ open class NewGetXView(private val getXListener: GetXListener) {
         val main = JPanel()
         main.layout = GridLayout(2, 2)
 
+        //use getX5
+        getX5Box = JCheckBox(GetXName.mainUseGetX5, data.function.useGetX5)
+        getX5Box.addActionListener(actionChangeListener)
+        setMargin(getX5Box)
+        main.add(getX5Box)
+
         //use folder
         folderBox = JCheckBox(GetXName.mainUseFolder, data.function.useFolder)
         folderBox.addActionListener(actionChangeListener)
@@ -147,12 +154,6 @@ open class NewGetXView(private val getXListener: GetXListener) {
         setBottomMargin(pageViewBox)
         main.add(pageViewBox)
 
-        //add binding
-        bindingBox = JCheckBox(GetXName.mainAddBinding, data.function.addBinding)
-        bindingBox.addActionListener(actionChangeListener)
-        setBottomMargin(bindingBox)
-        main.add(bindingBox)
-
         return main
     }
 
@@ -161,6 +162,12 @@ open class NewGetXView(private val getXListener: GetXListener) {
         //Minor Function
         val minor = JPanel()
         minor.layout = GridLayout(2, 2)
+
+        //add binding
+        bindingBox = JCheckBox(GetXName.mainAddBinding, data.function.addBinding)
+        bindingBox.addActionListener(actionChangeListener)
+        setBottomMargin(bindingBox)
+        minor.add(bindingBox)
 
         //add lifecycle
         lifecycleBox = JCheckBox(GetXName.minorAddLifecycle, data.function.addLifecycle)

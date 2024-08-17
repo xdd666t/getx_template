@@ -14,6 +14,8 @@ data class TemplateInfo(
 ///select function
 data class FunctionInfo(
     //default true
+    var useGetX5: Boolean = false,
+    //default true
     var useFolder: Boolean = true,
     //default false
     var usePrefix: Boolean = false,
