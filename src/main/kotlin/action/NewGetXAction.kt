@@ -265,7 +265,7 @@ class NewGetXAction : AnAction() {
     }
 
     private fun replaceBinding(inputFileName: String, prefixName: String) {
-        if (!inputFileName.contains("binding.dart")) {
+        if (!inputFileName.contains("binding_4.dart") && !inputFileName.contains("binding_5.dart")) {
             return
         }
 

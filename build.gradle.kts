@@ -49,7 +49,7 @@ tasks {
   }
 }
 
-version = "3.5.0"
+version = "3.5.1"
 tasks.patchPluginXml {
   sinceBuild.set("200")
   untilBuild.set("")

@@ -1,6 +1,7 @@
 # 3.5.x
 - Compatible with getX5
 - Add "Observer" wrap
+- Optimize binding content
 
 # 3.3.x
 - Adjust StatefulWidget template
