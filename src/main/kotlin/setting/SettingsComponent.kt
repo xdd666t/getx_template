@@ -50,9 +50,6 @@ class SettingsComponent {
             val body = JPanel().apply {
                 layout = GridLayout(1, 2)
 
-                //separate lintNorm：lint and flutter_lints
-                add(lintNormFunction(), fillX())
-
                 //open folder suffix
                 add(useFolderSuffix(), fillX())
             }
@@ -73,37 +70,6 @@ class SettingsComponent {
                 isSelected = data.setting.useFolderSuffix
                 addActionListener {
                     data.setting.useFolderSuffix = isSelected
-                }
-            })
-
-            add(JPanel(), fillX())
-        }
-    }
-
-    private fun lintNormFunction(): JPanel {
-        return JPanel().apply {
-            layout = migLayout()
-
-            add(JLabel("lintNorm："))
-            add(JComboBox<String>().apply {
-                addItem("all")
-                addItem("flutter_lints")
-                addItem("lint")
-                preferredSize = Dimension(105, 30)
-                selectedIndex = data.setting.lintNormIndex
-
-                this.addActionListener {
-                    data.setting.lintNormIndex = this.selectedIndex
-                    data.setting.flutterLints = false
-                    data.setting.lint = false
-                    when (this.selectedIndex) {
-                        0 -> {
-                            data.setting.flutterLints = true
-                            data.setting.lint = true
-                        }
-                        1 -> data.setting.flutterLints = true
-                        2 -> data.setting.lint = true
-                    }
                 }
             })
 

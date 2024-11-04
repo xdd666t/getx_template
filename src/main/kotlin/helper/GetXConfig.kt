@@ -27,8 +27,6 @@ data class FunctionInfo(
     var addLifecycle: Boolean = false,
     //add binding
     var addBinding: Boolean = false,
-    //support lint norm
-    var lintNorm: Boolean = true,
     //function tab index
     var funTabIndex: Int = 0,
 )
@@ -46,12 +44,6 @@ data class ModuleNameSuffix(
 
 //Setting Info
 data class SettingInfo(
-    //pub: lint
-    var lint: Boolean = false,
-    //pub: flutter_lints
-    var flutterLints: Boolean = true,
-    //set lintNorm default index
-    var lintNormIndex: Int = 1,
     //open folder suffix
     var useFolderSuffix: Boolean = false,
 )

@@ -33,17 +33,13 @@ class DataService : PersistentStateComponent<DataService> {
     @OptionTag(converter = FunctionInfoConverter::class)
     var function = FunctionInfo(
         useGetX5 = true, useFolder = true, usePrefix = false, isPageView = false,
-        addBinding = false, addLifecycle = false, autoDispose = false,
-        lintNorm = true, funTabIndex = 0,
+        addBinding = false, addLifecycle = false, autoDispose = false, funTabIndex = 0,
     )
 
     //setting info
     @JvmField
     @OptionTag(converter = SettingInfoConverter::class)
-    var setting = SettingInfo(
-        lint = false, flutterLints = true, lintNormIndex = 1,
-        useFolderSuffix = false,
-    )
+    var setting = SettingInfo(useFolderSuffix = false)
 
     ///default true
     @JvmField

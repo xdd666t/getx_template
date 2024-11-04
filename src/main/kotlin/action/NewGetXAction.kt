@@ -56,7 +56,6 @@ class NewGetXAction : AnAction() {
                 data.function.autoDispose = view.disposeBox.isSelected
                 data.function.addLifecycle = view.lifecycleBox.isSelected
                 data.function.addBinding = view.bindingBox.isSelected
-                data.function.lintNorm = view.lintNormBox.isSelected
                 val templateType = view.templateGroup.selection.actionCommand
                 val list = ArrayList<TemplateInfo>().apply {
                     add(data.templatePage.apply { selected = (GetXName.templatePage == templateType) })
@@ -231,18 +230,6 @@ class NewGetXAction : AnAction() {
         //deal binding function
         if (data.function.addBinding) {
             replaceContentMap["Get.put\\(@nameLogic\\(\\)\\)"] = "Get.find<@nameLogic>()"
-        }
-
-        //remove lint
-        if (!data.function.lintNorm || (!data.setting.lint && data.function.lintNorm)) {
-            replaceContentMap["\\s*\nimport 'state.dart';"] = ""
-            replaceContentMap["final @nameLogic"] = "final"
-            replaceContentMap["final @nameState"] = "final"
-        }
-        //remove flutter_lints
-        if (!data.function.lintNorm || (!data.setting.flutterLints && data.function.lintNorm)) {
-            replaceContentMap["const @namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s"] = ""
-            replaceContentMap["@namePage\\(\\{Key\\? key}\\) : super\\(key: key\\);\\s*\n\\s\\s"] = ""
         }
 
         //deal suffix of custom module name

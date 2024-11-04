@@ -36,7 +36,6 @@ open class NewGetXView(private val getXListener: GetXListener) {
      */
     lateinit var disposeBox: JCheckBox
     lateinit var lifecycleBox: JCheckBox
-    lateinit var lintNormBox: JCheckBox
     lateinit var bindingBox: JCheckBox
 
     /**
@@ -180,12 +179,6 @@ open class NewGetXView(private val getXListener: GetXListener) {
         disposeBox.addActionListener(actionChangeListener)
         setMargin(disposeBox)
         minor.add(disposeBox)
-
-        //support lint normal
-        lintNormBox = JCheckBox(GetXName.minorLintNorm, data.function.lintNorm)
-        lintNormBox.addActionListener(actionChangeListener)
-        setBottomMargin(lintNormBox)
-        minor.add(lintNormBox)
 
         return minor
     }
