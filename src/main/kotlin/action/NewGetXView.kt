@@ -37,6 +37,8 @@ open class NewGetXView(private val getXListener: GetXListener) {
     lateinit var disposeBox: JCheckBox
     lateinit var lifecycleBox: JCheckBox
     lateinit var bindingBox: JCheckBox
+    lateinit var logicInBuildBox: JCheckBox
+    lateinit var useScaffoldBox: JCheckBox
 
     /**
      * select Template：Template Function
@@ -160,7 +162,7 @@ open class NewGetXView(private val getXListener: GetXListener) {
     private fun getMinorFunction(): JPanel {
         //Minor Function
         val minor = JPanel()
-        minor.layout = GridLayout(2, 2)
+        minor.layout = GridLayout(3, 2)
 
         //add binding
         bindingBox = JCheckBox(GetXName.mainAddBinding, data.function.addBinding)
@@ -177,8 +179,20 @@ open class NewGetXView(private val getXListener: GetXListener) {
         //auto dispose
         disposeBox = JCheckBox(GetXName.minorAutoDispose, data.function.autoDispose)
         disposeBox.addActionListener(actionChangeListener)
-        setMargin(disposeBox)
+        setBottomMargin(disposeBox)
         minor.add(disposeBox)
+
+        //logic in build
+        logicInBuildBox = JCheckBox(GetXName.minorLogicInBuild, data.function.logicInBuild)
+        logicInBuildBox.addActionListener(actionChangeListener)
+        setMargin(logicInBuildBox)
+        minor.add(logicInBuildBox)
+
+        //use scaffold
+        useScaffoldBox = JCheckBox(GetXName.minorUseScaffold, data.function.useScaffold)
+        useScaffoldBox.addActionListener(actionChangeListener)
+        setBottomMargin(useScaffoldBox)
+        minor.add(useScaffoldBox)
 
         return minor
     }

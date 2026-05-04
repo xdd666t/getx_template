@@ -1,3 +1,12 @@
+# 3.6.0
+- Raise minimum supported IDE build to 232 for IntelliJ Platform 2023.2 compatibility
+- Fix missing intention description resources for "Wrap with Observer"
+- Fix service access during intention snippet initialization on newer IDE versions
+- Add logic-in-build option for generated GetX views
+- Add Scaffold generation option, enabled by default for new templates
+- Optimize wrap intention order for common GetX actions
+- Disable unused instrumentation and searchable options tasks to keep plugin verification stable
+
 # 3.5.x
 - Compatible with getX5
 - Add "Observer" wrap

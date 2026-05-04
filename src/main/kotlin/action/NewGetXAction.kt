@@ -56,6 +56,8 @@ class NewGetXAction : AnAction() {
                 data.function.autoDispose = view.disposeBox.isSelected
                 data.function.addLifecycle = view.lifecycleBox.isSelected
                 data.function.addBinding = view.bindingBox.isSelected
+                data.function.logicInBuild = view.logicInBuildBox.isSelected
+                data.function.useScaffold = view.useScaffoldBox.isSelected
                 val templateType = view.templateGroup.selection.actionCommand
                 val list = ArrayList<TemplateInfo>().apply {
                     add(data.templatePage.apply { selected = (GetXName.templatePage == templateType) })
@@ -182,6 +184,17 @@ class NewGetXAction : AnAction() {
 
         //select suitable file, return suitable content
         var content = getSuitableContent(inputFileName)
+
+        // Apply logicInBuild transformation: move field declarations into build()
+        if (data.function.logicInBuild && !data.function.isPageView) {
+            content = applyLogicInBuildTransformation(content)
+        }
+
+        // Apply useScaffold transformation: replace Container() with Scaffold
+        if (data.function.useScaffold) {
+            content = applyUseScaffoldTransformation(content)
+        }
+
         replaceContentMap.clear()
 
         //replace view file
@@ -203,6 +216,65 @@ class NewGetXAction : AnAction() {
         }
 
         return content
+    }
+
+    /**
+     * Transform template to place logic/state declarations inside build().
+     * Only applies to non-pageView templates (already build-local).
+     */
+    private fun applyLogicInBuildTransformation(content: String): String {
+        // Case 1: Two field declarations (with state)
+        val pattern2field = Regex(
+            "  final @nameLogic \\w+ = Get\\.put\\(@nameLogic\\(\\)\\);\\r?\\n" +
+            "  final @nameState \\w+ = Get\\.find<@nameLogic>\\(\\)\\.\\w+;\\r?\\n" +
+            "\\r?\\n" +
+            "  @override\\r?\\n" +
+            "  Widget build\\(BuildContext context\\) \\{\\r?\\n" +
+            "    return"
+        )
+        val replacement2field =
+            "  @override\n" +
+            "  Widget build(BuildContext context) {\n" +
+            "    final @nameLogic logic = Get.put(@nameLogic());\n" +
+            "    final @nameState state = Get.find<@nameLogic>().state;\n" +
+            "\n" +
+            "    return"
+
+        // Case 2: One field declaration (easy, no state)
+        val pattern1field = Regex(
+            "  final @nameLogic \\w+ = Get\\.put\\(@nameLogic\\(\\)\\);\\r?\\n" +
+            "\\r?\\n" +
+            "  @override\\r?\\n" +
+            "  Widget build\\(BuildContext context\\) \\{\\r?\\n" +
+            "    return"
+        )
+        val replacement1field =
+            "  @override\n" +
+            "  Widget build(BuildContext context) {\n" +
+            "    final @nameLogic logic = Get.put(@nameLogic());\n" +
+            "\n" +
+            "    return"
+
+        return content
+            .replace(pattern2field, replacement2field)
+            .replace(pattern1field, replacement1field)
+    }
+
+    /**
+     * Transform template to use Scaffold wrapper instead of plain Container().
+     */
+    private fun applyUseScaffoldTransformation(content: String): String {
+        return content.replace(
+            "    return Container();",
+            "    return Scaffold(\n" +
+            "      appBar: AppBar(\n" +
+            "        title: const Text('@namePage'),\n" +
+            "      ),\n" +
+            "      body: const Center(\n" +
+            "        child: Text('@namePage'),\n" +
+            "      ),\n" +
+            "    );"
+        )
     }
 
     private fun replaceLogic(inputFileName: String, prefixName: String) {

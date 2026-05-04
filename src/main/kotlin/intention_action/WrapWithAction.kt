@@ -11,7 +11,6 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.codeStyle.CodeStyleManager
-import com.intellij.util.IncorrectOperationException
 
 abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElementBaseIntentionAction(), IntentionAction {
     private var psiElement: PsiElement? = null
@@ -60,7 +59,7 @@ abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElement
 
         // place cursors to specify types:
         val prefixSelection = Snippets.PREFIX_SELECTION
-        val snippetArr = arrayOf(Snippets.GetX_SNIPPET_KEY)
+        val snippetArr = arrayOf(Snippets.getSnippetKey())
         val caretModel = editor.caretModel
         caretModel.removeSecondaryCarets()
         for (snippet in snippetArr) {

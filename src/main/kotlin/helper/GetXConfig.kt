@@ -29,6 +29,10 @@ data class FunctionInfo(
     var addBinding: Boolean = false,
     //function tab index
     var funTabIndex: Int = 0,
+    //default false: place logic/state declarations inside build()
+    var logicInBuild: Boolean = false,
+    //default true: generate Scaffold wrapper instead of Container
+    var useScaffold: Boolean = true,
 )
 
 //module name

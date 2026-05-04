@@ -21,6 +21,7 @@ intellij {
   type.set("IC") // Target IDE Platform
 
   plugins.set(listOf(/* Plugin Dependencies */))
+  instrumentCode.set(false)
 }
 
 dependencies {
@@ -38,6 +39,10 @@ tasks {
     kotlinOptions.jvmTarget = "17"
   }
 
+  named("buildSearchableOptions") {
+    enabled = false
+  }
+
   signPlugin {
     certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
     privateKey.set(System.getenv("PRIVATE_KEY"))
@@ -49,9 +54,9 @@ tasks {
   }
 }
 
-version = "3.5.2"
+version = "3.6.0"
 tasks.patchPluginXml {
-  sinceBuild.set("200")
+  sinceBuild.set("232")
   untilBuild.set("")
   pluginId.set("com.tao.getx")
   pluginDescription.set(markdownToHTML(File(rootDir, "pluginDescription.md").readText()))

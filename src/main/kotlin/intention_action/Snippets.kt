@@ -1,13 +1,15 @@
 package intention_action
 
-import helper.DataService.Companion.instance
+import helper.DataService
 import java.util.*
 
 object Snippets {
-    private val data = instance
     const val PREFIX_SELECTION = "Subject"
-    private val SUFFIX1 = data.module.logicName
-    val GetX_SNIPPET_KEY = PREFIX_SELECTION + SUFFIX1
+
+    fun getSnippetKey(): String {
+        val data = DataService.instance
+        return PREFIX_SELECTION + data.module.logicName
+    }
 
     fun getSnippet(snippetType: SnippetType?, widget: String): String {
         return when (snippetType) {
@@ -20,6 +22,10 @@ object Snippets {
         }
     }
 
+    private fun logicName(): String {
+        return DataService.instance.module.logicName
+    }
+
     private fun snippetObx(widget: String): String {
         return String.format(
             """Obx(() {
@@ -29,10 +35,11 @@ object Snippets {
     }
 
     private fun snippetGetBuilder(widget: String): String {
+        val key = getSnippetKey()
         return String.format(
             """GetBuilder<%1${"$"}s>(builder: (%2${"$"}s) {
   return %3${"$"}s;
-})""", GetX_SNIPPET_KEY, data.module.logicName.lowercase(Locale.getDefault()), widget
+})""", key, logicName().lowercase(Locale.getDefault()), widget
         )
     }
 
@@ -45,17 +52,19 @@ object Snippets {
     }
 
     private fun snippetGetBuilderAutoDispose(widget: String): String {
+        val key = getSnippetKey()
         return String.format(
             """GetBuilder<%1${"$"}s>(
   assignId: true,
   builder: (%2${"$"}s) {
     return %3${"$"}s;
   },
-)""", GetX_SNIPPET_KEY, data.module.logicName.lowercase(Locale.getDefault()), widget
+)""", key, logicName().lowercase(Locale.getDefault()), widget
         )
     }
 
     private fun snippetGetX(widget: String): String {
+        val key = getSnippetKey()
         return String.format(
             """GetX<%1${"$"}s>(
   init: %1${"$"}s(),
@@ -63,7 +72,7 @@ object Snippets {
   builder: (%2${"$"}s) {
     return %3${"$"}s;
   },
-)""", GetX_SNIPPET_KEY, data.module.logicName.lowercase(Locale.getDefault()), widget
+)""", key, logicName().lowercase(Locale.getDefault()), widget
         )
     }
 }

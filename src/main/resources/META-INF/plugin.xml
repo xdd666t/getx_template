@@ -39,26 +39,31 @@
         <intentionAction>
             <className>intention_action.WrapWithObxAction</className>
             <category>GetX</category>
+            <descriptionDirectoryName>WrapWithObxAction</descriptionDirectoryName>
         </intentionAction>
         <!--GetBuilder Action-->
         <intentionAction>
             <className>intention_action.WrapWithGetBuilderAction</className>
             <category>GetX</category>
-        </intentionAction>
-        <!--Observer Action-->
-        <intentionAction>
-            <className>intention_action.WrapWithObserverAction</className>
-            <category>GetX</category>
+            <descriptionDirectoryName>WrapWithGetBuilderAction</descriptionDirectoryName>
         </intentionAction>
         <!--GetBuilder(Auto Dispose) Action-->
         <intentionAction>
             <className>intention_action.WrapWithGetBuilderAutoDisposeAction</className>
             <category>GetX</category>
+            <descriptionDirectoryName>WrapWithGetBuilderAutoDisposeAction</descriptionDirectoryName>
         </intentionAction>
         <!--GetX Action-->
         <intentionAction>
             <className>intention_action.WrapWithGetXAction</className>
             <category>GetX</category>
+            <descriptionDirectoryName>WrapWithGetXAction</descriptionDirectoryName>
+        </intentionAction>
+        <!--Observer Action-->
+        <intentionAction>
+            <className>intention_action.WrapWithObserverAction</className>
+            <category>GetX</category>
+            <descriptionDirectoryName>WrapWithObserverAction</descriptionDirectoryName>
         </intentionAction>
     </extensions>
 </idea-plugin>

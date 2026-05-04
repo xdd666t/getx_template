@@ -17,6 +17,10 @@ object GetXName {
     const val minorAutoDispose = "autoDispose"
     const val minorLintNorm = "lintNorm"
 
+    //minor function (continued)
+    const val minorLogicInBuild = "logicInBuild"
+    const val minorUseScaffold = "useScaffold"
+
     //template function
     const val templatePage = "Page"
     const val templateComponent = "Component"
