@@ -10,8 +10,6 @@ param(
   [ValidateSet('Implement', 'Fix', 'Review')]
   [string]$Mode = 'Implement',
   [string]$Model = 'sonnet',
-  [ValidateSet('low', 'medium', 'high', 'xhigh', 'max')]
-  [string]$Effort = 'high',
   [string]$Name,
   [string]$NamePrefix = 'codex-delegate',
   [Nullable[decimal]]$MaxBudgetUsd,
@@ -206,7 +204,6 @@ $configData = [ordered]@{
   repoRoot = $repoRoot
   mode = $Mode
   model = $Model
-  effort = $Effort
   sessionName = $effectiveName
   sessionMode = $SessionMode
   sessionKey = $effectiveSessionKey
@@ -398,7 +395,6 @@ try {
     })
     $claudeArgs = @(New-ClaudeDelegateCliArgs `
       -Model $Model `
-      -Effort $Effort `
       -SessionName $effectiveName `
       -SessionId ([string]$sessionLease.sessionId) `
       -Resume ([bool]$sessionLease.resume) `

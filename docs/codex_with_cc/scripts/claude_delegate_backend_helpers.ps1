@@ -304,7 +304,6 @@ function Update-ClaudeDelegateStreamCapture {
 function New-ClaudeDelegateCliArgs {
   param(
     [Parameter(Mandatory = $true)][string]$Model,
-    [Parameter(Mandatory = $true)][string]$Effort,
     [Parameter(Mandatory = $true)][string]$SessionName,
     [Parameter(Mandatory = $true)][string]$SessionId,
     [Parameter(Mandatory = $true)][bool]$Resume,
@@ -318,7 +317,6 @@ function New-ClaudeDelegateCliArgs {
     '--print',
     '--output-format', 'stream-json',
     '--model', $Model,
-    '--effort', $Effort,
     '--name', $SessionName,
     '--permission-mode', 'acceptEdits'
   )

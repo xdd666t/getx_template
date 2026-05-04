@@ -22,9 +22,12 @@ $resolvedValidationRoot = [System.IO.Path]::GetFullPath($ValidationRoot)
 $chainRoot = Join-Path $resolvedValidationRoot $Name
 $artifactRoot = Join-Path $chainRoot 'artifacts'
 $taskRoot = Join-Path $chainRoot 'tasks'
+$taskDate = Get-Date -Format 'yyyyMMdd'
+$taskBatchId = '{0}-{1}' -f (Get-Date -Format 'HHmmss-fff'), ([guid]::NewGuid().ToString('N').Substring(0, 6))
+$datedTaskRoot = Join-Path $taskRoot $taskDate
 
 New-Item -ItemType Directory -Path $artifactRoot -Force | Out-Null
-New-Item -ItemType Directory -Path $taskRoot -Force | Out-Null
+New-Item -ItemType Directory -Path $datedTaskRoot -Force | Out-Null
 
 $taskSpecs = @(
   @{
@@ -108,14 +111,15 @@ $taskSpecs = @(
 )
 
 foreach ($taskSpec in $taskSpecs) {
-  $taskPath = Join-Path $taskRoot $taskSpec.FileName
+  $taskFileName = '{0}-{1}' -f $taskBatchId, $taskSpec.FileName
+  $taskPath = Join-Path $datedTaskRoot $taskFileName
 $taskContent = @"
 # Real Delegate Chain Validation Task
 
 - SessionKey: $SessionKey
 - ArtifactRoot: $artifactRoot
 - SessionMode: $($taskSpec.SessionMode)
-- Child-thread only: This task must run inside a Codex spawn_agent child thread with model 'gpt-5.3-codex', reasoning_effort 'high', fork_context 'false'.
+- Child-thread only: This task must run inside a Codex spawn_agent child thread with model 'gpt-5.3-codex', reasoning_effort 'medium', fork_context 'false'.
 - Required child-thread marker: set process environment CODEX_CLAUDE_CHILD_THREAD=1 before invoking the worker entry script.
 - Worker entry script: docs/codex_with_cc/scripts/delegate_to_claude.ps1
 - Required worker arguments: -TaskFile "$taskPath" -ArtifactRoot "$artifactRoot" -SessionKey "$SessionKey" $($taskSpec.SessionFlags) -BypassPermissions
@@ -137,24 +141,25 @@ Real delegate chain validation scaffold created.
 Validation Root: $chainRoot
 Artifact Root: $artifactRoot
 Task Root: $taskRoot
+Task Date Root: $datedTaskRoot
 Session Key: $SessionKey
 
 Required Codex orchestration rules:
 - The Codex main thread may only create spawn_agent child threads and collect results.
 - Every Claude worker must run inside a child thread with:
   - model: gpt-5.3-codex
-  - reasoning_effort: high
+  - reasoning_effort: medium
   - fork_context: false
 - Every child thread must set CODEX_CLAUDE_CHILD_THREAD=1 and then call docs/codex_with_cc/scripts/delegate_to_claude.ps1 with -TaskFile.
 - Do not run Claude CLI or delegate_to_claude.ps1 directly from the main thread.
 
 Recommended execution order:
-1. Child thread: anchor-read-protocol.md (PrimaryAnchor)
-2. Child thread: parallel-artifact-audit.md (ParallelPool)
-3. Child thread: parallel-stream-audit.md (ParallelPool)
+1. Child thread: $taskBatchId-anchor-read-protocol.md (PrimaryAnchor)
+2. Child thread: $taskBatchId-parallel-artifact-audit.md (ParallelPool)
+3. Child thread: $taskBatchId-parallel-stream-audit.md (ParallelPool)
 4. Wait for the anchor + both parallel runs to finish
-5. Child thread: reuse-cross-check-1.md (PrimaryReuse)
-6. Child thread: reuse-cross-check-2.md (PrimaryReuse)
+5. Child thread: $taskBatchId-reuse-cross-check-1.md (PrimaryReuse)
+6. Child thread: $taskBatchId-reuse-cross-check-2.md (PrimaryReuse)
 
 Post-run verification commands:
 - pwsh -NoProfile -File .\docs\codex_with_cc\scripts\verify_delegate_artifacts.ps1 -RunId <anchor-run-id> -ArtifactRoot "$artifactRoot"

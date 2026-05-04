@@ -10,9 +10,10 @@ This document is the portable entry point for the Codex -> Codex child agent -> 
 2. The Codex main thread must not run `docs/codex_with_cc/scripts/delegate_to_claude.ps1` directly.
 3. Every Claude Code delegation must be carried by a Codex `spawn_agent` child thread.
 4. The child thread must set `CODEX_CLAUDE_CHILD_THREAD=1` before invoking `delegate_to_claude.ps1`.
-5. The child thread should use `model: gpt-5.3-codex`, `reasoning_effort: high`, and `fork_context: false`.
-6. Medium and large tasks should be written to a task file and passed with `-TaskFile`.
-7. Claude workers must keep changes inside the delegated scope, run the required verification, and finish with the exact report headings defined in this document.
+5. The child thread should use `model: gpt-5.3-codex`, `reasoning_effort: medium`, and `fork_context: false`.
+6. `delegate_to_claude.ps1` must not pass `--effort`; Claude Code should use its configured default effort.
+7. Medium and large tasks should be written to a dated, uniquely named task file under `.codex/codex_with_cc/tasks/<yyyyMMdd>/<HHmmssfff>-<short-id>-<task-name>.md` and passed with `-TaskFile`.
+8. Claude workers must keep changes inside the delegated scope, run the required verification, and finish with the exact report headings defined in this document.
 
 ## Roles
 - Codex main thread: understand the request, define scope, create child threads, review results, and decide final acceptance.
@@ -58,7 +59,7 @@ Run this only inside a Codex child thread:
 ```powershell
 $env:CODEX_CLAUDE_CHILD_THREAD = '1'
 pwsh -NoProfile -File .\docs\codex_with_cc\scripts\delegate_to_claude.ps1 `
-  -TaskFile .\.codex\codex_with_cc\tasks\<task-file>.md `
+  -TaskFile .\.codex\codex_with_cc\tasks\<yyyyMMdd>\<HHmmssfff>-<short-id>-<task-file>.md `
   -SessionMode PrimaryReuse `
   -SessionKey <stable-session-key> `
   -BypassPermissions
