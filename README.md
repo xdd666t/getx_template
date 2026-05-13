@@ -56,17 +56,3 @@ Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323
   - If you don't understand the concept and function of binding, it is not recommended to turn it on; not using binding will not affect development
 
 - Module Name: The name of the module, please use the big camel case as much as possible; capitalize the first letter
-
-
-# Run this project
-
-**If you want to run this project，please confirm some of your configuration**
-
-- File ---> Project Structure ---> Project Settings：Project（SDK must use  jdk11）
-
-![image-20211208095732612](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100315.png)
-
-- Build, Execution, Deployment ---> Build Tools ---> Gradle
-  - gradle download: https://services.gradle.org/distributions/ 
-
-![image-20211208100031275](https://cdn.jsdelivr.net/gh/xdd666t/MyData@master/pic/flutter/blog/20211208100323.png)
