@@ -1,7 +1,7 @@
 package helper
 
 import com.intellij.openapi.components.PersistentStateComponent
-import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
@@ -68,6 +68,6 @@ class DataService : PersistentStateComponent<DataService> {
     companion object {
         @JvmStatic
         val instance: DataService
-            get() = ServiceManager.getService(DataService::class.java)
+            get() = ApplicationManager.getApplication().getService(DataService::class.java)
     }
 }

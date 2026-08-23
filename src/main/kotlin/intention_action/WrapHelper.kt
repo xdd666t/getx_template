@@ -1,25 +1,21 @@
 package intention_action;
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 
 object WrapHelper {
     @JvmStatic
     fun callExpressionFinder(psiElement: PsiElement): PsiElement? {
-        var psiElementFinder: PsiElement? = psiElement.parent
-
-        for (i in 1..10) {
-            if (psiElementFinder == null) {
-                return null
-            }
-
-            val str = psiElementFinder.toString()
-            if (str == "CALL_EXPRESSION" || str == "ARGUMENTS") {
-                if (psiElementFinder.text.startsWith(psiElement.text)) {
-                    return psiElementFinder
+        var current: PsiElement? = psiElement.parent
+        while (current != null && current !is PsiFile) {
+            val elementType = (current.node?.elementType?.toString()
+                ?: current.toString()).substringAfterLast(':')
+            if (elementType == "CALL_EXPRESSION" || elementType == "ARGUMENTS") {
+                return current.takeIf {
+                    psiElement.text.isNotEmpty() && it.text.startsWith(psiElement.text)
                 }
-                return null
             }
-            psiElementFinder = psiElementFinder.parent
+            current = current.parent
         }
         return null
     }

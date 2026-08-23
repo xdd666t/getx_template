@@ -1,390 +1,225 @@
 package action
 
-import com.google.common.base.CaseFormat
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.vfs.VirtualFile
 import helper.DataService
+import helper.DartNameUtils
+import helper.GenerationMode
+import helper.GenerationOptions
 import helper.GetXName
+import helper.ModuleNameSuffix
 import helper.TemplateInfo
-import java.io.*
-import java.util.*
-import kotlin.collections.HashMap
-
+import helper.TemplateKind
+import java.io.IOException
+import java.nio.charset.StandardCharsets
 
 class NewGetXAction : AnAction() {
-    private var project: Project? = null
-    private lateinit var psiPath: String
-    private var data = DataService.instance
+    private val data: DataService
+        get() = DataService.instance
 
-    /**
-     * module name
-     */
-    private lateinit var moduleName: String
+    private val templateGenerator = GetXTemplateGenerator()
 
-
-    override fun actionPerformed(event: AnActionEvent) {
-        project = event.project
-        psiPath = event.getData(PlatformDataKeys.PSI_ELEMENT).toString()
-        psiPath = psiPath.substring(psiPath.indexOf(":") + 1)
-        initView()
+    override fun update(event: AnActionEvent) {
+        event.presentation.isEnabledAndVisible =
+            event.project != null && resolveTargetDirectory(event) != null
     }
 
-    private fun initView() {
+    override fun actionPerformed(event: AnActionEvent) {
+        val project = event.project ?: return
+        val targetDirectory = resolveTargetDirectory(event)
+        if (targetDirectory == null) {
+            Messages.showErrorDialog(
+                project,
+                "Please select a project directory before creating a GetX module.",
+                "GetX",
+            )
+            return
+        }
+
         NewGetXView(object : GetXListener {
-            override fun onSave(): Boolean {
-                return save()
-            }
-
-            override fun onDataChange(view: NewGetXView) {
-                //module name
-                moduleName = view.nameTextField.text
-
-                //deal default value
-                val modelType = view.modeGroup.selection.actionCommand
-                data.modeDefault = (GetXName.ModeDefault == modelType)
-                data.modeEasy = (GetXName.ModeEasy == modelType)
-
-                //function area
-                data.function.useGetX5 = view.getX5Box.isSelected
-                data.function.useFolder = view.folderBox.isSelected
-                data.function.usePrefix = view.prefixBox.isSelected
-                data.function.isPageView = view.pageViewBox.isSelected
-                data.function.autoDispose = view.disposeBox.isSelected
-                data.function.addLifecycle = view.lifecycleBox.isSelected
-                data.function.addBinding = view.bindingBox.isSelected
-                data.function.logicInBuild = view.logicInBuildBox.isSelected
-                data.function.useScaffold = view.useScaffoldBox.isSelected
-                val templateType = view.templateGroup.selection.actionCommand
-                val list = ArrayList<TemplateInfo>().apply {
-                    add(data.templatePage.apply { selected = (GetXName.templatePage == templateType) })
-                    add(data.templateComponent.apply { selected = (GetXName.templateComponent == templateType) })
-                    add(data.templateCustom.apply { selected = (GetXName.templateCustom == templateType) })
-                }
-                for (item in list) {
-                    if (!item.selected) continue
-                    data.module.logicName = item.logic
-                    data.module.stateName = item.state
-                    data.module.viewName = item.view
-                    data.module.viewFileName = item.viewFile
-                    break
-                }
+            override fun onSave(view: NewGetXView): Boolean {
+                return save(project, targetDirectory, view)
             }
         })
     }
 
-    /**
-     * generate  file
-     */
-    private fun save(): Boolean {
-        if ("" == moduleName.trim { it <= ' ' }) {
-            Messages.showInfoMessage(project, "Please input the module name", "Info")
+    private fun save(
+        project: Project,
+        targetDirectory: VirtualFile,
+        view: NewGetXView,
+    ): Boolean {
+        val moduleName = DartNameUtils.normalizeModuleName(view.nameTextField.text)
+        if (moduleName == null) {
+            Messages.showErrorDialog(
+                project,
+                "Module name must start with a letter and contain only letters, numbers, spaces, '_' or '-'.",
+                "Invalid Module Name",
+            )
             return false
         }
-        //Create a file
-        createFile()
-        //Refresh project
-        project?.guessProjectDir()?.refresh(false, true)
 
+        val options = createOptions(view)
+        val generatedFiles = try {
+            templateGenerator.generate(moduleName, options)
+        } catch (exception: IllegalArgumentException) {
+            Messages.showErrorDialog(project, exception.message ?: "Invalid GetX configuration.", "GetX")
+            return false
+        } catch (exception: IllegalStateException) {
+            Messages.showErrorDialog(project, exception.message ?: "Unable to load GetX templates.", "GetX")
+            return false
+        }
+
+        if (!writeGeneratedFiles(project, targetDirectory, generatedFiles)) {
+            return false
+        }
+
+        persistOptions(options)
         return true
     }
 
-    private fun createFile() {
-        val prefix = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, upperCase(moduleName))
-        var folder = ""
-        var prefixName = ""
-
-        //add folder
-        if (data.function.useFolder) {
-            folder = "/$prefix"
-
-            //use folder suffix
-            if (data.setting.useFolderSuffix) {
-                folder = "${folder}_${data.module.viewName.lowercase()}"
-            }
+    private fun createOptions(view: NewGetXView): GenerationOptions {
+        val mode = if (view.modeGroup.selection?.actionCommand == GetXName.ModeEasy) {
+            GenerationMode.EASY
+        } else {
+            GenerationMode.DEFAULT
         }
-
-        //add prefix
-        if (data.function.usePrefix) {
-            prefixName = "${prefix}_"
+        val templateKind = when (view.templateGroup.selection?.actionCommand) {
+            GetXName.templateComponent -> TemplateKind.COMPONENT
+            GetXName.templateCustom -> TemplateKind.CUSTOM
+            else -> TemplateKind.PAGE
         }
+        val template = templateFor(templateKind)
 
-        //select generate file mode
-        val path = psiPath + folder
-        if (data.modeDefault) {
-            generateDefault(path, prefixName)
-        } else if (data.modeEasy) {
-            generateEasy(path, prefixName)
-        }
-
-        //add binding file
-        if (data.function.addBinding) {
-            val inputFileName = if (data.function.useGetX5) {
-                "binding_5.dart"
-            } else {
-                "binding_4.dart"
-            }
-            generateFile(inputFileName, path, "${prefixName}binding.dart")
-        }
-    }
-
-    private fun generateDefault(path: String, prefixName: String) {
-        generateFile("state.dart", path, "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart")
-        generateFile("logic.dart", path, "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart")
-        generateFile("view.dart", path, "$prefixName${data.module.viewFileName.lowercase(Locale.getDefault())}.dart")
-    }
-
-    private fun generateEasy(path: String, prefixName: String) {
-        generateFile(
-            "easy/logic.dart", path, "${prefixName}${data.module.logicName.lowercase(Locale.getDefault())}.dart"
+        val function = data.function.copy(
+            useGetX5 = view.getX5Box.isSelected,
+            useFolder = view.folderBox.isSelected,
+            usePrefix = view.prefixBox.isSelected,
+            isPageView = view.pageViewBox.isSelected,
+            autoDispose = view.disposeBox.isSelected,
+            addLifecycle = view.lifecycleBox.isSelected,
+            addBinding = view.bindingBox.isSelected,
+            funTabIndex = view.selectedFunctionTabIndex,
+            logicInBuild = view.logicInBuildBox.isSelected,
+            useScaffold = view.useScaffoldBox.isSelected,
         )
-        generateFile(
-            "easy/view.dart", path, "${prefixName}${data.module.viewFileName.lowercase(Locale.getDefault())}.dart"
+        val module = ModuleNameSuffix(
+            logicName = template.logic,
+            viewName = template.view,
+            viewFileName = template.viewFile,
+            stateName = template.state,
+        )
+
+        return GenerationOptions(
+            mode = mode,
+            function = function,
+            module = module,
+            setting = data.setting.copy(),
+            templateKind = templateKind,
         )
     }
 
-    private fun generateFile(inputFileName: String, filePath: String, outFileName: String) {
-        //content deal
-        val content = dealContent(inputFileName)
+    private fun templateFor(kind: TemplateKind): TemplateInfo {
+        return when (kind) {
+            TemplateKind.PAGE -> data.templatePage
+            TemplateKind.COMPONENT -> data.templateComponent
+            TemplateKind.CUSTOM -> data.templateCustom
+        }
+    }
 
-        //Write file
-        try {
-            val folder = File(filePath)
-            // if file not exists, then create it
-            if (!folder.exists()) {
-                folder.mkdirs()
+    private fun persistOptions(options: GenerationOptions) {
+        data.modeDefault = options.mode == GenerationMode.DEFAULT
+        data.modeEasy = options.mode == GenerationMode.EASY
+        data.function = options.function.copy()
+        data.module = options.module.copy()
+        data.templatePage.selected = options.templateKind == TemplateKind.PAGE
+        data.templateComponent.selected = options.templateKind == TemplateKind.COMPONENT
+        data.templateCustom.selected = options.templateKind == TemplateKind.CUSTOM
+    }
+
+    private fun writeGeneratedFiles(
+        project: Project,
+        targetDirectory: VirtualFile,
+        generatedFiles: List<GeneratedFile>,
+    ): Boolean {
+        val conflicts = generatedFiles
+            .mapNotNull { file ->
+                findChild(targetDirectory, file.relativePath)?.let { file.relativePath }
             }
-            val file = File("$filePath/$outFileName")
-            if (!file.exists()) {
-                file.createNewFile()
-            }
-            val fw = FileWriter(file.absoluteFile)
-            val bw = BufferedWriter(fw)
-            bw.write(content)
-            bw.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
+            .distinct()
 
-    private var replaceContentMap = HashMap<String, String>()
-
-    //content need deal
-    private fun dealContent(inputFileName: String): String {
-        //module name
-        val name = upperCase(moduleName)
-        //Adding a prefix requires modifying the imported class name
-        var prefixName = ""
-        if (data.function.usePrefix) {
-            prefixName = "${CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name)}_"
+        if (conflicts.isNotEmpty()) {
+            Messages.showErrorDialog(
+                project,
+                "The following files already exist and were not overwritten:\n${conflicts.joinToString("\n")}",
+                "GetX Files Already Exist",
+            )
+            return false
         }
 
-        //select suitable file, return suitable content
-        var content = getSuitableContent(inputFileName)
-
-        // Apply logicInBuild transformation: move field declarations into build()
-        if (data.function.logicInBuild && !data.function.isPageView) {
-            content = applyLogicInBuildTransformation(content)
-        }
-
-        // Apply useScaffold transformation: replace Container() with Scaffold
-        if (data.function.useScaffold) {
-            content = applyUseScaffoldTransformation(content)
-        }
-
-        replaceContentMap.clear()
-
-        //replace view file
-        replaceView(inputFileName, prefixName)
-
-        //replace logic file
-        replaceLogic(inputFileName, prefixName)
-
-        //replace binding file
-        replaceBinding(inputFileName, prefixName)
-
-        //replace state file
-        replaceState(inputFileName)
-
-        replaceContentMap["@name"] = name
-
-        replaceContentMap.forEach { (key, value) ->
-            content = content.replace(key.toRegex(), value)
-        }
-
-        return content
-    }
-
-    /**
-     * Transform template to place logic/state declarations inside build().
-     * Only applies to non-pageView templates (already build-local).
-     */
-    private fun applyLogicInBuildTransformation(content: String): String {
-        // Case 1: Two field declarations (with state)
-        val pattern2field = Regex(
-            "  final @nameLogic \\w+ = Get\\.put\\(@nameLogic\\(\\)\\);\\r?\\n" +
-            "  final @nameState \\w+ = Get\\.find<@nameLogic>\\(\\)\\.\\w+;\\r?\\n" +
-            "\\r?\\n" +
-            "  @override\\r?\\n" +
-            "  Widget build\\(BuildContext context\\) \\{\\r?\\n" +
-            "    return"
-        )
-        val replacement2field =
-            "  @override\n" +
-            "  Widget build(BuildContext context) {\n" +
-            "    final @nameLogic logic = Get.put(@nameLogic());\n" +
-            "    final @nameState state = Get.find<@nameLogic>().state;\n" +
-            "\n" +
-            "    return"
-
-        // Case 2: One field declaration (easy, no state)
-        val pattern1field = Regex(
-            "  final @nameLogic \\w+ = Get\\.put\\(@nameLogic\\(\\)\\);\\r?\\n" +
-            "\\r?\\n" +
-            "  @override\\r?\\n" +
-            "  Widget build\\(BuildContext context\\) \\{\\r?\\n" +
-            "    return"
-        )
-        val replacement1field =
-            "  @override\n" +
-            "  Widget build(BuildContext context) {\n" +
-            "    final @nameLogic logic = Get.put(@nameLogic());\n" +
-            "\n" +
-            "    return"
-
-        return content
-            .replace(pattern2field, replacement2field)
-            .replace(pattern1field, replacement1field)
-    }
-
-    /**
-     * Transform template to use Scaffold wrapper instead of plain Container().
-     */
-    private fun applyUseScaffoldTransformation(content: String): String {
-        return content.replace(
-            "    return Container();",
-            "    return Scaffold(\n" +
-            "      appBar: AppBar(\n" +
-            "        title: const Text('@namePage'),\n" +
-            "      ),\n" +
-            "      body: const Center(\n" +
-            "        child: Text('@namePage'),\n" +
-            "      ),\n" +
-            "    );"
-        )
-    }
-
-    private fun replaceLogic(inputFileName: String, prefixName: String) {
-        if (!inputFileName.contains("logic.dart")) {
-            return
-        }
-
-        replaceContentMap["state.dart"] = "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart"
-        replaceContentMap["Logic"] = data.module.logicName
-        replaceContentMap["State"] = data.module.stateName
-        replaceContentMap["state"] = data.module.stateName.lowercase(Locale.getDefault())
-    }
-
-    private fun replaceView(inputFileName: String, prefixName: String) {
-        if (!inputFileName.contains("view.dart")) {
-            return
-        }
-
-        // deal getX5
-        if (data.function.useGetX5) {
-            replaceContentMap["Get.find"] = "Bind.find"
-            replaceContentMap["Get.delete"] = "Bind.delete"
-        }
-
-        //deal binding function
-        if (data.function.addBinding) {
-            replaceContentMap["Get.put\\(@nameLogic\\(\\)\\)"] = "Get.find<@nameLogic>()"
-        }
-
-        //deal suffix of custom module name
-        replaceContentMap["logic.dart"] = "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart"
-        replaceContentMap["state.dart"] = "$prefixName${data.module.stateName.lowercase(Locale.getDefault())}.dart"
-
-        replaceContentMap["Page"] = data.module.viewName
-        replaceContentMap["Logic"] = data.module.logicName
-        replaceContentMap["logic"] = data.module.logicName.lowercase(Locale.getDefault())
-        replaceContentMap["@nameState"] = "@name${data.module.stateName}"
-        replaceContentMap["state"] = data.module.stateName.lowercase(Locale.getDefault())
-    }
-
-    private fun replaceState(inputFileName: String) {
-        if (!inputFileName.contains("state.dart")) {
-            return
-        }
-
-        replaceContentMap["State"] = data.module.stateName
-    }
-
-    private fun replaceBinding(inputFileName: String, prefixName: String) {
-        if (!inputFileName.contains("binding_4.dart") && !inputFileName.contains("binding_5.dart")) {
-            return
-        }
-
-        if (data.function.addBinding) {
-            replaceContentMap["Logic"] = data.module.logicName
-            replaceContentMap["logic.dart"] = "$prefixName${data.module.logicName.lowercase(Locale.getDefault())}.dart"
-        }
-    }
-
-    private fun getSuitableContent(inputFileName: String): String {
-        //deal auto dispose or pageView
-        var defaultFolder = "/templates/normal/"
-
-        // view.dart
-        if (inputFileName.contains("view.dart")) {
-            if (data.function.autoDispose) {
-                defaultFolder = "/templates/auto/"
-            }
-
-            if (data.function.isPageView) {
-                defaultFolder = "/templates/pageView/"
+        var failure: Exception? = null
+        WriteCommandAction.runWriteCommandAction(project) {
+            try {
+                generatedFiles.forEach { file ->
+                    writeFile(targetDirectory, file)
+                }
+            } catch (exception: Exception) {
+                failure = exception
             }
         }
 
-        //add lifecycle
-        if (data.function.addLifecycle && inputFileName.contains("logic.dart")) {
-            defaultFolder = "/templates/lifecycle/"
+        if (failure != null) {
+            Messages.showErrorDialog(
+                project,
+                "Unable to create GetX files: ${failure?.message ?: "unknown error"}",
+                "GetX",
+            )
+            return false
         }
 
-        //read file
-        var content = ""
-        try {
-            val input = this.javaClass.getResourceAsStream("$defaultFolder$inputFileName")
-            content = String(readStream(input!!))
-        } catch (e: Exception) {
-            //some error
-        }
-
-        return content
+        targetDirectory.refresh(false, true)
+        return true
     }
 
-    @Throws(Exception::class)
-    private fun readStream(inStream: InputStream): ByteArray {
-        val outSteam = ByteArrayOutputStream()
-        try {
-            val buffer = ByteArray(1024)
-            var len: Int
-            while (inStream.read(buffer).apply { len = this } != -1) {
-                outSteam.write(buffer, 0, len)
-                println(String(buffer))
+    private fun writeFile(targetDirectory: VirtualFile, generatedFile: GeneratedFile) {
+        val parts = generatedFile.relativePath.split('/')
+        val fileName = parts.last()
+        var directory = targetDirectory
+
+        parts.dropLast(1).forEach { part ->
+            val existing = directory.findChild(part)
+            directory = when {
+                existing == null -> directory.createChildDirectory(this, part)
+                existing.isDirectory -> existing
+                else -> throw IOException("Path component is not a directory: $part")
             }
-        } catch (_: IOException) {
-        } finally {
-            outSteam.close()
-            inStream.close()
         }
-        return outSteam.toByteArray()
+
+        if (directory.findChild(fileName) != null) {
+            throw IOException("File was created while generation was in progress: $fileName")
+        }
+
+        directory.createChildData(this, fileName)
+            .setBinaryContent(generatedFile.content.toByteArray(StandardCharsets.UTF_8))
     }
 
-    private fun upperCase(str: String): String {
-        return str.substring(0, 1).uppercase(Locale.getDefault()) + str.substring(1)
+    private fun findChild(targetDirectory: VirtualFile, relativePath: String): VirtualFile? {
+        var current = targetDirectory
+        relativePath.split('/').forEach { part ->
+            if (!current.isDirectory) {
+                return current
+            }
+            current = current.findChild(part) ?: return null
+        }
+        return current
+    }
+
+    private fun resolveTargetDirectory(event: AnActionEvent): VirtualFile? {
+        val selectedFile = event.getData(CommonDataKeys.VIRTUAL_FILE) ?: return null
+        return if (selectedFile.isDirectory) selectedFile else selectedFile.parent
     }
 }

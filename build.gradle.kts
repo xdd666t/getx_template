@@ -26,7 +26,8 @@ intellij {
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-  implementation("com.fleshgrinder.kotlin:case-format:0.2.0")
+
+  testImplementation(kotlin("test"))
 }
 
 tasks {
@@ -37,6 +38,10 @@ tasks {
   }
   withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
+  }
+
+  test {
+    useJUnit()
   }
 
   named("buildSearchableOptions") {

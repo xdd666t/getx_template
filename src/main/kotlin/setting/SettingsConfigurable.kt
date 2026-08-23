@@ -15,66 +15,60 @@ class SettingsConfigurable : Configurable {
     }
 
     override fun createComponent(): JComponent {
-        mSetting = SettingsComponent()
-        return mSetting!!.mainPanel
+        val setting = SettingsComponent()
+        mSetting = setting
+        reset()
+        return setting.mainPanel
     }
 
     override fun isModified(): Boolean {
-        return (//Page
-                mSetting!!.page.logic.text != data.templatePage.logic
-                        || mSetting!!.page.state.text != data.templatePage.state
-                        || mSetting!!.page.view.text != data.templatePage.view
-                        || mSetting!!.page.viewFile.text != data.templatePage.viewFile
-                        //Component
-                        || mSetting!!.component.logic.text != data.templateComponent.logic
-                        || mSetting!!.component.state.text != data.templateComponent.state
-                        || mSetting!!.component.view.text != data.templateComponent.view
-                        || mSetting!!.component.viewFile.text != data.templateComponent.viewFile
-                        //Custom
-                        || mSetting!!.custom.logic.text != data.templateCustom.logic
-                        || mSetting!!.custom.state.text != data.templateCustom.state
-                        || mSetting!!.custom.view.text != data.templateCustom.view
-                        || mSetting!!.custom.viewFile.text != data.templateCustom.viewFile
-                )
+        val setting = mSetting ?: return false
+        return setting.useFolderSuffixBox.isSelected != data.setting.useFolderSuffix ||
+            setting.page.logic.text != data.templatePage.logic ||
+            setting.page.state.text != data.templatePage.state ||
+            setting.page.view.text != data.templatePage.view ||
+            setting.page.viewFile.text != data.templatePage.viewFile ||
+            setting.component.logic.text != data.templateComponent.logic ||
+            setting.component.state.text != data.templateComponent.state ||
+            setting.component.view.text != data.templateComponent.view ||
+            setting.component.viewFile.text != data.templateComponent.viewFile ||
+            setting.custom.logic.text != data.templateCustom.logic ||
+            setting.custom.state.text != data.templateCustom.state ||
+            setting.custom.view.text != data.templateCustom.view ||
+            setting.custom.viewFile.text != data.templateCustom.viewFile
     }
 
     override fun apply() {
-        //Page
-        data.templatePage.logic = mSetting!!.page.logic.text
-        data.templatePage.state = mSetting!!.page.state.text
-        data.templatePage.view = mSetting!!.page.view.text
-        data.templatePage.viewFile = mSetting!!.page.viewFile.text
-        //Component
-        data.templateComponent.logic = mSetting!!.component.logic.text
-        data.templateComponent.state = mSetting!!.component.state.text
-        data.templateComponent.view = mSetting!!.component.view.text
-        data.templateComponent.viewFile = mSetting!!.component.viewFile.text
-        //Custom
-        data.templateCustom.logic = mSetting!!.custom.logic.text
-        data.templateCustom.state = mSetting!!.custom.state.text
-        data.templateCustom.view = mSetting!!.custom.view.text
-        data.templateCustom.viewFile = mSetting!!.custom.viewFile.text
+        val setting = mSetting ?: return
+        data.setting.useFolderSuffix = setting.useFolderSuffixBox.isSelected
+        copyToData(setting.page, data.templatePage)
+        copyToData(setting.component, data.templateComponent)
+        copyToData(setting.custom, data.templateCustom)
     }
 
     override fun reset() {
-        //page
-        mSetting!!.page.logic.text = data.templatePage.logic
-        mSetting!!.page.state.text = data.templatePage.state
-        mSetting!!.page.view.text = data.templatePage.view
-        mSetting!!.page.viewFile.text = data.templatePage.viewFile
-        //component
-        mSetting!!.component.logic.text = data.templateComponent.logic
-        mSetting!!.component.state.text = data.templateComponent.state
-        mSetting!!.component.view.text = data.templateComponent.view
-        mSetting!!.component.viewFile.text = data.templateComponent.viewFile
-        //custom
-        mSetting!!.custom.logic.text = data.templateCustom.logic
-        mSetting!!.custom.state.text = data.templateCustom.state
-        mSetting!!.custom.view.text = data.templateCustom.view
-        mSetting!!.custom.viewFile.text = data.templateCustom.viewFile
+        val setting = mSetting ?: return
+        setting.useFolderSuffixBox.isSelected = data.setting.useFolderSuffix
+        copyFromData(data.templatePage, setting.page)
+        copyFromData(data.templateComponent, setting.component)
+        copyFromData(data.templateCustom, setting.custom)
     }
 
     override fun disposeUIResources() {
         mSetting = null
+    }
+
+    private fun copyToData(source: Setting, target: helper.TemplateInfo) {
+        target.logic = source.logic.text
+        target.state = source.state.text
+        target.view = source.view.text
+        target.viewFile = source.viewFile.text
+    }
+
+    private fun copyFromData(source: helper.TemplateInfo, target: Setting) {
+        target.logic.text = source.logic
+        target.state.text = source.state
+        target.view.text = source.view
+        target.viewFile.text = source.viewFile
     }
 }

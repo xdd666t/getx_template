@@ -2,8 +2,8 @@ package intention_action
 
 import com.intellij.codeInsight.intention.IntentionAction
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
@@ -12,104 +12,108 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.codeStyle.CodeStyleManager
 
-abstract class WrapWithAction(private val snippetType: SnippetType) : PsiElementBaseIntentionAction(), IntentionAction {
-    private var psiElement: PsiElement? = null
+abstract class WrapWithAction(private val snippetType: SnippetType) :
+    PsiElementBaseIntentionAction(),
+    IntentionAction {
 
-    override fun getFamilyName(): String {
-        return text
-    }
+    override fun getFamilyName(): String = text
 
     override fun isAvailable(project: Project, editor: Editor?, element: PsiElement): Boolean {
         if (editor == null) {
             return false
         }
+
         val currentFile = getCurrentFile(project, editor)
-        if (currentFile != null && !currentFile.name.endsWith(".dart")) {
+        if (currentFile?.virtualFile?.extension?.equals("dart", ignoreCase = true) != true) {
             return false
         }
-        if (!element.toString().contains("PsiElement")) {
-            return false
-        }
-        psiElement = WrapHelper.callExpressionFinder(element)
-        return psiElement != null
+
+        return WrapHelper.callExpressionFinder(element) != null
     }
 
     override fun invoke(project: Project, editor: Editor, element: PsiElement) {
-        safeUse {
+        val callExpression = WrapHelper.callExpressionFinder(element) ?: return
+        try {
             WriteCommandAction.runWriteCommandAction(project) {
-                safeUse { invokeSnippetAction(project, editor, snippetType) }
+                invokeSnippetAction(project, editor, callExpression)
             }
+        } catch (exception: Exception) {
+            LOGGER.warn("Unable to wrap Dart expression with $snippetType.", exception)
         }
     }
 
-    private fun invokeSnippetAction(project: Project, editor: Editor, snippetType: SnippetType?) {
+    private fun invokeSnippetAction(project: Project, editor: Editor, element: PsiElement) {
         val document = editor.document
-        val element = psiElement
-        val elementSelectionRange = element!!.textRange
-        val offsetStart = elementSelectionRange.startOffset
-        val offsetEnd = elementSelectionRange.endOffset
-        if (!WrapHelper.isSelectionValid(offsetStart, offsetEnd)) {
+        val elementRange = element.textRange
+        val offsetStart = elementRange.startOffset
+        val offsetEnd = elementRange.endOffset
+        if (!WrapHelper.isSelectionValid(offsetStart, offsetEnd) ||
+            offsetEnd > document.textLength
+        ) {
             return
         }
+
         val selectedText = document.getText(TextRange.create(offsetStart, offsetEnd))
-        val replaceWith = Snippets.getSnippet(snippetType, selectedText)
+        val replacement = Snippets.getSnippet(snippetType, selectedText)
+        if (replacement.isEmpty()) {
+            return
+        }
 
-        // wrap the widget:
-        document.replaceString(offsetStart, offsetEnd, replaceWith)
+        document.replaceString(offsetStart, offsetEnd, replacement)
+        updateCarets(editor, offsetStart, replacement)
 
-        // place cursors to specify types:
-        val prefixSelection = Snippets.PREFIX_SELECTION
-        val snippetArr = arrayOf(Snippets.getSnippetKey())
+        val documentManager = PsiDocumentManager.getInstance(project)
+        documentManager.commitDocument(document)
+        val currentFile = getCurrentFile(project, editor)
+        if (currentFile != null) {
+            CodeStyleManager.getInstance(project).reformatText(
+                currentFile,
+                offsetStart,
+                offsetStart + replacement.length,
+            )
+        }
+    }
+
+    private fun updateCarets(editor: Editor, offsetStart: Int, replacement: String) {
         val caretModel = editor.caretModel
         caretModel.removeSecondaryCarets()
-        for (snippet in snippetArr) {
-            if (!replaceWith.contains(snippet)) {
-                continue
-            }
-            val caretOffset = offsetStart + replaceWith.indexOf(snippet)
-            val visualPos = editor.offsetToVisualPosition(caretOffset)
-            caretModel.addCaret(visualPos)
 
-            // select snippet prefix keys:
-            val currentCaret = caretModel.currentCaret
-            currentCaret.setSelection(caretOffset, caretOffset + prefixSelection.length)
+        val key = Snippets.getSnippetKey()
+        val keyOffset = replacement.indexOf(key)
+        if (keyOffset < 0) {
+            caretModel.primaryCaret.moveToOffset(offsetStart + replacement.length)
+            return
         }
-        val initialCaret = caretModel.allCarets[0]
-        if (!initialCaret.hasSelection()) {
-            // initial position from where was triggered the intention action
+
+        val initialCaret = caretModel.primaryCaret
+        val snippetCaret = caretModel.addCaret(
+            editor.offsetToVisualPosition(offsetStart + keyOffset),
+        )
+        if (snippetCaret == null) {
+            initialCaret.moveToOffset(offsetStart + keyOffset)
+            initialCaret.setSelection(
+                offsetStart + keyOffset,
+                offsetStart + keyOffset + Snippets.PREFIX_SELECTION.length,
+            )
+            return
+        }
+
+        snippetCaret.setSelection(
+            offsetStart + keyOffset,
+            offsetStart + keyOffset + Snippets.PREFIX_SELECTION.length,
+        )
+        if (initialCaret !== snippetCaret && !initialCaret.hasSelection()) {
             caretModel.removeCaret(initialCaret)
         }
-
-        // reformat file:
-        ApplicationManager.getApplication().runWriteAction {
-            PsiDocumentManager.getInstance(project).commitDocument(document)
-            val currentFile = getCurrentFile(project, editor)
-            if (currentFile != null) {
-                val unFormattedLineCount = document.lineCount
-                CodeStyleManager.getInstance(project).reformat(currentFile)
-                val formattedLineCount = document.lineCount
-
-                // file was incorrectly formatted, revert formatting
-                if (formattedLineCount > unFormattedLineCount + 3) {
-                    document.setText(document.text)
-                    PsiDocumentManager.getInstance(project).commitDocument(document)
-                }
-            }
-        }
     }
 
-    override fun startInWriteAction(): Boolean {
-        return true
-    }
+    override fun startInWriteAction(): Boolean = true
 
     private fun getCurrentFile(project: Project, editor: Editor): PsiFile? {
         return PsiDocumentManager.getInstance(project).getPsiFile(editor.document)
     }
 
-    private fun safeUse(invoke: () -> Unit) {
-        try {
-            invoke.invoke()
-        } catch (_: Exception) {
-        }
+    private companion object {
+        val LOGGER: Logger = Logger.getInstance(WrapWithAction::class.java)
     }
 }

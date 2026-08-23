@@ -52,6 +52,25 @@ data class SettingInfo(
     var useFolderSuffix: Boolean = false,
 )
 
+enum class GenerationMode {
+    DEFAULT,
+    EASY,
+}
+
+enum class TemplateKind {
+    PAGE,
+    COMPONENT,
+    CUSTOM,
+}
+
+data class GenerationOptions(
+    val mode: GenerationMode,
+    val function: FunctionInfo,
+    val module: ModuleNameSuffix,
+    val setting: SettingInfo,
+    val templateKind: TemplateKind,
+)
+
 class ModuleNameSuffixConverter : Converter<ModuleNameSuffix>() {
     override fun toString(value: ModuleNameSuffix): String? {
         return Gson().toJson(value)

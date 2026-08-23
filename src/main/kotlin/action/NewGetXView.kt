@@ -19,7 +19,11 @@ open class NewGetXView(private val getXListener: GetXListener) {
     /**
      * Overall popup entity
      */
-    private var jDialog: JDialog = JDialog(JFrame(), "GetX Template Code Produce")
+    private var jDialog: JDialog = JDialog(
+        null as java.awt.Frame?,
+        "GetX Template Code Produce",
+        true,
+    )
     lateinit var nameTextField: JTextField
     lateinit var modeGroup: ButtonGroup
 
@@ -45,6 +49,10 @@ open class NewGetXView(private val getXListener: GetXListener) {
      */
     lateinit var templateGroup: ButtonGroup
 
+    private var functionTabIndex = 0
+    val selectedFunctionTabIndex: Int
+        get() = functionTabIndex
+
 
     private val keyListener: KeyListener = object : KeyListener {
         override fun keyTyped(e: KeyEvent) {}
@@ -58,14 +66,9 @@ open class NewGetXView(private val getXListener: GetXListener) {
     }
 
     private val actionChangeListener = ActionListener {
-        //data change
-        getXListener.onDataChange(this)
-
-        //click btn
-        if (it.actionCommand == "Cancel") {
-            dispose()
-        } else if (it.actionCommand == "OK") {
-            confirm()
+        when (it.actionCommand) {
+            "Cancel" -> dispose()
+            "OK" -> confirm()
         }
     }
 
@@ -102,14 +105,14 @@ open class NewGetXView(private val getXListener: GetXListener) {
         template.border = BorderFactory.createTitledBorder("Select Mode")
 
         //default model
-        val defaultBtn = JRadioButton(GetXName.ModeDefault, data.modeDefault)
+        val defaultBtn = JRadioButton(GetXName.ModeDefault, !data.modeEasy || data.modeDefault)
         defaultBtn.actionCommand = GetXName.ModeDefault
         defaultBtn.addActionListener(actionChangeListener)
         defaultBtn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
         template.add(defaultBtn)
 
         //easy model
-        val easyBtn = JRadioButton(GetXName.ModeEasy, data.modeEasy)
+        val easyBtn = JRadioButton(GetXName.ModeEasy, data.modeEasy && !data.modeDefault)
         easyBtn.actionCommand = GetXName.ModeEasy
         easyBtn.addActionListener(actionChangeListener)
         easyBtn.border = BorderFactory.createEmptyBorder(5, 10, 10, 100)
@@ -177,7 +180,10 @@ open class NewGetXView(private val getXListener: GetXListener) {
         minor.add(lifecycleBox)
 
         //auto dispose
-        disposeBox = JCheckBox(GetXName.minorAutoDispose, data.function.autoDispose)
+        disposeBox = JCheckBox(
+            GetXName.minorAutoDispose,
+            data.function.autoDispose && !data.function.isPageView,
+        )
         disposeBox.addActionListener(actionChangeListener)
         setBottomMargin(disposeBox)
         minor.add(disposeBox)
@@ -203,21 +209,30 @@ open class NewGetXView(private val getXListener: GetXListener) {
         template.layout = GridLayout(2, 2)
 
         //add page
-        val pageBtn = JRadioButton(GetXName.templatePage, data.templatePage.selected)
+        val pageBtn = JRadioButton(
+            GetXName.templatePage,
+            !data.templateComponent.selected && !data.templateCustom.selected,
+        )
         pageBtn.actionCommand = GetXName.templatePage
         pageBtn.addActionListener(actionChangeListener)
         setPadding(pageBtn)
         template.add(pageBtn)
 
         //add component
-        val componentBtn = JRadioButton(GetXName.templateComponent, data.templateComponent.selected)
+        val componentBtn = JRadioButton(
+            GetXName.templateComponent,
+            data.templateComponent.selected,
+        )
         componentBtn.actionCommand = GetXName.templateComponent
         componentBtn.addActionListener(actionChangeListener)
         setPadding(componentBtn)
         template.add(componentBtn)
 
         //add custom
-        val customBtn = JRadioButton(GetXName.templateCustom, data.templateCustom.selected)
+        val customBtn = JRadioButton(
+            GetXName.templateCustom,
+            data.templateCustom.selected && !data.templateComponent.selected,
+        )
         customBtn.actionCommand = GetXName.templateCustom
         customBtn.addActionListener(actionChangeListener)
         setBottomPadding(customBtn)
@@ -243,10 +258,11 @@ open class NewGetXView(private val getXListener: GetXListener) {
         tab.addTab("Main", main)
         tab.addTab("Minor", minor)
         tab.addTab("Template", template)
+        functionTabIndex = data.function.funTabIndex.coerceIn(0, tab.tabCount - 1)
         tab.addChangeListener {
-            data.function.funTabIndex = tab.selectedIndex
+            functionTabIndex = tab.selectedIndex
         }
-        tab.selectedIndex = data.function.funTabIndex
+        tab.selectedIndex = functionTabIndex
 
         function.add(tab)
         container.add(function)
@@ -337,10 +353,7 @@ open class NewGetXView(private val getXListener: GetXListener) {
     }
 
     private fun confirm() {
-        //data change, deal TextField listener
-        getXListener.onDataChange(this)
-
-        if (getXListener.onSave()) {
+        if (getXListener.onSave(this)) {
             dispose()
         }
     }
@@ -351,7 +364,5 @@ open class NewGetXView(private val getXListener: GetXListener) {
 }
 
 interface GetXListener {
-    fun onSave(): Boolean
-
-    fun onDataChange(view: NewGetXView)
+    fun onSave(view: NewGetXView): Boolean
 }

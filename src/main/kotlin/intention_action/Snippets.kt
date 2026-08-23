@@ -1,24 +1,22 @@
 package intention_action
 
 import helper.DataService
-import java.util.*
+import java.util.Locale
 
 object Snippets {
     const val PREFIX_SELECTION = "Subject"
 
     fun getSnippetKey(): String {
-        val data = DataService.instance
-        return PREFIX_SELECTION + data.module.logicName
+        return PREFIX_SELECTION + DataService.instance.module.logicName
     }
 
-    fun getSnippet(snippetType: SnippetType?, widget: String): String {
+    fun getSnippet(snippetType: SnippetType, widget: String): String {
         return when (snippetType) {
             SnippetType.Obx -> snippetObx(widget)
             SnippetType.GetBuilder -> snippetGetBuilder(widget)
             SnippetType.Observer -> snippetObserver(widget)
             SnippetType.GetBuilderAutoDispose -> snippetGetBuilderAutoDispose(widget)
             SnippetType.GetX -> snippetGetX(widget)
-            else -> ""
         }
     }
 
@@ -26,53 +24,40 @@ object Snippets {
         return DataService.instance.module.logicName
     }
 
-    private fun snippetObx(widget: String): String {
-        return String.format(
-            """Obx(() {
-  return %1${"$"}s;
-})""", widget
-        )
+    private fun logicVariableName(): String {
+        return logicName().lowercase(Locale.ROOT)
     }
+
+    private fun snippetObx(widget: String): String = """Obx(() {
+  return $widget;
+})"""
 
     private fun snippetGetBuilder(widget: String): String {
-        val key = getSnippetKey()
-        return String.format(
-            """GetBuilder<%1${"$"}s>(builder: (%2${"$"}s) {
-  return %3${"$"}s;
-})""", key, logicName().lowercase(Locale.getDefault()), widget
-        )
+        return """GetBuilder<${getSnippetKey()}>(builder: (${logicVariableName()}) {
+  return $widget;
+})"""
     }
 
-    private fun snippetObserver(widget: String): String {
-        return String.format(
-            """Observer(builder: (BuildContext context) {
-  return %1${"$"}s;
-})""", widget
-        )
-    }
+    private fun snippetObserver(widget: String): String = """Observer(builder: (BuildContext context) {
+  return $widget;
+})"""
 
     private fun snippetGetBuilderAutoDispose(widget: String): String {
-        val key = getSnippetKey()
-        return String.format(
-            """GetBuilder<%1${"$"}s>(
+        return """GetBuilder<${getSnippetKey()}>(
   assignId: true,
-  builder: (%2${"$"}s) {
-    return %3${"$"}s;
+  builder: (${logicVariableName()}) {
+    return $widget;
   },
-)""", key, logicName().lowercase(Locale.getDefault()), widget
-        )
+)"""
     }
 
     private fun snippetGetX(widget: String): String {
-        val key = getSnippetKey()
-        return String.format(
-            """GetX<%1${"$"}s>(
-  init: %1${"$"}s(),
+        return """GetX<${getSnippetKey()}>(
+  init: ${getSnippetKey()}(),
   initState: (_) {},
-  builder: (%2${"$"}s) {
-    return %3${"$"}s;
+  builder: (${logicVariableName()}) {
+    return $widget;
   },
-)""", key, logicName().lowercase(Locale.getDefault()), widget
-        )
+)"""
     }
 }

@@ -2,8 +2,6 @@ package setting
 
 import com.intellij.ui.IdeBorderFactory
 import com.intellij.ui.components.JBTextField
-import com.intellij.ui.layout.selected
-import helper.DataService
 import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
@@ -14,8 +12,6 @@ import javax.swing.*
 
 
 class SettingsComponent {
-    private val data = DataService.instance
-
     @JvmField
     var mainPanel = JPanel()
 
@@ -27,6 +23,9 @@ class SettingsComponent {
 
     @JvmField
     var custom = Setting()
+
+    @JvmField
+    var useFolderSuffixBox = JCheckBox()
 
     init {
         val functionLayout = selectFunctionLayout()
@@ -65,12 +64,9 @@ class SettingsComponent {
                 text = "useFolderSuffix："
                 border = BorderFactory.createEmptyBorder()
             })
-            add(JCheckBox().apply {
+            add(useFolderSuffixBox.apply {
+                text = ""
                 border = BorderFactory.createEmptyBorder()
-                isSelected = data.setting.useFolderSuffix
-                addActionListener {
-                    data.setting.useFolderSuffix = isSelected
-                }
             })
 
             add(JPanel(), fillX())
