@@ -1,10 +1,11 @@
 package live_templates
 
 import com.intellij.codeInsight.template.TemplateContextType
-import com.intellij.psi.PsiFile
+import com.intellij.codeInsight.template.TemplateActionContext
 
-class GetXContext : TemplateContextType("FLUTTER", "Flutter") {
-    override fun isInContext(file: PsiFile, offset: Int): Boolean {
-        return file.name.endsWith(".dart")
+@Suppress("DEPRECATION")
+class GetXContext : TemplateContextType("FLUTTER", "Flutter", null) {
+    override fun isInContext(templateActionContext: TemplateActionContext): Boolean {
+        return templateActionContext.file.name.endsWith(".dart")
     }
 }

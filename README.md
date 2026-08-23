@@ -56,3 +56,13 @@ Language: English | [中文（详细讲解）](https://juejin.cn/post/7005003323
   - If you don't understand the concept and function of binding, it is not recommended to turn it on; not using binding will not affect development
 
 - Module Name: The name of the module, please use the big camel case as much as possible; capitalize the first letter
+
+# Development
+
+- Build JDK: JDK 25
+- Gradle: use the checked-in Gradle Wrapper (9.5.0)
+- The plugin targets IntelliJ IDEA 2023.3 and produces Java 17-compatible bytecode.
+
+Run the verification suite with:
+
+    ./gradlew test buildPlugin verifyPlugin

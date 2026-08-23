@@ -1,47 +1,83 @@
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
   id("java")
-  id("org.jetbrains.kotlin.jvm") version "1.9.23"
-  id("org.jetbrains.intellij") version "1.17.2"
-  // https://github.com/JetBrains/gradle-changelog-plugin
-  id("org.jetbrains.changelog") version "2.2.1"
+  id("org.jetbrains.kotlin.jvm") version "2.3.20"
+  id("org.jetbrains.intellij.platform") version "2.18.1"
+  id("org.jetbrains.changelog") version "2.5.0"
 }
 
 group = "com.xdd"
+version = "3.6.0"
 
 repositories {
   mavenCentral()
-}
-
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-  version.set("2023.2.5")
-  type.set("IC") // Target IDE Platform
-
-  plugins.set(listOf(/* Plugin Dependencies */))
-  instrumentCode.set(false)
+  intellijPlatform {
+    defaultRepositories()
+  }
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+  intellijPlatform {
+    intellijIdeaCommunity("2023.3.8")
+    testFramework(TestFrameworkType.Platform)
+  }
 
   testImplementation(kotlin("test"))
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(25))
+  }
+}
+
+kotlin {
+  jvmToolchain(25)
+  compilerOptions {
+    jvmTarget.set(JvmTarget.JVM_17)
+  }
+}
+
+intellijPlatform {
+  instrumentCode = false
+
+  pluginConfiguration {
+    id = "com.tao.getx"
+    version = project.version.toString()
+    description = markdownToHTML(File(rootDir, "pluginDescription.md").readText())
+    changeNotes = markdownToHTML(File(rootDir, "changeNotes.md").readText())
+
+    ideaVersion {
+      sinceBuild = "233"
+      untilBuild = provider { null }
+    }
+  }
+
+  pluginVerification {
+    ides {
+      create(IntelliJPlatformType.IntellijIdeaCommunity, "2023.3.8")
+    }
+  }
+}
+
 tasks {
-  // Set the JVM compatibility versions
   withType<JavaCompile> {
     sourceCompatibility = "17"
     targetCompatibility = "17"
-  }
-  withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
+    options.release.set(17)
   }
 
   test {
     useJUnit()
+  }
+
+  withType<KotlinJvmCompile>().configureEach {
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
   }
 
   named("buildSearchableOptions") {
@@ -57,13 +93,4 @@ tasks {
   publishPlugin {
     token.set(System.getenv("PUBLISH_TOKEN"))
   }
-}
-
-version = "3.6.0"
-tasks.patchPluginXml {
-  sinceBuild.set("232")
-  untilBuild.set("")
-  pluginId.set("com.tao.getx")
-  pluginDescription.set(markdownToHTML(File(rootDir, "pluginDescription.md").readText()))
-  changeNotes.set(markdownToHTML(File(rootDir, "changeNotes.md").readText()))
 }

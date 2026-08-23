@@ -8,7 +8,7 @@
 
     <!--  It is recommended to write the id of other plugins that the plugin depends on. Do
     not write it. In some cases, uploading the plugin will report an error -->
-    <depends>com.intellij.modules.all</depends>
+    <depends>com.intellij.modules.platform</depends>
 
     <!-- Write plugin actions -->
     <actions>

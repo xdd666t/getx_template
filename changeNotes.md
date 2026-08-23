@@ -1,5 +1,7 @@
 # 3.6.0
-- Raise minimum supported IDE build to 232 for IntelliJ Platform 2023.2 compatibility
+- Upgrade the Gradle and Kotlin toolchain for JDK 25 builds
+- Migrate to IntelliJ Platform Gradle Plugin 2.x and IntelliJ IDEA 2023.3
+- Raise minimum supported IDE build to 233 for IntelliJ Platform 2023.3 compatibility
 - Fix missing intention description resources for "Wrap with Observer"
 - Fix service access during intention snippet initialization on newer IDE versions
 - Add logic-in-build option for generated GetX views

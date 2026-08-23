@@ -172,10 +172,11 @@ class NewGetXAction : AnAction() {
             }
         }
 
-        if (failure != null) {
+        val writeFailure = failure
+        if (writeFailure != null) {
             Messages.showErrorDialog(
                 project,
-                "Unable to create GetX files: ${failure?.message ?: "unknown error"}",
+                "Unable to create GetX files: ${writeFailure.message ?: "unknown error"}",
                 "GetX",
             )
             return false
